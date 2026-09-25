@@ -3,289 +3,264 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>EMON PROGRESS HUB | Developer Emon Khan</title>
+  <title>EMON TRADING ROAD MAP | 90 Days Compounding Tracker</title>
   
-  <!-- Tailwind CSS & Fonts -->
+  <!-- Tailwind CSS, Fonts & Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <style>
-    * { font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+    * { font-family: 'Rajdhani', sans-serif; -webkit-tap-highlight-color: transparent; }
     .font-orbitron { font-family: 'Orbitron', sans-serif; }
-    body { background-color: #0b0f19; color: #e2e8f0; }
-    .glass-card { background: rgba(17, 24, 39, 0.85); border: 1px solid rgba(56, 189, 248, 0.2); backdrop-filter: blur(12px); }
-    .glass-card:hover { border-color: rgba(56, 189, 248, 0.4); }
-    .active-nav { color: #38bdf8 !important; border-top: 2px solid #38bdf8; }
+    body { background-color: #030712; color: #f3f4f6; }
+    .card-glass { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(0, 242, 254, 0.2); backdrop-filter: blur(12px); }
+    .row-completed { background: rgba(16, 185, 129, 0.15) !important; border-left: 4px solid #10b981; }
+
+    @media print {
+      body { background-color: #fff; color: #000; }
+      header, .no-print, button, .custom-inputs { display: none !important; }
+      .card-glass { border: 1px solid #ccc; background: transparent; color: #000; }
+      table { width: 100%; border-collapse: collapse; }
+      th, td { border: 1px solid #999 !important; color: #000 !important; padding: 4px !important; }
+      #printableArea { display: block !important; }
+    }
   </style>
 </head>
-<body class="min-h-screen pb-24">
+<body class="min-h-screen pb-16">
 
   <!-- TOP BRANDING HEADER -->
-  <header class="max-w-md mx-auto p-4 flex justify-between items-center bg-[#090d16]/90 border-b border-slate-800 sticky top-0 z-40 backdrop-blur-md">
+  <header class="max-w-4xl mx-auto p-4 flex justify-between items-center bg-[#090d16]/95 border-b border-cyan-500/20 sticky top-0 z-50 backdrop-blur-md">
     <div>
-      <h1 class="text-base font-black tracking-wider text-cyan-400 font-orbitron">EMON<span class="text-purple-400">|PROGRESS</span></h1>
-      <p class="text-[10px] text-gray-400 flex items-center gap-1 font-semibold mt-0.5">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span> Dev: <span class="text-cyan-400">Emon Khan</span>
-      </p>
+      <h1 class="text-lg font-black tracking-wider text-cyan-400 font-orbitron">EMON<span class="text-amber-400">|TRADING HUB</span></h1>
+      <p class="text-[11px] text-gray-400 font-semibold">Owner & Dev: <span class="text-cyan-300 font-bold">Emon Khan</span></p>
     </div>
-    <div class="text-right">
-      <span class="text-[10px] text-gray-400 block font-mono" id="currentDateText">Loading...</span>
-      <span class="text-[11px] font-bold text-emerald-400 font-mono" id="dailyScoreBadge">🔥 স্কোর: ০%</span>
+    <div class="flex gap-2 no-print">
+      <button onclick="window.print()" class="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1.5 shadow-md hover:opacity-90">
+        <i class="fa-solid fa-file-pdf"></i> PDF ডাউনলোড
+      </button>
+      <button onclick="resetAllProgress()" class="bg-rose-500/20 text-rose-400 border border-rose-500/40 px-2.5 py-1.5 rounded-lg text-xs font-bold hover:bg-rose-500/30">
+        রিসেট
+      </button>
     </div>
   </header>
 
-  <main class="max-w-md mx-auto p-4 space-y-4">
+  <main class="max-w-4xl mx-auto p-3 space-y-4" id="printableArea">
 
-    <!-- 1. TAB: DAILY TRACKER (কাজের হিসেব ও রুটিন) -->
-    <div id="tab-tracker" class="space-y-4">
-      
-      <!-- Motivational Banner -->
-      <div class="glass-card p-4 rounded-2xl bg-gradient-to-r from-cyan-950/40 to-purple-950/40 border-cyan-500/30">
-        <h2 class="text-sm font-bold text-cyan-300">🎯 আজকের লক্ষ্য ও কাজের হিসেব</h2>
-        <p class="text-[11px] text-gray-400 mt-1">প্রতিদিন ১% উন্নতি বছর শেষে ৩৭ গুণ সফল করে তুলবে।</p>
+    <!-- SUMMARY HEADER METRICS -->
+    <div class="card-glass p-4 rounded-2xl border-cyan-500/40">
+      <div class="text-center mb-3">
+        <h2 class="text-base font-black text-amber-400 font-orbitron tracking-wider">EMON TRADING ROAD MAP</h2>
+        <p class="text-xs text-gray-300">90 DAYS COMPOUNDING PLAN (5% DAILY PROFIT TARGET)</p>
       </div>
 
-      <!-- Add New Task/Habit -->
-      <div class="glass-card p-4 rounded-2xl space-y-3">
-        <label class="text-xs font-bold text-cyan-400 block">আজকে কী কাজ করলেন বা করবেন?</label>
-        <div class="flex gap-2">
-          <input type="text" id="taskInput" placeholder="যেমন: ২ ঘণ্টা কোডিং, ৩০ মিনিট বই পড়া..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
-          <button onclick="addNewTask()" class="bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs hover:opacity-90 shrink-0">
-            যুক্ত করুন
-          </button>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+        <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+          <p class="text-[10px] text-gray-400 font-bold uppercase">INITIAL CAPITAL</p>
+          <h3 id="displayInitFund" class="text-base font-black text-cyan-400 font-orbitron">$50.00</h3>
         </div>
-      </div>
-
-      <!-- Daily Habit Checklist -->
-      <div class="glass-card p-4 rounded-2xl space-y-2">
-        <div class="flex justify-between items-center mb-1">
-          <h3 class="text-xs font-bold text-gray-300 uppercase tracking-wider">ডেইলি চেকলিস্ট</h3>
-          <button onclick="resetDayTasks()" class="text-[10px] text-rose-400 hover:underline">রিসেট দিন</button>
+        <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+          <p class="text-[10px] text-gray-400 font-bold uppercase">DAILY TARGET</p>
+          <h3 id="displayDailyRate" class="text-base font-black text-emerald-400 font-orbitron">5.00%</h3>
         </div>
-        <div id="taskListContainer" class="space-y-2">
-          <!-- Tasks render here dynamically -->
+        <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+          <p class="text-[10px] text-gray-400 font-bold uppercase">MAX STOP LOSS</p>
+          <h3 id="displayStopLoss" class="text-base font-black text-rose-400 font-orbitron">2.00% / Day</h3>
+        </div>
+        <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+          <p class="text-[10px] text-gray-400 font-bold uppercase">FINAL TARGET</p>
+          <h3 id="displayFinalTarget" class="text-base font-black text-amber-300 font-orbitron">$4,036.52</h3>
         </div>
       </div>
 
-      <!-- Quick Reflection Note -->
-      <div class="glass-card p-4 rounded-2xl space-y-2">
-        <label class="text-xs font-bold text-purple-400 block">দিনের মূল্যায়ন (আজকের কী শিক্ষা হলো?):</label>
-        <textarea id="dailyReflection" rows="3" placeholder="আজকে সারাদিন কেমন কাটল, কী শিখলেন তা সংক্ষেপে লিখে রাখুন..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-purple-400" onkeyup="saveReflection()"></textarea>
-      </div>
-
-    </div>
-
-    <!-- 2. TAB: CODING ROADMAP (কোডিং রোডম্যাপ) -->
-    <div id="tab-coding" class="space-y-4 hidden">
-      <div class="glass-card p-4 rounded-2xl bg-gradient-to-r from-blue-950/40 to-slate-900 border-blue-500/30">
-        <h2 class="text-sm font-bold text-blue-400">💻 সম্পূর্ণ কোডিং সাকসেস রোডম্যাপ</h2>
-        <p class="text-[11px] text-gray-400 mt-1">জিরো থেকে প্রফেশনাল প্রবলেম সলভার ও অটোমেশন স্পেশালিস্ট হওয়ার গাইড।</p>
-      </div>
-
-      <!-- Roadmap Steps -->
-      <div class="space-y-3">
-        <!-- Step 1 -->
-        <div class="glass-card p-4 rounded-2xl border-l-4 border-l-cyan-400 space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-[10px] bg-cyan-950 text-cyan-400 px-2 py-0.5 rounded font-bold">লেভেল ১</span>
-            <span class="text-[10px] text-gray-400">ফাউন্ডেশন</span>
-          </div>
-          <h3 class="text-xs font-bold text-white">কম্পিউটার ফান্ডামেন্টাল ও বেসিক লজিক</h3>
-          <p class="text-[11px] text-gray-400 leading-relaxed">টার্মিনাল (CLI), গিট ও গিটহাব (Git/GitHub), ভেরিয়েবল, লুপ এবং বেসিক অ্যালগরিদম বোঝা।</p>
+      <!-- PROGRESS TRACKER -->
+      <div class="mt-4 space-y-1.5 no-print">
+        <div class="flex justify-between text-xs font-bold">
+          <span class="text-gray-300">মিশন প্রগ্রেস: <span id="completedDaysCount" class="text-cyan-400">০</span> / <span id="totalDaysCount">৯০</span> দিন সম্পন্ন</span>
+          <span id="progressPercentage" class="text-emerald-400 font-mono">0%</span>
         </div>
-
-        <!-- Step 2 -->
-        <div class="glass-card p-4 rounded-2xl border-l-4 border-l-purple-400 space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-[10px] bg-purple-950 text-purple-400 px-2 py-0.5 rounded font-bold">লেভেল ২</span>
-            <span class="text-[10px] text-gray-400">কোর ল্যাঙ্গুয়েজ</span>
-          </div>
-          <h3 class="text-xs font-bold text-white">পাইথন ও ডাটা স্ট্রাকচার</h3>
-          <p class="text-[11px] text-gray-400 leading-relaxed">পাইথনের কোর কনসেপ্ট, OOP (অবজেক্ট ওরিয়েন্টেড প্রোগ্রামিং), ফাইল হ্যান্ডলিং, API থেকে ডাটা ফেচিং।</p>
-        </div>
-
-        <!-- Step 3 -->
-        <div class="glass-card p-4 rounded-2xl border-l-4 border-l-emerald-400 space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-[10px] bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded font-bold">লেভেল ৩</span>
-            <span class="text-[10px] text-gray-400">অটোমেশন ও টুলস</span>
-          </div>
-          <h3 class="text-xs font-bold text-white">রিয়েল-লাইফ অটোমেশন ও বট মেকিং</h3>
-          <p class="text-[11px] text-gray-400 leading-relaxed">ওয়েব স্ক্র্যাপিং, স্ক্রিপ্টিং, এআই এপিআই ইন্টিগ্রেশন এবং স্বয়ংক্রিয় প্রসেসিং টুলস তৈরি।</p>
-        </div>
-
-        <!-- Step 4 -->
-        <div class="glass-card p-4 rounded-2xl border-l-4 border-l-amber-400 space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-[10px] bg-amber-950 text-amber-400 px-2 py-0.5 rounded font-bold">লেভেল ৪</span>
-            <span class="text-[10px] text-gray-400">প্রোডাক্ট বিল্ডিং</span>
-          </div>
-          <h3 class="text-xs font-bold text-white">ফুল প্রজেক্ট ও লাইভ ডেপ্লয়মেন্ট</h3>
-          <p class="text-[11px] text-gray-400 leading-relaxed">ব্যাকএন্ড + ফ্রন্টএন্ড মিলিয়ে রিয়েল ইউজারদের জন্য সাইট ও অ্যাপ্লিকেশন লাইভ হোস্ট করা।</p>
+        <div class="w-full bg-slate-950 rounded-full h-2.5 border border-slate-800 overflow-hidden">
+          <div id="progressBarFill" class="bg-gradient-to-r from-cyan-400 to-emerald-400 h-full w-0 transition-all duration-300"></div>
         </div>
       </div>
     </div>
 
-    <!-- 3. TAB: SUCCESS ROADMAP (সফল হওয়ার রোডম্যাপ) -->
-    <div id="tab-success" class="space-y-4 hidden">
-      <div class="glass-card p-4 rounded-2xl bg-gradient-to-r from-amber-950/40 to-slate-900 border-amber-500/30">
-        <h2 class="text-sm font-bold text-amber-400">🏆 সফল হওয়ার সার্বিক ফ্রেমওয়ার্ক</h2>
-        <p class="text-[11px] text-gray-400 mt-1">শুধু স্বপ্ন দেখা নয়, লক্ষ্য অর্জনের প্রমাণিত ৪টি মূল স্তম্ভ।</p>
+    <!-- RULES PANEL -->
+    <div class="card-glass p-3.5 rounded-xl border-amber-500/30 text-xs space-y-1 text-gray-300">
+      <h3 class="text-amber-400 font-bold flex items-center gap-1.5 uppercase tracking-wider text-[11px]">
+        <i class="fa-solid fa-shield-halved"></i> প্রিন্ট অ্যান্ড ট্রেডিং রুলস:
+      </h3>
+      <p><b>১. দৈনিক টার্গেট:</b> মূল ফান্ডের ৫% লাভ হলে দিনের ট্রেড সঙ্গে সঙ্গে বন্ধ করবেন।</p>
+      <p><b>২. স্টপ লস (Stop Loss):</b> দিনে সর্বোচ্চ ২% এর বেশি লস দেওয়া যাবে না।</p>
+      <p><b>৩. ট্রেড সাইজ:</b> প্রতি ট্রেডে ফান্ডের ৫% এমাউন্ট এন্ট্রি নিবেন এবং ১:২ রিওয়ার্ড রেশিও ফলো করবেন।</p>
+    </div>
+
+    <!-- CUSTOM ROADMAP GENERATOR MODAL/FORM (NEW FEATURE) -->
+    <div class="card-glass p-4 rounded-xl border-slate-800 no-print space-y-3">
+      <h3 class="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
+        <i class="fa-solid fa-sliders"></i> কাস্টম রোডম্যাপ তৈরি করুন (নতুন প্ল্যান)
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+        <div>
+          <label class="text-gray-400 block mb-1">ক্যাপিটাল ($):</label>
+          <input type="number" id="inputCapital" value="50" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-white font-mono focus:outline-none focus:border-cyan-400">
+        </div>
+        <div>
+          <label class="text-gray-400 block mb-1">দৈনিক প্রফিট (%):</label>
+          <input type="number" id="inputProfitRate" value="5" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-white font-mono focus:outline-none focus:border-cyan-400">
+        </div>
+        <div>
+          <label class="text-gray-400 block mb-1">কত দিনের প্ল্যান:</label>
+          <input type="number" id="inputDays" value="90" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-white font-mono focus:outline-none focus:border-cyan-400">
+        </div>
       </div>
+      <button onclick="generateCustomPlan()" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-4 py-2 rounded-lg text-xs shadow-md transition">
+        নতুন রোডম্যাপ জেনারেট করুন ⚡
+      </button>
+    </div>
 
-      <div class="space-y-3">
-        <div class="glass-card p-4 rounded-2xl space-y-2">
-          <div class="flex items-center gap-2 text-amber-400 text-xs font-bold">
-            <i class="fa-solid fa-brain"></i> ১. মাইন্ডসেট ও আত্মনিয়ন্ত্রণ
-          </div>
-          <p class="text-[11px] text-gray-300 leading-relaxed">
-            মুড অনুযায়ী কাজ না করে রুটিন অনুযায়ী কাজ করা। ছোটখাটো ব্যর্থতাকে শেখার অংশ মনে করা এবং অপ্রয়োজনীয় সোশ্যাল মিডিয়া স্ক্রোলিং কমানো।
-          </p>
-        </div>
-
-        <div class="glass-card p-4 rounded-2xl space-y-2">
-          <div class="flex items-center gap-2 text-cyan-400 text-xs font-bold">
-            <i class="fa-solid fa-crosshairs"></i> ২. একটি প্রধান স্কিলে মাস্টারি
-          </div>
-          <p class="text-[11px] text-gray-300 leading-relaxed">
-            একসাথে ১০ দিকে না ছুটে যেকোনো ১টি ডিমান্ডিং স্কিল বেছে নিয়ে টানা ৬ মাস সময় দেওয়া। এমন দক্ষতা তৈরি করা যা মানুষের বড় সমস্যা সমাধান করে।
-          </p>
-        </div>
-
-        <div class="glass-card p-4 rounded-2xl space-y-2">
-          <div class="flex items-center gap-2 text-emerald-400 text-xs font-bold">
-            <i class="fa-solid fa-chart-line"></i> ৩. ধারাবাহিকতা (Consistency)
-          </div>
-          <p class="text-[11px] text-gray-300 leading-relaxed">
-            একদিন ১০ ঘণ্টা কাজ করে ৫ দিন গায়েব থাকার চেয়ে প্রতিদিন মন দিয়ে ২ ঘণ্টা কাজ করা বহুগুণ শক্তিশালী।
-          </p>
-        </div>
-
-        <div class="glass-card p-4 rounded-2xl space-y-2">
-          <div class="flex items-center gap-2 text-rose-400 text-xs font-bold">
-            <i class="fa-solid fa-vault"></i> ৪. অর্থনৈতিক সচেতনতা
-          </div>
-          <p class="text-[11px] text-gray-300 leading-relaxed">
-            প্রথম থেকেই উপার্জনের হিসেব রাখা, অযথা খরচ না করে নিজের স্কিল বা কাজের টুলসে ইনভেস্ট করা।
-          </p>
-        </div>
+    <!-- 90 DAYS INTERACTIVE TABLE -->
+    <div class="card-glass rounded-2xl overflow-hidden border-slate-800">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-950/90 text-gray-400 uppercase border-b border-slate-800 text-[10px] tracking-wider">
+              <th class="p-2.5 text-center no-print">স্ট্যাটাস</th>
+              <th class="p-2.5">DAY</th>
+              <th class="p-2.5">FUNDS ($)</th>
+              <th class="p-2.5">TRADE ($)</th>
+              <th class="p-2.5">STOP LOSS ($)</th>
+              <th class="p-2.5">PROFIT (5%)</th>
+              <th class="p-2.5 text-right font-bold text-amber-400">TOTAL ($)</th>
+            </tr>
+          </thead>
+          <tbody id="roadmapTableBody" class="divide-y divide-slate-800/60 font-mono">
+            <!-- Dynamic rows will render here -->
+          </tbody>
+        </table>
       </div>
     </div>
 
   </main>
 
-  <!-- BOTTOM NAVIGATION -->
-  <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-[#090d16] border-t border-slate-800 p-2 flex justify-around items-center z-40 rounded-t-2xl shadow-2xl">
-    <button onclick="switchTab('tracker')" id="nav-tracker" class="tab-btn active-nav flex flex-col items-center text-[10px] font-bold text-gray-400">
-      <span class="text-base"><i class="fa-solid fa-list-check"></i></span> ডেইলি ট্র্যাকার
-    </button>
-    <button onclick="switchTab('coding')" id="nav-coding" class="tab-btn flex flex-col items-center text-[10px] font-bold text-gray-400">
-      <span class="text-base"><i class="fa-solid fa-laptop-code"></i></span> কোডিং রোডম্যাপ
-    </button>
-    <button onclick="switchTab('success')" id="nav-success" class="tab-btn flex flex-col items-center text-[10px] font-bold text-gray-400">
-      <span class="text-base"><i class="fa-solid fa-trophy"></i></span> সাকসেস রুলস
-    </button>
-  </nav>
-
-  <!-- SCRIPT ENGINE -->
   <script>
-    // Set Current Bengali Date
-    const today = new Date();
-    document.getElementById('currentDateText').innerText = today.toLocaleDateString('bn-BD', {
-      day: 'numeric', month: 'long', year: 'numeric'
-    });
+    let capital = 50.00;
+    let profitRate = 0.05;
+    let stopLossRate = 0.02;
+    let totalDays = 90;
+    let roadmapData = [];
+    let completedDays = JSON.parse(localStorage.getItem('emon_completed_days')) || {};
 
-    // Navigation Switcher
-    function switchTab(tab) {
-      ['tracker', 'coding', 'success'].forEach(t => {
-        document.getElementById('tab-' + t).classList.add('hidden');
-        document.getElementById('nav-' + t).classList.remove('active-nav');
-      });
-      document.getElementById('tab-' + tab).classList.remove('hidden');
-      document.getElementById('nav-' + tab).classList.add('active-nav');
-    }
+    function calculateRoadmap() {
+      roadmapData = [];
+      let currentFund = capital;
 
-    // Default Tasks Initializer
-    let defaultTasks = [
-      { text: "আজকে ১ ঘণ্টা কোডিং বা টেকনিক্যাল স্কিল প্র্যাকটিস", done: false },
-      { text: "২০ মিনিট যেকোনো শিক্ষণীয় বই পড়া বা রিসার্চ", done: false },
-      { text: "পর্যাপ্ত পানি পান ও হালকা শারীরিক ব্যায়াম", done: false },
-      { text: "অযথা সময় নষ্ট না করে দিনের মূল কাজ শেষ করা", done: false }
-    ];
+      for (let i = 1; i <= totalDays; i++) {
+        let tradeAmount = currentFund * 0.05;
+        let stopLoss = -(currentFund * stopLossRate);
+        let profit = currentFund * profitRate;
+        let total = currentFund + profit;
 
-    let userTasks = JSON.parse(localStorage.getItem('emon_hub_tasks')) || defaultTasks;
+        roadmapData.push({
+          day: i,
+          funds: currentFund.toFixed(2),
+          trade: tradeAmount.toFixed(2),
+          stopLoss: stopLoss.toFixed(2),
+          profit: profit.toFixed(2),
+          total: total.toFixed(2)
+        });
 
-    function renderTasks() {
-      const container = document.getElementById('taskListContainer');
-      container.innerHTML = '';
-
-      let completedCount = 0;
-
-      userTasks.forEach((task, index) => {
-        if(task.done) completedCount++;
-
-        const div = document.createElement('div');
-        div.className = `flex items-center justify-between p-2.5 rounded-xl border transition ${
-          task.done ? 'bg-emerald-950/30 border-emerald-500/40 text-gray-400 line-through' : 'bg-slate-900 border-slate-800 text-white'
-        }`;
-
-        div.innerHTML = `
-          <div class="flex items-center gap-2.5 cursor-pointer flex-1" onclick="toggleTask(${index})">
-            <input type="checkbox" ${task.done ? 'checked' : ''} class="rounded text-cyan-500 pointer-events-none" />
-            <span class="text-xs font-medium">${task.text}</span>
-          </div>
-          <button onclick="deleteTask(${index})" class="text-gray-500 hover:text-rose-400 px-1 text-xs">
-            <i class="fa-solid fa-trash-can"></i>
-          </button>
-        `;
-        container.appendChild(div);
-      });
-
-      // Update Daily Progress Score
-      let scorePercent = userTasks.length > 0 ? Math.round((completedCount / userTasks.length) * 100) : 0;
-      document.getElementById('dailyScoreBadge').innerText = `🔥 স্কোর: ${scorePercent}%`;
-
-      localStorage.setItem('emon_hub_tasks', JSON.stringify(userTasks));
-    }
-
-    function addNewTask() {
-      const input = document.getElementById('taskInput');
-      const val = input.value.trim();
-      if(!val) return;
-
-      userTasks.push({ text: val, done: false });
-      input.value = '';
-      renderTasks();
-    }
-
-    function toggleTask(index) {
-      userTasks[index].done = !userTasks[index].done;
-      renderTasks();
-    }
-
-    function deleteTask(index) {
-      userTasks.splice(index, 1);
-      renderTasks();
-    }
-
-    function resetDayTasks() {
-      if(confirm("আজকের সব টাস্ক আনচেক করে নতুন দিন শুরু করতে চান?")) {
-        userTasks.forEach(t => t.done = false);
-        renderTasks();
+        currentFund = total;
       }
     }
 
-    // Daily Reflection Auto-Save
-    const reflectBox = document.getElementById('dailyReflection');
-    reflectBox.value = localStorage.getItem('emon_hub_reflection') || '';
+    function renderTable() {
+      const tbody = document.getElementById('roadmapTableBody');
+      tbody.innerHTML = '';
 
-    function saveReflection() {
-      localStorage.setItem('emon_hub_reflection', reflectBox.value);
+      roadmapData.forEach(row => {
+        const isDone = completedDays[row.day] || false;
+        const tr = document.createElement('tr');
+        tr.className = `transition hover:bg-slate-800/40 ${isDone ? 'row-completed' : ''}`;
+        tr.id = `row-${row.day}`;
+
+        tr.innerHTML = `
+          <td class="p-2.5 text-center no-print">
+            <input type="checkbox" ${isDone ? 'checked' : ''} onchange="toggleDay(${row.day})" class="w-4 h-4 rounded text-emerald-500 bg-slate-900 border-slate-700 cursor-pointer" />
+          </td>
+          <td class="p-2.5 font-bold text-white">Day ${row.day}</td>
+          <td class="p-2.5 text-gray-300">$${row.funds}</td>
+          <td class="p-2.5 text-cyan-400">$${row.trade}</td>
+          <td class="p-2.5 text-rose-400">${row.stopLoss}$</td>
+          <td class="p-2.5 text-emerald-400">+$${row.profit}</td>
+          <td class="p-2.5 text-right font-black text-amber-300">$${row.total}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      updateProgress();
     }
 
-    // Initial Run
-    renderTasks();
+    function toggleDay(day) {
+      completedDays[day] = !completedDays[day];
+      localStorage.setItem('emon_completed_days', JSON.stringify(completedDays));
+
+      const row = document.getElementById(`row-${day}`);
+      if (completedDays[day]) {
+        row.classList.add('row-completed');
+      } else {
+        row.classList.remove('row-completed');
+      }
+
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const doneCount = Object.values(completedDays).filter(Boolean).length;
+      const percent = Math.round((doneCount / totalDays) * 100);
+
+      document.getElementById('completedDaysCount').innerText = doneCount;
+      document.getElementById('totalDaysCount').innerText = totalDays;
+      document.getElementById('progressPercentage').innerText = `${percent}%`;
+      document.getElementById('progressBarFill').style.width = `${percent}%`;
+    }
+
+    function resetAllProgress() {
+      if (confirm("আপনি কি সমস্ত দিনের টিক মার্ক রিসেট করতে চান?")) {
+        completedDays = {};
+        localStorage.removeItem('emon_completed_days');
+        renderTable();
+      }
+    }
+
+    function generateCustomPlan() {
+      const userCap = parseFloat(document.getElementById('inputCapital').value);
+      const userRate = parseFloat(document.getElementById('inputProfitRate').value);
+      const userDays = parseInt(document.getElementById('inputDays').value);
+
+      if (!userCap || !userRate || !userDays) {
+        alert("দয়া করে সঠিক সংখ্যা প্রদান করুন!");
+        return;
+      }
+
+      capital = userCap;
+      profitRate = userRate / 100;
+      totalDays = userDays;
+
+      document.getElementById('displayInitFund').innerText = `$${capital.toFixed(2)}`;
+      document.getElementById('displayDailyRate').innerText = `${userRate.toFixed(2)}%`;
+
+      calculateRoadmap();
+      const lastTotal = roadmapData[roadmapData.length - 1].total;
+      document.getElementById('displayFinalTarget').innerText = `$${Number(lastTotal).toLocaleString()}`;
+
+      completedDays = {};
+      renderTable();
+    }
+
+    // Initialize Page
+    calculateRoadmap();
+    renderTable();
   </script>
 </body>
 </html>
