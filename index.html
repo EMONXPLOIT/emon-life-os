@@ -45,76 +45,96 @@
 
   <main class="max-w-4xl mx-auto p-3 space-y-4">
 
-    <!-- TAB 1: 10-IN-1 SMART OFFICE & CALC SUITE -->
+    <!-- TAB 1: 10-IN-1 SMART OFFICE & UNLIMITED CALC SUITE -->
     <div id="tab-tools" class="space-y-4 print-section">
       <div class="card-glass p-4 rounded-2xl bg-gradient-to-r from-cyan-950/40 to-slate-900 border-cyan-500/40 flex justify-between items-center">
         <div>
           <h2 class="text-sm font-bold text-cyan-300 flex items-center gap-2">
-            <i class="fa-solid fa-calculator text-amber-400"></i> ১০ প্রকার প্রফেশনাল অফিস ক্যালকুলেটর
+            <i class="fa-solid fa-calculator text-amber-400"></i> আনলিমিটেড শোরুম ও নিখুঁত সময় ভিত্তিক স্যালারি ক্যালকুলেটর
           </h2>
-          <p class="text-[11px] text-gray-400 mt-0.5">শোরুম ও অফিস ডিউটি, দৈনিক আয়, ওভারটাইম ও সরাসরি হিসাব সংরক্ষণের ব্যবস্থা।</p>
+          <p class="text-[11px] text-gray-400 mt-0.5">১ সেকেন্ড, ১ মিনিট, ১ ঘণ্টা ও ১ দিনের নিখুঁত ইনকাম ট্র্যাকার।</p>
         </div>
         <button onclick="printCurrentTab('tab-tools')" class="no-print bg-cyan-500 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1">
           <i class="fa-solid fa-file-pdf"></i> রিপোর্ট PDF
         </button>
       </div>
 
-      <!-- 1. Showroom Shift & Overtime Calculator with Daily Income -->
+      <!-- Unlimited Shift, Overtime & Micro-Seconds Engine -->
       <div class="card-glass p-4 rounded-2xl space-y-3">
         <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
-          <i class="fa-solid fa-business-time"></i> ১. শোরুমের বেতন, দৈনিক ইনকাম ও ওভারটাইম হিসাব
+          <i class="fa-solid fa-stopwatch-20"></i> ১. শোরুম ও কর্মস্থলের লাইভ সময় ও ইনকাম ট্র্যাকার
         </h3>
         
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
-          <div>
-            <label class="text-gray-400 block mb-1">মাসিক মূল বেতন (৳):</label>
-            <input type="number" id="srSalary" placeholder="যেমন: 7000" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+          <div class="col-span-2 sm:col-span-1">
+            <label class="text-gray-400 block mb-1">মাসিক মূল বেতন (৳ - আনলিমিটেড):</label>
+            <input type="number" id="srSalary" step="any" placeholder="যেকোনো পরিমাণ" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono focus:border-cyan-400 focus:outline-none">
           </div>
           <div>
             <label class="text-gray-400 block mb-1">উপস্থিত দিন (হাজিরা):</label>
-            <input type="number" id="srDays" value="30" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+            <input type="number" id="srDays" value="30" step="any" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono focus:border-cyan-400 focus:outline-none">
           </div>
           <div>
             <label class="text-gray-400 block mb-1">প্রতিদিনের শিফট ডিউটি (ঘণ্টা):</label>
-            <input type="number" id="srDailyDutyHours" value="8" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+            <input type="number" id="srDailyDutyHours" value="8" step="any" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono focus:border-cyan-400 focus:outline-none">
           </div>
           <div>
             <label class="text-gray-400 block mb-1">মোট ওভারটাইম (ঘণ্টা):</label>
-            <input type="number" id="srOvertimeHours" value="0" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+            <input type="number" id="srOvertimeHours" value="0" step="any" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono focus:border-cyan-400 focus:outline-none">
           </div>
-          <div class="col-span-2 sm:col-span-1">
-            <label class="text-gray-400 block mb-1">অগ্রিম / কর্তন (৳):</label>
-            <input type="number" id="srDeduct" value="0" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+          <div class="col-span-2 sm:col-span-2">
+            <label class="text-gray-400 block mb-1">অগ্রিম / অন্যান্য কর্তন (৳):</label>
+            <input type="number" id="srDeduct" value="0" step="any" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono focus:border-cyan-400 focus:outline-none">
           </div>
         </div>
 
-        <button onclick="calcShowroomSalary()" class="w-full bg-cyan-500 text-slate-950 font-bold py-2 rounded-lg text-xs">
-          হিসাব বের করুন ⚡
+        <button onclick="calcShowroomSalary()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-2 rounded-lg text-xs transition">
+          সম্পূর্ণ হিসাব বের করুন ⚡
         </button>
 
-        <!-- Detailed Results with Daily Income Display -->
-        <div id="srResult" class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-xs hidden space-y-2 font-mono">
-          <!-- Daily Income Highlight -->
-          <div class="p-2.5 rounded-lg bg-emerald-950/40 border border-emerald-500/40 flex justify-between items-center">
-            <span class="text-gray-300 font-bold">💰 ১ দিনে ইনকাম (ডেইলি রেট):</span>
-            <span class="text-base font-black text-emerald-400" id="resDailyIncome">৳০.০০</span>
+        <!-- Detailed Results with Second/Minute Breakdown -->
+        <div id="srResult" class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-xs hidden space-y-2.5 font-mono">
+          
+          <!-- Micro Earnings Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+            <div class="bg-slate-950/80 p-2 rounded-lg border border-slate-800">
+              <span class="text-[10px] text-gray-400 block">১ সেকেন্ডে আয়</span>
+              <span class="text-xs font-black text-rose-400" id="resSecondRate">৳০.০০০০</span>
+            </div>
+            <div class="bg-slate-950/80 p-2 rounded-lg border border-slate-800">
+              <span class="text-[10px] text-gray-400 block">১ মিনিটে আয়</span>
+              <span class="text-xs font-black text-purple-400" id="resMinuteRate">৳০.০০</span>
+            </div>
+            <div class="bg-slate-950/80 p-2 rounded-lg border border-slate-800">
+              <span class="text-[10px] text-gray-400 block">১ ঘণ্টায় আয়</span>
+              <span class="text-xs font-black text-cyan-400" id="resHourRate">৳০.০০</span>
+            </div>
+            <div class="bg-slate-950/80 p-2 rounded-lg border border-slate-800">
+              <span class="text-[10px] text-gray-400 block">১ দিনে আয়</span>
+              <span class="text-xs font-black text-emerald-400" id="resDailyIncome">৳০.০০</span>
+            </div>
           </div>
 
-          <div class="flex justify-between text-gray-300">
-            <span>প্রতি ঘণ্টার রেট (<span id="resDutyHrsTxt">৮</span>h শিফট):</span> 
-            <span class="text-cyan-400 font-bold" id="resHourRate">৳০.০০</span>
+          <!-- Total Duty Time Summary -->
+          <div class="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800 space-y-1">
+            <div class="flex justify-between text-gray-300">
+              <span>মোট কাজের সময় (হাজিরা + ওভারটাইম):</span>
+              <span class="text-amber-300 font-bold" id="resTotalWorkedTime">০ ঘণ্টা (০ সেকেন্ড)</span>
+            </div>
+            <div class="flex justify-between text-gray-300">
+              <span>ওভারটাইম থেকে অতিরিক্ত আয়:</span>
+              <span class="text-emerald-400 font-bold" id="resOvertimePay">+৳০.০০</span>
+            </div>
           </div>
-          <div class="flex justify-between text-gray-300">
-            <span>মোট ওভারটাইম আয়:</span> 
-            <span class="text-emerald-400 font-bold" id="resOvertimePay">+৳০.০০</span>
-          </div>
+
+          <!-- Final Payable Salary -->
           <div class="flex justify-between border-t border-slate-800 pt-2 text-sm font-bold">
-            <span class="text-amber-300">সর্বমোট প্রদেয় বেতন:</span> 
-            <span class="text-amber-400" id="resTotalSalary">৳০.০০</span>
+            <span class="text-amber-300">সর্বমোট নিট প্রদেয় বেতন:</span> 
+            <span class="text-amber-400 text-base" id="resTotalSalary">৳০.০০</span>
           </div>
 
           <!-- Add to Pocket Expense Action -->
-          <button onclick="addCalculatedSalaryToWallet()" class="w-full mt-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-bold py-2 rounded-lg text-xs flex items-center justify-center gap-1.5 no-print">
+          <button onclick="addCalculatedSalaryToWallet()" class="w-full mt-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-bold py-2 rounded-lg text-xs flex items-center justify-center gap-1.5 no-print shadow-md">
             <i class="fa-solid fa-plus-circle"></i> খরচের খাতার ব্যালেন্সে এই বেতন যোগ করুন (+)
           </button>
         </div>
@@ -126,8 +146,8 @@
           <i class="fa-solid fa-chart-pie"></i> ২. পণ্যের লাভ-ক্ষতি ও প্রফিট মার্জিন
         </h3>
         <div class="grid grid-cols-2 gap-2 text-xs">
-          <input type="number" id="costPrice" placeholder="পাইকারি কেনা দাম (৳)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
-          <input type="number" id="sellPrice" placeholder="খুচরা বিক্রয় মূল্য (৳)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+          <input type="number" id="costPrice" step="any" placeholder="পাইকারি কেনা দাম (৳)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+          <input type="number" id="sellPrice" step="any" placeholder="খুচরা বিক্রয় মূল্য (৳)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
         </div>
         <button onclick="calcProfitMargin()" class="w-full bg-emerald-500 text-slate-950 font-bold py-2 rounded-lg text-xs">নিট লাভ বের করুন 📈</button>
         <p id="profitResult" class="text-xs font-mono font-bold text-center text-cyan-300"></p>
@@ -139,8 +159,8 @@
           <i class="fa-solid fa-tags"></i> ৩. শপিং ও ডিসকাউন্ট হিসাব
         </h3>
         <div class="grid grid-cols-2 gap-2 text-xs">
-          <input type="number" id="origPrice" placeholder="মূল দাম (৳)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
-          <input type="number" id="discPercent" placeholder="ছাড়ের হার (%)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+          <input type="number" id="origPrice" step="any" placeholder="মূল দাম (৳)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+          <input type="number" id="discPercent" step="any" placeholder="ছাড়ের হার (%)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
         </div>
         <button onclick="calcDiscount()" class="w-full bg-purple-500 text-white font-bold py-2 rounded-lg text-xs">ছাড়ের পর মূল্য দেখুন 🏷️</button>
         <p id="discountResult" class="text-xs font-mono font-bold text-center text-emerald-400"></p>
@@ -152,8 +172,8 @@
           <i class="fa-solid fa-vector-square"></i> ৪. জমি ও স্কয়ার ফিট পরিমাপ (শতক ও কাঠা)
         </h3>
         <div class="grid grid-cols-2 gap-2 text-xs">
-          <input type="number" id="landLength" placeholder="দৈর্ঘ্য (ফুট)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
-          <input type="number" id="landWidth" placeholder="প্রস্থ (ফুট)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+          <input type="number" id="landLength" step="any" placeholder="দৈর্ঘ্য (ফুট)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+          <input type="number" id="landWidth" step="any" placeholder="প্রস্থ (ফুট)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
         </div>
         <button onclick="calcLandArea()" class="w-full bg-rose-500 text-white font-bold py-2 rounded-lg text-xs">জমি পরিমাপ করুন 📐</button>
         <p id="landResult" class="text-xs font-mono font-bold text-center text-amber-300"></p>
@@ -165,8 +185,8 @@
           <i class="fa-solid fa-coins"></i> ৫. স্বর্ণের ভরি ও আনার হিসাব
         </h3>
         <div class="grid grid-cols-2 gap-2 text-xs">
-          <input type="number" id="goldRateBhori" placeholder="প্রতি ভরি স্বর্ণের দাম (৳)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
-          <input type="number" id="goldGrams" placeholder="স্বর্ণের ওজন (গ্রাম)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+          <input type="number" id="goldRateBhori" step="any" placeholder="প্রতি ভরি স্বর্ণের দাম (৳)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+          <input type="number" id="goldGrams" step="any" placeholder="স্বর্ণের ওজন (গ্রাম)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
         </div>
         <button onclick="calcGold()" class="w-full bg-amber-500 text-slate-950 font-bold py-2 rounded-lg text-xs">স্বর্ণের মোট দাম দেখুন 🪙</button>
         <p id="goldResult" class="text-xs font-mono font-bold text-center text-cyan-300"></p>
@@ -260,7 +280,7 @@
             <option value="income">টাকা এলো (+)</option>
           </select>
           <input type="text" id="expenseTitle" placeholder="বিবরণ" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white sm:col-span-2">
-          <input type="number" id="expenseAmount" placeholder="পরিমাণ" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
+          <input type="number" id="expenseAmount" step="any" placeholder="পরিমাণ" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
         </div>
         <button onclick="addExpenseRecord()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-bold py-2 rounded-lg text-xs">
           যুক্ত করুন ✍️
@@ -292,7 +312,7 @@
             <option value="due">বাকি নিল (-)</option>
             <option value="paid">জমা দিল (+)</option>
           </select>
-          <input type="number" id="custAmount" placeholder="টাকার পরিমাণ" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white font-mono">
+          <input type="number" id="custAmount" step="any" placeholder="টাকার পরিমাণ" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white font-mono">
         </div>
         <button onclick="addShopEntry()" class="w-full bg-cyan-500 text-slate-950 font-bold py-2 rounded-lg text-xs">
           খাতায় লিখুন ✍️
@@ -357,7 +377,7 @@
       activeTab.classList.remove('print-target');
     }
 
-    /* 1. SHOWROOM SHIFT & OVERTIME CALCULATOR WITH DAILY INCOME */
+    /* 1. UNLIMITED SHOWROOM, OVERTIME, MINUTE & SECOND CALC */
     let lastCalculatedPayableSalary = 0;
 
     function calcShowroomSalary() {
@@ -369,21 +389,30 @@
 
       if(salary <= 0) return alert("মাসিক বেতন লিখুন!");
 
-      // Calculations
-      const perDay = salary / 30; // দৈনিক ইনকাম
-      const perHour = perDay / dutyHours; // শিফটের প্রতি ঘণ্টার রেট
-      const overtimePay = otHours * perHour; // ওভারটাইম আর্নিং
-      const basePay = perDay * days;
+      // Unlimited Micro calculations
+      const perDay = salary / 30;                     // দৈনিক আয়
+      const perHour = perDay / dutyHours;             // প্রতি ঘণ্টার রেট
+      const perMinute = perHour / 60;                 // প্রতি মিনিটের রেট
+      const perSecond = perMinute / 60;               // প্রতি সেকেন্ডের রেট
+
+      const overtimePay = otHours * perHour;          // ওভারটাইম আয়
+      const basePay = perDay * days;                  // মূল হাজিরা আয়
       const totalPay = (basePay + overtimePay) - deduct;
 
       lastCalculatedPayableSalary = totalPay;
 
-      // Update UI
-      document.getElementById('resDailyIncome').innerText = `৳${perDay.toFixed(2)}`;
-      document.getElementById('resDutyHrsTxt').innerText = dutyHours;
+      const totalWorkedHours = (days * dutyHours) + otHours;
+      const totalWorkedSeconds = totalWorkedHours * 3600;
+
+      // Update UI elements
+      document.getElementById('resSecondRate').innerText = `৳${perSecond.toFixed(4)}`;
+      document.getElementById('resMinuteRate').innerText = `৳${perMinute.toFixed(2)}`;
       document.getElementById('resHourRate').innerText = `৳${perHour.toFixed(2)}`;
+      document.getElementById('resDailyIncome').innerText = `৳${perDay.toFixed(2)}`;
+
+      document.getElementById('resTotalWorkedTime').innerText = `${totalWorkedHours.toLocaleString()} ঘণ্টা (${totalWorkedSeconds.toLocaleString()} সেকেন্ড)`;
       document.getElementById('resOvertimePay').innerText = `+৳${overtimePay.toFixed(2)}`;
-      document.getElementById('resTotalSalary').innerText = `৳${totalPay.toFixed(2)}`;
+      document.getElementById('resTotalSalary').innerText = `৳${totalPay.toLocaleString('en-IN', {maximumFractionDigits: 2})}`;
       document.getElementById('srResult').classList.remove('hidden');
     }
 
@@ -393,7 +422,7 @@
       const dateStr = new Date().toLocaleDateString('bn-BD', { day: 'numeric', month: 'short' });
       expenseData.unshift({
         type: 'income',
-        title: 'শোরুমের বেতন ও ওভারটাইম',
+        title: 'অর্জিত বেতন ও ওভারটাইম',
         amt: lastCalculatedPayableSalary,
         date: dateStr
       });
