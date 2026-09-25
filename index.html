@@ -1,642 +1,571 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>EMON SMART MANAGER | Ultimate Office & Calculator Suite</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emon Smart Manager</title>
   
-  <!-- Tailwind CSS, Fonts & Font Awesome -->
+  <!-- Firebase SDKs (Compat version for single HTML file) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
   <style>
-    * { font-family: 'Rajdhani', sans-serif; -webkit-tap-highlight-color: transparent; }
-    .font-orbitron { font-family: 'Orbitron', sans-serif; }
-    body { background-color: #030712; color: #f3f4f6; }
-    .card-glass { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(0, 242, 254, 0.2); backdrop-filter: blur(12px); }
-    .active-nav { color: #38bdf8 !important; border-top: 2px solid #38bdf8; }
-    .row-completed { background: rgba(16, 185, 129, 0.15) !important; border-left: 4px solid #10b981; }
-
-    @media print {
-      body { background-color: #fff !important; color: #000 !important; }
-      header, nav, footer, .no-print, button, input, select { display: none !important; }
-      .card-glass { border: 1px solid #aaa !important; background: transparent !important; color: #000 !important; }
-      table { width: 100%; border-collapse: collapse; }
-      th, td { border: 1px solid #777 !important; color: #000 !important; padding: 6px !important; }
-      .print-target { display: block !important; }
+    @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
+    body {
+      font-family: 'Hind Siliguri', sans-serif;
     }
   </style>
 </head>
-<body class="min-h-screen pb-24">
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
 
-  <!-- TOP BRANDING HEADER -->
-  <header class="max-w-4xl mx-auto p-4 flex justify-between items-center bg-[#090d16]/95 border-b border-cyan-500/20 sticky top-0 z-50 backdrop-blur-md">
-    <div>
-      <h1 class="text-base font-black tracking-wider text-cyan-400 font-orbitron">EMON<span class="text-amber-400">|SMART MANAGER</span></h1>
-      <p class="text-[10px] text-gray-400 font-semibold">Dev & Owner: <span class="text-cyan-300 font-bold">Emon Khan</span></p>
-    </div>
-    <div class="flex items-center gap-1.5 no-print">
-      <span class="text-[11px] text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2.5 py-1 rounded-lg font-bold">
-        <i class="fa-solid fa-file-pdf"></i> All PDF Active
-      </span>
+  <!-- Top Navbar -->
+  <header class="bg-slate-800/80 backdrop-blur border-b border-slate-700 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <i data-lucide="layers" class="text-indigo-400 w-6 h-6"></i>
+        <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
+          Emon Smart Manager
+        </h1>
+      </div>
+
+      <!-- Auth Action Section -->
+      <div id="authSection" class="flex items-center gap-3">
+        <button id="loginBtn" onclick="loginWithGoogle()" class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-1.5 rounded-lg text-sm font-medium transition shadow-lg shadow-indigo-500/20">
+          <i data-lucide="log-in" class="w-4 h-4"></i>
+          <span>Google দিয়ে লগইন</span>
+        </button>
+
+        <div id="userProfile" class="hidden items-center gap-3">
+          <div class="flex items-center gap-2">
+            <img id="userAvatar" src="" alt="User" class="w-8 h-8 rounded-full border border-indigo-400">
+            <span id="userName" class="text-sm font-medium text-slate-300 hidden sm:inline-block"></span>
+          </div>
+          <button onclick="logoutUser()" class="p-1.5 text-slate-400 hover:text-red-400 transition" title="লগআউট">
+            <i data-lucide="log-out" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
     </div>
   </header>
 
-  <main class="max-w-4xl mx-auto p-3 space-y-4">
-
-    <!-- BIG PROMINENT DEVELOPER BRANDING & FACEBOOK PROFILE BANNER (NEW) -->
-    <div class="card-glass p-4 rounded-2xl bg-gradient-to-r from-blue-950/50 via-slate-900 to-cyan-950/40 border-blue-500/40 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xl no-print">
-      <div class="flex items-center gap-3.5 text-center sm:text-left">
-        <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center text-white text-2xl shadow-lg shadow-blue-500/30">
-          <i class="fa-brands fa-facebook-f"></i>
-        </div>
-        <div>
-          <div class="flex items-center justify-center sm:justify-start gap-1.5">
-            <span class="text-xs bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-2 py-0.5 rounded font-black tracking-wider uppercase font-orbitron">DEVELOPER</span>
-            <span class="text-xs text-emerald-400 font-bold flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> ভেরিফাইড আইডি</span>
-          </div>
-          <h2 class="text-lg font-black text-white tracking-wide mt-0.5">ইমন ইসলাম (Emon Khan)</h2>
-          <p class="text-[11px] text-gray-300">যেকোনো প্রশ্ন, পরামর্শ বা প্রজেক্ট সংক্রান্ত প্রয়োজনে ফেসবুক আইডিতে সরাসরি যুক্ত হন।</p>
-        </div>
-      </div>
-      <a href="https://www.facebook.com/imana.isalama.347870" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-slate-950 font-bold px-5 py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 transition transform hover:scale-105 shrink-0">
-        <i class="fa-brands fa-facebook text-base text-slate-950"></i>
-        <span>ফেসবুক প্রোফাইল দেখুন</span>
-        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-      </a>
-    </div>
-
-    <!-- TAB 1: 10-IN-1 SMART OFFICE & UNLIMITED CALC SUITE -->
-    <div id="tab-tools" class="space-y-4 print-section">
-      <div class="card-glass p-4 rounded-2xl bg-gradient-to-r from-cyan-950/40 to-slate-900 border-cyan-500/40 flex justify-between items-center">
-        <div>
-          <h2 class="text-sm font-bold text-cyan-300 flex items-center gap-2">
-            <i class="fa-solid fa-calculator text-amber-400"></i> শোরুম, অফিস ও কাস্টম দিনভিত্তিক বেতন ক্যালকুলেটর
-          </h2>
-          <p class="text-[11px] text-gray-400 mt-0.5">মাসিক বেতন থেকে ১০ দিন, ১৪ দিন বা যেকোনো দিনের ওভারটাইমসহ নিখুঁত হিসাব।</p>
-        </div>
-        <button onclick="printCurrentTab('tab-tools')" class="no-print bg-cyan-500 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1">
-          <i class="fa-solid fa-file-pdf"></i> রিপোর্ট PDF
-        </button>
-      </div>
-
-      <!-- MAIN SHOWROOM & CUSTOM DAYS CALCULATOR -->
-      <div class="card-glass p-4 rounded-2xl space-y-4">
-        
-        <!-- STEP 1: MONTHLY SALARY BASE -->
-        <div>
-          <h3 class="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-2 mb-2">
-            <i class="fa-solid fa-money-bill-wave"></i> ১. মাসিক মূল বেতন ও শিফট রেট
-          </h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-            <div>
-              <label class="text-gray-400 block mb-1">মাসিক মূল বেতন (৳ - আনলিমিটেড):</label>
-              <input type="number" id="srSalary" step="any" placeholder="যেমন: 15000 বা 7000" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white font-mono focus:border-cyan-400 focus:outline-none" oninput="updateBaseRates()">
-            </div>
-            <div>
-              <label class="text-gray-400 block mb-1">প্রতিদিনের শিফট ডিউটি (ঘণ্টা):</label>
-              <input type="number" id="srDailyDutyHours" value="8" step="any" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white font-mono focus:border-cyan-400 focus:outline-none" oninput="updateBaseRates()">
-            </div>
-          </div>
-
-          <!-- Base Rates Display -->
-          <div class="grid grid-cols-3 gap-2 mt-2 text-center text-xs font-mono">
-            <div class="bg-slate-950/80 p-2 rounded-lg border border-slate-800">
-              <span class="text-[10px] text-gray-400 block">১ দিনের বেতন রেট</span>
-              <span class="font-bold text-emerald-400" id="basePerDay">৳০.০০</span>
-            </div>
-            <div class="bg-slate-950/80 p-2 rounded-lg border border-slate-800">
-              <span class="text-[10px] text-gray-400 block">১ ঘণ্টার রেট</span>
-              <span class="font-bold text-cyan-400" id="basePerHour">৳০.০০</span>
-            </div>
-            <div class="bg-slate-950/80 p-2 rounded-lg border border-slate-800">
-              <span class="text-[10px] text-gray-400 block">১ মিনিটের রেট</span>
-              <span class="font-bold text-purple-400" id="basePerMinute">৳০.০০</span>
-            </div>
-          </div>
-        </div>
-
-        <hr class="border-slate-800">
-
-        <!-- STEP 2: CUSTOM WORKING DAYS & OVERTIME -->
-        <div class="space-y-3">
-          <div class="flex justify-between items-center">
-            <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
-              <i class="fa-solid fa-calendar-check"></i> ২. নির্দিষ্ট কাজের দিন ও ওভারটাইম হিসাব (১০ দিন, ১৪ দিন ইত্যাদি)
-            </h3>
-            <span class="text-[10px] text-cyan-400 bg-cyan-950 px-2 py-0.5 rounded border border-cyan-800 font-bold">কাস্টম হাজিরার হিসাব</span>
-          </div>
-
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
-            <div>
-              <label class="text-gray-400 block mb-1">মোট কয়দিন কাজ করেছে?</label>
-              <input type="number" id="custWorkDays" placeholder="যেমন: 10 বা 15" class="w-full bg-slate-950 border border-amber-500/40 rounded-lg p-2.5 text-amber-300 font-mono font-bold focus:border-amber-400 focus:outline-none">
-            </div>
-            <div>
-              <label class="text-gray-400 block mb-1">মোট ওভারটাইম (ঘণ্টা):</label>
-              <input type="number" id="custOvertimeHours" value="0" step="any" placeholder="অতিরিক্ত ঘণ্টা" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white font-mono focus:border-cyan-400 focus:outline-none">
-            </div>
-            <div class="col-span-2 sm:col-span-1">
-              <label class="text-gray-400 block mb-1">অগ্রিম নিয়েছে / কর্তন (৳):</label>
-              <input type="number" id="custDeduct" value="0" step="any" placeholder="০" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-rose-300 font-mono focus:border-rose-400 focus:outline-none">
-            </div>
-          </div>
-
-          <button onclick="calcCustomDutySalary()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold py-2.5 rounded-xl text-xs shadow-lg hover:opacity-90 transition">
-            নির্দিষ্ট দিনের মোট টাকা বের করুন ⚡
-          </button>
-        </div>
-
-        <!-- RESULT MEMO FOR CUSTOM DAYS -->
-        <div id="custResultCard" class="p-3.5 bg-slate-900/95 rounded-xl border border-amber-500/30 text-xs hidden space-y-2 font-mono">
-          <div class="flex justify-between border-b border-slate-800 pb-2">
-            <span class="text-gray-400">কাজের হিসাবের দিন:</span>
-            <span class="text-cyan-300 font-bold"><span id="resWorkedDaysCount">০</span> দিন (<span id="resWorkedShiftHours">০</span> ঘণ্টা শিফট)</span>
-          </div>
-
-          <div class="flex justify-between">
-            <span class="text-gray-400">মূল দিনের হাজিরা বাবদ টাকা:</span>
-            <span class="text-white font-bold" id="resBaseEarnedPay">৳০.০০</span>
-          </div>
-
-          <div class="flex justify-between">
-            <span class="text-gray-400">ওভারটাইম আয় (<span id="resOtHoursCount">০</span> ঘণ্টা):</span>
-            <span class="text-emerald-400 font-bold" id="resCustomOtPay">+৳০.০০</span>
-          </div>
-
-          <div class="flex justify-between">
-            <span class="text-gray-400">কর্তন / অগ্রিম বাদ:</span>
-            <span class="text-rose-400 font-bold" id="resCustomDeduct">-৳০.০০</span>
-          </div>
-
-          <div class="flex justify-between border-t border-slate-800 pt-2 text-sm font-bold bg-amber-500/10 p-2 rounded-lg">
-            <span class="text-amber-300">নিট প্রদেয় বেতন:</span>
-            <span class="text-amber-400 text-base" id="resCustomFinalPay">৳০.০০</span>
-          </div>
-
-          <button onclick="addCustomSalaryToWallet()" class="w-full mt-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-bold py-2 rounded-lg text-xs flex items-center justify-center gap-1.5 no-print shadow-md">
-            <i class="fa-solid fa-plus-circle"></i> এই উপার্জিত টাকা খরচ খাতায় যোগ করুন (+)
-          </button>
-        </div>
-
-      </div>
-
-      <!-- 2. Profit / Margin Calculator -->
-      <div class="card-glass p-4 rounded-2xl space-y-3">
-        <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
-          <i class="fa-solid fa-chart-pie"></i> ৩. পণ্যের লাভ-ক্ষতি ও প্রফিট মার্জিন
-        </h3>
-        <div class="grid grid-cols-2 gap-2 text-xs">
-          <input type="number" id="costPrice" step="any" placeholder="পাইকারি কেনা দাম (৳)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
-          <input type="number" id="sellPrice" step="any" placeholder="খুচরা বিক্রয় মূল্য (৳)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
-        </div>
-        <button onclick="calcProfitMargin()" class="w-full bg-emerald-500 text-slate-950 font-bold py-2 rounded-lg text-xs">নিট লাভ বের করুন 📈</button>
-        <p id="profitResult" class="text-xs font-mono font-bold text-center text-cyan-300"></p>
-      </div>
-
-      <!-- 3. Discount Calculator -->
-      <div class="card-glass p-4 rounded-2xl space-y-3">
-        <h3 class="text-xs font-bold text-purple-400 uppercase tracking-wider flex items-center gap-2">
-          <i class="fa-solid fa-tags"></i> ৪. শপিং ও ডিসকাউন্ট হিসাব
-        </h3>
-        <div class="grid grid-cols-2 gap-2 text-xs">
-          <input type="number" id="origPrice" step="any" placeholder="মূল দাম (৳)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
-          <input type="number" id="discPercent" step="any" placeholder="ছাড়ের হার (%)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
-        </div>
-        <button onclick="calcDiscount()" class="w-full bg-purple-500 text-white font-bold py-2 rounded-lg text-xs">ছাড়ের পর মূল্য দেখুন 🏷️</button>
-        <p id="discountResult" class="text-xs font-mono font-bold text-center text-emerald-400"></p>
-      </div>
-    </div>
-
-    <!-- TAB 2: SMART WHITEBOARD NOTEPAD -->
-    <div id="tab-notepad" class="space-y-4 hidden print-section">
-      <div class="card-glass p-4 rounded-2xl bg-gradient-to-r from-purple-950/40 to-slate-900 border-purple-500/40 flex justify-between items-center">
-        <div>
-          <h2 class="text-sm font-bold text-purple-300 flex items-center gap-2">
-            <i class="fa-solid fa-file-pen text-amber-400"></i> সাদা কাগজ ও স্মার্ট নোটবুক
-          </h2>
-          <p class="text-[11px] text-gray-400 mt-1">যা-ই লিখবেন স্বয়ংক্রিয়ভাবে সেভ থাকবে এবং রিলোডেও হারাবে না।</p>
-        </div>
-        <button onclick="printCurrentTab('tab-notepad')" class="no-print bg-purple-500 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1 shadow-md">
-          <i class="fa-solid fa-file-pdf"></i> নোট PDF
-        </button>
-      </div>
-
-      <div class="card-glass p-4 rounded-2xl space-y-3">
-        <input type="text" id="noteTitle" placeholder="নোটের শিরোনাম বা বিষয়ের নাম লিখুন..." class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-sm text-cyan-300 font-bold focus:outline-none focus:border-purple-400" oninput="saveNotepad()">
-        <textarea id="noteContent" rows="14" placeholder="এখানে চুক্তিপত্র, ব্যবসার হিসাব, মিটিং বা দৈনন্দিন ভাবনা লিখে রাখুন..." class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-white leading-relaxed focus:outline-none focus:border-purple-400" oninput="saveNotepad()"></textarea>
-        <div class="flex justify-between items-center text-[11px] text-gray-400">
-          <span id="saveStatus" class="text-emerald-400 font-semibold">● সেভ হয়েছে</span>
-          <button onclick="clearNotepad()" class="text-rose-400 hover:underline no-print">নোটবুক মুছুন</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 3: TRADING ROADMAP -->
-    <div id="tab-trading" class="space-y-4 hidden print-section">
-      <div class="card-glass p-4 rounded-2xl border-cyan-500/40 flex justify-between items-center">
-        <div>
-          <h2 class="text-base font-black text-amber-400 font-orbitron tracking-wider">EMON TRADING ROAD MAP</h2>
-          <p class="text-xs text-gray-300">90 DAYS COMPOUNDING PLAN (5% DAILY TARGET)</p>
-        </div>
-        <button onclick="printCurrentTab('tab-trading')" class="no-print bg-amber-500 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1">
-          <i class="fa-solid fa-file-pdf"></i> প্ল্যান PDF
-        </button>
-      </div>
-
-      <div class="card-glass rounded-2xl overflow-hidden border-slate-800">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs border-collapse">
-            <thead>
-              <tr class="bg-slate-950/90 text-gray-400 uppercase border-b border-slate-800 text-[10px]">
-                <th class="p-2.5 text-center no-print">স্ট্যাটাস</th>
-                <th class="p-2.5">DAY</th>
-                <th class="p-2.5">FUNDS ($)</th>
-                <th class="p-2.5">TRADE ($)</th>
-                <th class="p-2.5">STOP LOSS ($)</th>
-                <th class="p-2.5">PROFIT (5%)</th>
-                <th class="p-2.5 text-right font-bold text-amber-400">TOTAL ($)</th>
-              </tr>
-            </thead>
-            <tbody id="roadmapTableBody" class="divide-y divide-slate-800/60 font-mono"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 4: POCKET EXPENSES -->
-    <div id="tab-expense" class="space-y-4 hidden print-section">
-      <div class="flex justify-between items-center no-print">
-        <h3 class="text-xs font-bold text-gray-300 uppercase tracking-wider">পকেট ওয়ালেট ও দৈনিক হিসেব</h3>
-        <button onclick="printCurrentTab('tab-expense')" class="bg-cyan-500 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1">
-          <i class="fa-solid fa-file-pdf"></i> খরচ শিট PDF
-        </button>
-      </div>
-
-      <div class="grid grid-cols-3 gap-2">
-        <div class="card-glass p-3 rounded-xl text-center border-emerald-500/30">
-          <p class="text-[10px] text-gray-400 font-bold uppercase">পকেটে এলো (+)</p>
-          <h3 id="currentPocketFund" class="text-base font-black text-emerald-400 font-mono">৳০.০০</h3>
-        </div>
-        <div class="card-glass p-3 rounded-xl text-center border-rose-500/30">
-          <p class="text-[10px] text-gray-400 font-bold uppercase">মোট খরচ (-)</p>
-          <h3 id="totalSpent" class="text-base font-black text-rose-400 font-mono">৳০.০০</h3>
-        </div>
-        <div class="card-glass p-3 rounded-xl text-center border-cyan-500/30">
-          <p class="text-[10px] text-gray-400 font-bold uppercase">অবশিষ্ট ব্যালেন্স</p>
-          <h3 id="remainingPocketBal" class="text-base font-black text-cyan-300 font-mono">৳০.০০</h3>
-        </div>
-      </div>
-
-      <div class="card-glass p-4 rounded-2xl space-y-3 no-print">
-        <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs">
-          <select id="expenseType" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
-            <option value="expense">টাকা খরচ (-)</option>
-            <option value="income">টাকা এলো (+)</option>
-          </select>
-          <input type="text" id="expenseTitle" placeholder="বিবরণ" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white sm:col-span-2">
-          <input type="number" id="expenseAmount" step="any" placeholder="পরিমাণ" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
-        </div>
-        <button onclick="addExpenseRecord()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-bold py-2 rounded-lg text-xs">
-          যুক্ত করুন ✍️
-        </button>
-      </div>
-
-      <div class="card-glass rounded-2xl p-3 space-y-2">
-        <div id="expenseList" class="space-y-1.5 max-h-80 overflow-y-auto pr-1"></div>
-      </div>
-    </div>
-
-    <!-- TAB 5: DOKAN KHATA -->
-    <div id="tab-shop" class="space-y-4 hidden print-section">
-      <div class="card-glass p-4 rounded-2xl bg-gradient-to-r from-cyan-950/40 to-slate-900 border-cyan-500/40 flex justify-between items-center">
-        <div>
-          <h2 class="text-sm font-bold text-cyan-400">🏪 দোকান ও কাস্টমার বাকির খাতা</h2>
-          <p class="text-[11px] text-gray-400 mt-1">কাস্টমার অনুযায়ী বাকি ও জমার লেনদেন।</p>
-        </div>
-        <button onclick="printCurrentTab('tab-shop')" class="no-print bg-cyan-500 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1">
-          <i class="fa-solid fa-file-pdf"></i> খাতা PDF
-        </button>
-      </div>
-
-      <div class="card-glass p-4 rounded-2xl space-y-3 no-print">
-        <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs">
-          <input type="text" id="custName" placeholder="কাস্টমারের নাম" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
-          <input type="text" id="custItem" placeholder="পণ্যের বিবরণ" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
-          <select id="custType" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
-            <option value="due">বাকি নিল (-)</option>
-            <option value="paid">জমা দিল (+)</option>
-          </select>
-          <input type="number" id="custAmount" step="any" placeholder="টাকার পরিমাণ" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white font-mono">
-        </div>
-        <button onclick="addShopEntry()" class="w-full bg-cyan-500 text-slate-950 font-bold py-2 rounded-lg text-xs">
-          খাতায় লিখুন ✍️
-        </button>
-      </div>
-
-      <div class="card-glass rounded-2xl overflow-hidden border-slate-800">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs border-collapse">
-            <thead>
-              <tr class="bg-slate-950/90 text-gray-400 uppercase border-b border-slate-800 text-[10px]">
-                <th class="p-2.5">তারিখ</th>
-                <th class="p-2.5">কাস্টমারের নাম</th>
-                <th class="p-2.5">বিবরণ</th>
-                <th class="p-2.5">ধরন</th>
-                <th class="p-2.5 text-right font-bold text-amber-400">টাকা</th>
-                <th class="p-2.5 text-center no-print">একশন</th>
-              </tr>
-            </thead>
-            <tbody id="shopTableBody" class="divide-y divide-slate-800/60 font-mono"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-  </main>
-
-  <!-- PROFESSIONAL FOOTER -->
-  <footer class="max-w-4xl mx-auto p-4 mt-6 border-t border-slate-800/80 text-center text-xs text-gray-400 space-y-2 no-print">
-    <div class="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4">
-      <span class="text-cyan-400 font-bold">Developed with Passion by Emon Khan</span>
-      <span class="hidden sm:inline">•</span>
-      <a href="https://www.facebook.com/imana.isalama.347870" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 font-semibold inline-flex items-center gap-1.5 bg-blue-950/40 border border-blue-500/30 px-3 py-1 rounded-full transition">
-        <i class="fa-brands fa-facebook"></i>
-        <span>Official Facebook Profile</span>
-      </a>
-    </div>
-    <p class="text-[10px] text-gray-500">&copy; 2026 EMON SMART MANAGER. All Rights Reserved.</p>
-  </footer>
-
-  <!-- BOTTOM NAVIGATION BAR -->
-  <nav class="fixed bottom-0 left-0 right-0 max-w-4xl mx-auto bg-[#090d16] border-t border-slate-800 p-2 flex justify-around items-center z-40 rounded-t-2xl shadow-2xl no-print">
-    <button onclick="switchTab('tools')" id="nav-tools" class="tab-btn active-nav flex flex-col items-center text-[10px] font-bold text-gray-400">
-      <span class="text-base"><i class="fa-solid fa-calculator"></i></span> অফিস টুলস
+  <!-- Navigation Tabs -->
+  <nav class="max-w-6xl mx-auto w-full px-4 pt-4 flex gap-2 border-b border-slate-800 overflow-x-auto pb-2">
+    <button onclick="switchTab('calculator')" id="tab-calculator" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white flex items-center gap-2 whitespace-nowrap">
+      <i data-lucide="calculator" class="w-4 h-4"></i> ক্যালকুলেটর
     </button>
-    <button onclick="switchTab('notepad')" id="nav-notepad" class="tab-btn flex flex-col items-center text-[10px] font-bold text-gray-400">
-      <span class="text-base"><i class="fa-solid fa-file-pen"></i></span> নোটবুক
+    <button onclick="switchTab('shop')" id="tab-shop" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 flex items-center gap-2 whitespace-nowrap">
+      <i data-lucide="shopping-bag" class="w-4 h-4"></i> দোকান খাতা
     </button>
-    <button onclick="switchTab('trading')" id="nav-trading" class="tab-btn flex flex-col items-center text-[10px] font-bold text-gray-400">
-      <span class="text-base"><i class="fa-solid fa-chart-line"></i></span> ট্রেডিং
+    <button onclick="switchTab('expense')" id="tab-expense" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 flex items-center gap-2 whitespace-nowrap">
+      <i data-lucide="wallet" class="w-4 h-4"></i> ব্যক্তিগত খরচ
     </button>
-    <button onclick="switchTab('expense')" id="nav-expense" class="tab-btn flex flex-col items-center text-[10px] font-bold text-gray-400">
-      <span class="text-base"><i class="fa-solid fa-wallet"></i></span> খরচ খাতা
-    </button>
-    <button onclick="switchTab('shop')" id="nav-shop" class="tab-btn flex flex-col items-center text-[10px] font-bold text-gray-400">
-      <span class="text-base"><i class="fa-solid fa-shop"></i></span> দোকান খাতা
+    <button onclick="switchTab('notes')" id="tab-notes" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 flex items-center gap-2 whitespace-nowrap">
+      <i data-lucide="file-text" class="w-4 h-4"></i> নোটবুক
     </button>
   </nav>
 
-  <!-- SCRIPT ENGINE -->
-  <script>
-    function switchTab(tab) {
-      ['tools', 'notepad', 'trading', 'expense', 'shop'].forEach(t => {
-        document.getElementById('tab-' + t).classList.add('hidden');
-        document.getElementById('nav-' + t).classList.remove('active-nav');
-      });
-      document.getElementById('tab-' + tab).classList.remove('hidden');
-      document.getElementById('nav-' + tab).classList.add('active-nav');
-    }
+  <!-- Cloud Sync Indicator -->
+  <div class="max-w-6xl mx-auto w-full px-4 py-2 flex items-center justify-between text-xs text-slate-400">
+    <div id="syncStatus" class="flex items-center gap-1.5">
+      <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+      <span>লোকাল মোড (লগইন করলে ডাটা ক্লাউডে সেভ থাকবে)</span>
+    </div>
+  </div>
 
-    function printCurrentTab(tabId) {
-      const activeTab = document.getElementById(tabId);
-      activeTab.classList.add('print-target');
-      window.print();
-      activeTab.classList.remove('print-target');
-    }
+  <!-- Main Content Area -->
+  <main class="max-w-6xl mx-auto w-full px-4 py-4 flex-1">
 
-    /* 1. REAL-TIME BASE RATES (UPDATES AS YOU TYPE SALARY) */
-    let currentCalculatedCustomPay = 0;
+    <!-- 1. Calculator Section -->
+    <section id="sec-calculator" class="space-y-4">
+      <div class="max-w-md mx-auto bg-slate-800 rounded-2xl p-4 border border-slate-700 shadow-xl">
+        <div class="bg-slate-900 rounded-xl p-4 mb-4 text-right">
+          <div id="calc-history" class="text-xs text-slate-500 h-4 overflow-hidden"></div>
+          <div id="calc-display" class="text-3xl font-mono font-bold text-white tracking-wider truncate">0</div>
+        </div>
+        <div class="grid grid-cols-4 gap-2">
+          <button onclick="calcClear()" class="p-3 bg-red-500/20 text-red-400 font-bold rounded-xl hover:bg-red-500/30 transition">C</button>
+          <button onclick="calcOp('/')" class="p-3 bg-indigo-500/20 text-indigo-400 font-bold rounded-xl hover:bg-indigo-500/30 transition">÷</button>
+          <button onclick="calcOp('*')" class="p-3 bg-indigo-500/20 text-indigo-400 font-bold rounded-xl hover:bg-indigo-500/30 transition">×</button>
+          <button onclick="calcDelete()" class="p-3 bg-slate-700 text-slate-300 font-bold rounded-xl hover:bg-slate-600 transition">⌫</button>
 
-    function updateBaseRates() {
-      const salary = parseFloat(document.getElementById('srSalary').value) || 0;
-      const dutyHours = parseFloat(document.getElementById('srDailyDutyHours').value) || 8;
+          <button onclick="calcNum('7')" class="p-3 bg-slate-700/60 hover:bg-slate-700 rounded-xl text-lg font-semibold">7</button>
+          <button onclick="calcNum('8')" class="p-3 bg-slate-700/60 hover:bg-slate-700 rounded-xl text-lg font-semibold">8</button>
+          <button onclick="calcNum('9')" class="p-3 bg-slate-700/60 hover:bg-slate-700 rounded-xl text-lg font-semibold">9</button>
+          <button onclick="calcOp('-')" class="p-3 bg-indigo-500/20 text-indigo-400 font-bold rounded-xl hover:bg-indigo-500/30 transition">−</button>
 
-      if(salary <= 0) {
-        document.getElementById('basePerDay').innerText = "৳০.০০";
-        document.getElementById('basePerHour').innerText = "৳০.০০";
-        document.getElementById('basePerMinute').innerText = "৳০.০০";
-        return;
-      }
+          <button onclick="calcNum('4')" class="p-3 bg-slate-700/60 hover:bg-slate-700 rounded-xl text-lg font-semibold">4</button>
+          <button onclick="calcNum('5')" class="p-3 bg-slate-700/60 hover:bg-slate-700 rounded-xl text-lg font-semibold">5</button>
+          <button onclick="calcNum('6')" class="p-3 bg-slate-700/60 hover:bg-slate-700 rounded-xl text-lg font-semibold">6</button>
+          <button onclick="calcOp('+')" class="p-3 bg-indigo-500/20 text-indigo-400 font-bold rounded-xl hover:bg-indigo-500/30 transition">+</button>
 
-      const perDay = salary / 30;
-      const perHour = perDay / dutyHours;
-      const perMinute = perHour / 60;
+          <button onclick="calcNum('1')" class="p-3 bg-slate-700/60 hover:bg-slate-700 rounded-xl text-lg font-semibold">1</button>
+          <button onclick="calcNum('2')" class="p-3 bg-slate-700/60 hover:bg-slate-700 rounded-xl text-lg font-semibold">2</button>
+          <button onclick="calcNum('3')" class="p-3 bg-slate-700/60 hover:bg-slate-700 rounded-xl text-lg font-semibold">3</button>
+          <button onclick="calcEquals()" class="p-3 row-span-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl flex items-center justify-center transition">=</button>
 
-      document.getElementById('basePerDay').innerText = `৳${perDay.toFixed(2)}`;
-      document.getElementById('basePerHour').innerText = `৳${perHour.toFixed(2)}`;
-      document.getElementById('basePerMinute').innerText = `৳${perMinute.toFixed(2)}`;
-    }
+          <button onclick="calcNum('0')" class="p-3 col-span-2 bg-slate-700/60 hover:bg-slate-700 rounded-xl text-lg font-semibold">0</button>
+          <button onclick="calcNum('.')" class="p-3 bg-slate-700/60 hover:bg-slate-700 rounded-xl text-lg font-semibold">.</button>
+        </div>
+      </div>
+    </section>
 
-    /* 2. CUSTOM WORKING DAYS + OVERTIME CALCULATOR (10, 14, 15 DAYS ETC.) */
-    function calcCustomDutySalary() {
-      const salary = parseFloat(document.getElementById('srSalary').value) || 0;
-      const dutyHours = parseFloat(document.getElementById('srDailyDutyHours').value) || 8;
-      const workedDays = parseFloat(document.getElementById('custWorkDays').value);
-      const otHours = parseFloat(document.getElementById('custOvertimeHours').value) || 0;
-      const deduct = parseFloat(document.getElementById('custDeduct').value) || 0;
+    <!-- 2. Shop Ledger Section -->
+    <section id="sec-shop" class="hidden space-y-4">
+      <div class="grid md:grid-cols-3 gap-4">
+        <!-- Entry Form -->
+        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 h-fit space-y-3">
+          <h2 class="text-base font-semibold flex items-center gap-2 text-indigo-400">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i> নতুন এন্ট্রি
+          </h2>
+          <input id="shopCustomer" type="text" placeholder="কাস্টমারের নাম" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+          <input id="shopItem" type="text" placeholder="পণ্য / সেবার বিবরণ" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+          <input id="shopAmount" type="number" placeholder="টাকার পরিমাণ (৳)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+          <select id="shopType" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 text-slate-300">
+            <option value="due">বাকি (পাওনা)</option>
+            <option value="paid">জমা (পরিশোধ)</option>
+          </select>
+          <button onclick="addShopRecord()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2 rounded-lg text-sm transition">
+            রেকর্ড যুক্ত করুন
+          </button>
+        </div>
 
-      if(salary <= 0) {
-        alert("দয়া করে প্রথমে মাসিক মূল বেতন লিখুন!");
-        return;
-      }
-      if(isNaN(workedDays) || workedDays < 0) {
-        alert("মোট কয়দিন কাজ করেছে তা লিখুন (যেমন: ১০ বা ১৪ দিন)!");
-        return;
-      }
-
-      const perDayRate = salary / 30;
-      const perHourRate = perDayRate / dutyHours;
-
-      const baseEarned = perDayRate * workedDays;
-      const otEarned = otHours * perHourRate;
-      const netPay = (baseEarned + otEarned) - deduct;
-
-      currentCalculatedCustomPay = netPay;
-
-      document.getElementById('resWorkedDaysCount').innerText = workedDays;
-      document.getElementById('resWorkedShiftHours').innerText = workedDays * dutyHours;
-      document.getElementById('resBaseEarnedPay').innerText = `৳${baseEarned.toFixed(2)}`;
-      document.getElementById('resOtHoursCount').innerText = otHours;
-      document.getElementById('resCustomOtPay').innerText = `+৳${otEarned.toFixed(2)}`;
-      document.getElementById('resCustomDeduct').innerText = `-৳${deduct.toFixed(2)}`;
-      document.getElementById('resCustomFinalPay').innerText = `৳${netPay.toLocaleString('en-IN', {maximumFractionDigits: 2})}`;
-
-      document.getElementById('custResultCard').classList.remove('hidden');
-    }
-
-    function addCustomSalaryToWallet() {
-      if(currentCalculatedCustomPay <= 0) return alert("প্রথমে হিসাব বের করুন!");
-      
-      const days = document.getElementById('custWorkDays').value;
-      const dateStr = new Date().toLocaleDateString('bn-BD', { day: 'numeric', month: 'short' });
-      
-      expenseData.unshift({
-        type: 'income',
-        title: `${days} দিনের বেতন ও ওভারটাইম`,
-        amt: currentCalculatedCustomPay,
-        date: dateStr
-      });
-      renderExpenses();
-      alert(`✅ ${days} দিনের উপার্জিত ৳${currentCalculatedCustomPay.toFixed(2)} খরচের খাতার ব্যালেন্সে যোগ হয়েছে!`);
-      switchTab('expense');
-    }
-
-    /* 3. PROFIT / LOSS MARGIN */
-    function calcProfitMargin() {
-      const cp = parseFloat(document.getElementById('costPrice').value) || 0;
-      const sp = parseFloat(document.getElementById('sellPrice').value) || 0;
-      if(!cp || !sp) return alert("ক্রয় ও বিক্রয় মূল্য লিখুন!");
-      const profit = sp - cp;
-      const margin = (profit / cp) * 100;
-      document.getElementById('profitResult').innerText = profit >= 0 
-        ? `✅ লাভ: ৳${profit.toFixed(2)} (${margin.toFixed(1)}% মার্জিন)` 
-        : `❌ ক্ষতি: ৳${Math.abs(profit).toFixed(2)} (${margin.toFixed(1)}% লস)`;
-    }
-
-    /* 4. DISCOUNT */
-    function calcDiscount() {
-      const orig = parseFloat(document.getElementById('origPrice').value) || 0;
-      const disc = parseFloat(document.getElementById('discPercent').value) || 0;
-      if(!orig) return alert("মূল দাম লিখুন!");
-      const saved = (orig * disc) / 100;
-      const finalPrice = orig - saved;
-      document.getElementById('discountResult').innerText = `ছাড়: ৳${saved.toFixed(2)} | চূড়ান্ত মূল্য: ৳${finalPrice.toFixed(2)}`;
-    }
-
-    /* 5. PERSISTENT WHITEBOARD NOTEPAD */
-    const noteTitle = document.getElementById('noteTitle');
-    const noteContent = document.getElementById('noteContent');
-    const saveStatus = document.getElementById('saveStatus');
-
-    noteTitle.value = localStorage.getItem('emon_note_title') || '';
-    noteContent.value = localStorage.getItem('emon_note_content') || '';
-
-    function saveNotepad() {
-      localStorage.setItem('emon_note_title', noteTitle.value);
-      localStorage.setItem('emon_note_content', noteContent.value);
-      saveStatus.innerText = "● সংরক্ষিত";
-      saveStatus.className = "text-emerald-400 font-semibold";
-    }
-
-    function clearNotepad() {
-      if(confirm("নোটবুক খালি করতে চান?")) {
-        noteTitle.value = '';
-        noteContent.value = '';
-        localStorage.removeItem('emon_note_title');
-        localStorage.removeItem('emon_note_content');
-        saveStatus.innerText = "● খালি করা হয়েছে";
-      }
-    }
-
-    /* 6. TRADING ROADMAP */
-    let completedDays = JSON.parse(localStorage.getItem('emon_completed_days')) || {};
-    function renderTradingRoadmap() {
-      const tbody = document.getElementById('roadmapTableBody');
-      tbody.innerHTML = '';
-      let fund = 50.00;
-
-      for(let day = 1; day <= 90; day++) {
-        let trade = fund * 0.05;
-        let sl = -(fund * 0.02);
-        let profit = fund * 0.05;
-        let total = fund + profit;
-        let isDone = completedDays[day] || false;
-
-        const tr = document.createElement('tr');
-        tr.className = isDone ? 'row-completed' : '';
-        tr.innerHTML = `
-          <td class="p-2.5 text-center no-print"><input type="checkbox" ${isDone ? 'checked' : ''} onchange="toggleTradingDay(${day})" class="w-4 h-4 rounded text-emerald-500" /></td>
-          <td class="p-2.5 font-bold text-white">Day ${day}</td>
-          <td class="p-2.5 text-gray-300">$${fund.toFixed(2)}</td>
-          <td class="p-2.5 text-cyan-400">$${trade.toFixed(2)}</td>
-          <td class="p-2.5 text-rose-400">${sl.toFixed(2)}$</td>
-          <td class="p-2.5 text-emerald-400">+$${profit.toFixed(2)}</td>
-          <td class="p-2.5 text-right font-black text-amber-300">$${total.toFixed(2)}</td>
-        `;
-        tbody.appendChild(tr);
-        fund = total;
-      }
-    }
-    function toggleTradingDay(day) {
-      completedDays[day] = !completedDays[day];
-      localStorage.setItem('emon_completed_days', JSON.stringify(completedDays));
-      renderTradingRoadmap();
-    }
-
-    /* 7. EXPENSE & SHOP */
-    let expenseData = JSON.parse(localStorage.getItem('emon_expenses')) || [];
-    function renderExpenses() {
-      const list = document.getElementById('expenseList');
-      list.innerHTML = '';
-      let inc = 0, exp = 0;
-      expenseData.forEach((item, i) => {
-        if(item.type === 'income') inc += item.amt; else exp += item.amt;
-        const div = document.createElement('div');
-        div.className = "p-2 rounded-xl border flex justify-between items-center text-xs bg-slate-900 border-slate-800";
-        div.innerHTML = `
-          <div><span class="font-bold">${item.title}</span><span class="text-[10px] text-gray-400 block">${item.date}</span></div>
-          <div class="flex items-center gap-3">
-            <span class="font-bold font-mono ${item.type === 'income' ? 'text-emerald-400' : 'text-rose-400'}">${item.type === 'income' ? '+' : '-'}৳${item.amt}</span>
-            <button onclick="expenseData.splice(${i},1); renderExpenses();" class="text-gray-500 hover:text-rose-400 no-print"><i class="fa-solid fa-trash"></i></button>
+        <!-- Ledger Table -->
+        <div class="md:col-span-2 bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3">
+          <div class="flex items-center justify-between">
+            <h2 class="text-base font-semibold">দোকানের লেনদেন খাতা</h2>
+            <span id="shopNetDue" class="text-xs font-semibold px-2 py-1 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">মোট বাকি: ৳০</span>
           </div>
-        `;
-        list.appendChild(div);
-      });
-      document.getElementById('currentPocketFund').innerText = `৳${inc.toFixed(2)}`;
-      document.getElementById('totalSpent').innerText = `৳${exp.toFixed(2)}`;
-      document.getElementById('remainingPocketBal').innerText = `৳${(inc - exp).toFixed(2)}`;
-      localStorage.setItem('emon_expenses', JSON.stringify(expenseData));
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="text-xs uppercase bg-slate-900/50 text-slate-400">
+                <tr>
+                  <th class="p-2.5">কাস্টমার</th>
+                  <th class="p-2.5">বিবরণ</th>
+                  <th class="p-2.5">ধরন</th>
+                  <th class="p-2.5 text-right">টাকা</th>
+                  <th class="p-2.5 text-center">অ্যাকশন</th>
+                </tr>
+              </thead>
+              <tbody id="shopTableBody" class="divide-y divide-slate-700">
+                <tr><td colspan="5" class="p-4 text-center text-slate-500">কোনো লেনদেন রেকর্ড পাওয়া যায়নি</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Expense Manager Section -->
+    <section id="sec-expense" class="hidden space-y-4">
+      <div class="grid md:grid-cols-3 gap-4">
+        <!-- Add Expense -->
+        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 h-fit space-y-3">
+          <h2 class="text-base font-semibold flex items-center gap-2 text-emerald-400">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i> খরচের হিসাব যোগ
+          </h2>
+          <input id="expTitle" type="text" placeholder="খরচের খাত (উদা: বাজার, ভাড়া)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+          <input id="expAmount" type="number" placeholder="টাকার পরিমাণ (৳)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+          <select id="expCategory" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 text-slate-300">
+            <option value="খাবার">খাবার</option>
+            <option value="বিল ও ভাড়া">বিল ও ভাড়া</option>
+            <option value="যাতায়াত">যাতায়াত</option>
+            <option value="ব্যক্তিগত">ব্যক্তিগত</option>
+            <option value="অন্যান্য">অন্যান্য</option>
+          </select>
+          <button onclick="addExpenseRecord()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2 rounded-lg text-sm transition">
+            খরচ যোগ করুন
+          </button>
+        </div>
+
+        <!-- Expense List -->
+        <div class="md:col-span-2 bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3">
+          <div class="flex items-center justify-between">
+            <h2 class="text-base font-semibold">মাসিক খরচের তালিকা</h2>
+            <span id="expTotal" class="text-xs font-semibold px-2 py-1 rounded bg-red-500/10 text-red-400 border border-red-500/20">মোট খরচ: ৳০</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="text-xs uppercase bg-slate-900/50 text-slate-400">
+                <tr>
+                  <th class="p-2.5">খাত</th>
+                  <th class="p-2.5">ক্যাটাগরি</th>
+                  <th class="p-2.5 text-right">টাকা</th>
+                  <th class="p-2.5 text-center">অ্যাকশন</th>
+                </tr>
+              </thead>
+              <tbody id="expTableBody" class="divide-y divide-slate-700">
+                <tr><td colspan="4" class="p-4 text-center text-slate-500">কোনো খরচের রেকর্ড নেই</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Quick Notes Section -->
+    <section id="sec-notes" class="hidden space-y-4">
+      <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3">
+        <h2 class="text-base font-semibold flex items-center gap-2 text-cyan-400">
+          <i data-lucide="edit-3" class="w-4 h-4"></i> ক্লাউড নোটবুক
+        </h2>
+        <textarea id="personalNote" rows="8" placeholder="এখানে গুরুত্বপূর্ণ হিসাব বা নোট লিখে রাখুন, ক্লাউডে অটো সেভ হবে..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm focus:outline-none focus:border-indigo-500 leading-relaxed"></textarea>
+        <div class="flex justify-end">
+          <button onclick="saveNoteData()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">
+            নোট সংরক্ষণ করুন
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- JavaScript Application Logic -->
+  <script>
+    // ----------------------------------------------------
+    // FIREBASE INITIALIZATION WITH YOUR LIVE CONFIG
+    // ----------------------------------------------------
+    const firebaseConfig = {
+      apiKey: "AIzaSyAxwRVb4o6G66m9tZddxu-oGR_es1XHCgw",
+      authDomain: "emon-smart-manager.firebaseapp.com",
+      projectId: "emon-smart-manager",
+      storageBucket: "emon-smart-manager.firebasestorage.app",
+      messagingSenderId: "263367025617",
+      appId: "1:263367025617:web:5708e1f83d4192791bb6f0",
+      measurementId: "G-VKZWZGM2YK"
+    };
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    let currentUser = null;
+    let appData = {
+      shop: [],
+      expenses: [],
+      note: ""
+    };
+
+    // Load Local Data Initially
+    function loadLocal() {
+      const stored = localStorage.getItem('emon_smart_manager_data');
+      if (stored) {
+        try {
+          appData = JSON.parse(stored);
+        } catch (e) {
+          console.error("Local data parse error", e);
+        }
+      }
+      renderAll();
     }
 
+    // Save Data (Local + Cloud)
+    function persistData() {
+      localStorage.setItem('emon_smart_manager_data', JSON.stringify(appData));
+      renderAll();
+
+      if (currentUser) {
+        updateSyncStatus("সিঙ্ক হচ্ছে...", "bg-amber-400 animate-pulse");
+        db.collection("users").doc(currentUser.uid).set(appData)
+          .then(() => {
+            updateSyncStatus("ক্লাউডে সংরক্ষিত (Connected)", "bg-emerald-400");
+          })
+          .catch((err) => {
+            console.error("Firestore sync error:", err);
+            updateSyncStatus("সিঙ্ক ব্যর্থ হয়েছে", "bg-red-500");
+          });
+      }
+    }
+
+    function updateSyncStatus(text, dotClass) {
+      const status = document.getElementById("syncStatus");
+      status.innerHTML = `<span class="w-2 h-2 rounded-full ${dotClass}"></span><span>${text}</span>`;
+    }
+
+    // ----------------------------------------------------
+    // AUTHENTICATION LOGIC
+    // ----------------------------------------------------
+    function loginWithGoogle() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider).catch((error) => {
+        alert("লগইন ত্রুটি: " + error.message);
+      });
+    }
+
+    function logoutUser() {
+      auth.signOut().then(() => {
+        currentUser = null;
+        updateUIForAuth(null);
+        loadLocal();
+      });
+    }
+
+    auth.onAuthStateChanged((user) => {
+      currentUser = user;
+      updateUIForAuth(user);
+      if (user) {
+        updateSyncStatus("ক্লাউড ডাটা লোড হচ্ছে...", "bg-amber-400 animate-pulse");
+        db.collection("users").doc(user.uid).get().then((doc) => {
+          if (doc.exists) {
+            appData = Object.assign({ shop: [], expenses: [], note: "" }, doc.data());
+            localStorage.setItem('emon_smart_manager_data', JSON.stringify(appData));
+          } else {
+            persistData();
+          }
+          renderAll();
+          updateSyncStatus("ক্লাউডে সংরক্ষিত (Connected)", "bg-emerald-400");
+        }).catch((err) => {
+          console.error("Error fetching user data:", err);
+          loadLocal();
+        });
+      } else {
+        updateSyncStatus("লোকাল মোড (লগইন করলে ডাটা ক্লাউডে সেভ থাকবে)", "bg-amber-400");
+      }
+    });
+
+    function updateUIForAuth(user) {
+      const loginBtn = document.getElementById("loginBtn");
+      const userProfile = document.getElementById("userProfile");
+      const userName = document.getElementById("userName");
+      const userAvatar = document.getElementById("userAvatar");
+
+      if (user) {
+        loginBtn.classList.add("hidden");
+        userProfile.classList.remove("hidden");
+        userProfile.classList.add("flex");
+        userName.textContent = user.displayName || "ইউজার";
+        userAvatar.src = user.photoURL || "https://api.dicebear.com/7.x/bottts/svg?seed=Emon";
+      } else {
+        loginBtn.classList.remove("hidden");
+        userProfile.classList.add("hidden");
+        userProfile.classList.remove("flex");
+      }
+    }
+
+    // ----------------------------------------------------
+    // TABS LOGIC
+    // ----------------------------------------------------
+    function switchTab(tabId) {
+      ['calculator', 'shop', 'expense', 'notes'].forEach(id => {
+        document.getElementById(`sec-${id}`).classList.add('hidden');
+        const btn = document.getElementById(`tab-${id}`);
+        btn.classList.remove('bg-indigo-600', 'text-white');
+        btn.classList.add('text-slate-400');
+      });
+      document.getElementById(`sec-${tabId}`).classList.remove('hidden');
+      const activeBtn = document.getElementById(`tab-${tabId}`);
+      activeBtn.classList.add('bg-indigo-600', 'text-white');
+      activeBtn.classList.remove('text-slate-400');
+    }
+
+    // ----------------------------------------------------
+    // CALCULATOR LOGIC
+    // ----------------------------------------------------
+    let calcExpression = "";
+    function calcNum(val) {
+      if (calcExpression === "0" && val !== ".") calcExpression = "";
+      calcExpression += val;
+      updateCalcDisplay();
+    }
+    function calcOp(op) {
+      if (calcExpression === "" && op !== "-") return;
+      const lastChar = calcExpression.slice(-1);
+      if ("+-*/".includes(lastChar)) {
+        calcExpression = calcExpression.slice(0, -1) + op;
+      } else {
+        calcExpression += op;
+      }
+      updateCalcDisplay();
+    }
+    function calcClear() {
+      calcExpression = "";
+      document.getElementById("calc-history").innerText = "";
+      updateCalcDisplay();
+    }
+    function calcDelete() {
+      calcExpression = calcExpression.slice(0, -1);
+      updateCalcDisplay();
+    }
+    function calcEquals() {
+      try {
+        if (!calcExpression) return;
+        document.getElementById("calc-history").innerText = calcExpression;
+        const result = Function(`'use strict'; return (${calcExpression})`)();
+        calcExpression = String(result);
+        updateCalcDisplay();
+      } catch (e) {
+        document.getElementById("calc-display").innerText = "Error";
+      }
+    }
+    function updateCalcDisplay() {
+      document.getElementById("calc-display").innerText = calcExpression || "0";
+    }
+
+    // ----------------------------------------------------
+    // SHOP LEDGER LOGIC
+    // ----------------------------------------------------
+    function addShopRecord() {
+      const customer = document.getElementById("shopCustomer").value.trim();
+      const item = document.getElementById("shopItem").value.trim();
+      const amount = parseFloat(document.getElementById("shopAmount").value);
+      const type = document.getElementById("shopType").value;
+
+      if (!customer || isNaN(amount) || amount <= 0) {
+        alert("দয়া করে কাস্টমারের নাম এবং সঠিক পরিমাণ লিখুন!");
+        return;
+      }
+
+      appData.shop.unshift({
+        id: Date.now(),
+        customer,
+        item: item || "বিবরণ নেই",
+        amount,
+        type,
+        date: new Date().toLocaleDateString('bn-BD')
+      });
+
+      document.getElementById("shopCustomer").value = "";
+      document.getElementById("shopItem").value = "";
+      document.getElementById("shopAmount").value = "";
+      persistData();
+    }
+
+    function deleteShopRecord(id) {
+      appData.shop = appData.shop.filter(r => r.id !== id);
+      persistData();
+    }
+
+    function renderShop() {
+      const tbody = document.getElementById("shopTableBody");
+      let totalDue = 0;
+
+      if (!appData.shop || appData.shop.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">কোনো লেনদেন রেকর্ড পাওয়া যায়নি</td></tr>`;
+        document.getElementById("shopNetDue").innerText = `মোট বাকি: ৳০`;
+        return;
+      }
+
+      tbody.innerHTML = appData.shop.map(r => {
+        if (r.type === 'due') totalDue += r.amount;
+        else totalDue -= r.amount;
+
+        const isDue = r.type === 'due';
+        return `
+          <tr class="hover:bg-slate-700/30 transition">
+            <td class="p-2.5 font-medium">${r.customer}</td>
+            <td class="p-2.5 text-slate-400">${r.item}</td>
+            <td class="p-2.5">
+              <span class="text-xs px-2 py-0.5 rounded font-semibold ${isDue ? 'bg-amber-500/10 text-amber-400' : 'bg-emerald-500/10 text-emerald-400'}">
+                ${isDue ? 'বাকি' : 'জমা'}
+              </span>
+            </td>
+            <td class="p-2.5 text-right font-mono font-semibold">৳${r.amount}</td>
+            <td class="p-2.5 text-center">
+              <button onclick="deleteShopRecord(${r.id})" class="text-slate-500 hover:text-red-400 p-1">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      document.getElementById("shopNetDue").innerText = `মোট বাকি: ৳${totalDue}`;
+      lucide.createIcons();
+    }
+
+    // ----------------------------------------------------
+    // EXPENSE LOGIC
+    // ----------------------------------------------------
     function addExpenseRecord() {
-      const type = document.getElementById('expenseType').value;
-      const title = document.getElementById('expenseTitle').value.trim();
-      const amt = parseFloat(document.getElementById('expenseAmount').value);
-      if(!title || !amt) return alert("বিবরণ ও টাকা লিখুন!");
-      expenseData.unshift({ type, title, amt, date: new Date().toLocaleDateString('bn-BD', { day: 'numeric', month: 'short' }) });
-      document.getElementById('expenseTitle').value = '';
-      document.getElementById('expenseAmount').value = '';
-      renderExpenses();
-    }
+      const title = document.getElementById("expTitle").value.trim();
+      const amount = parseFloat(document.getElementById("expAmount").value);
+      const category = document.getElementById("expCategory").value;
 
-    let shopData = JSON.parse(localStorage.getItem('emon_shop_ledger')) || [];
-    function renderShopLedger() {
-      const tbody = document.getElementById('shopTableBody');
-      tbody.innerHTML = '';
-      shopData.forEach((s, i) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td class="p-2.5 text-gray-400">${s.date}</td>
-          <td class="p-2.5 font-bold text-white">${s.name}</td>
-          <td class="p-2.5 text-gray-300">${s.item}</td>
-          <td class="p-2.5 ${s.type === 'due' ? 'text-rose-400 font-bold' : 'text-emerald-400 font-bold'}">${s.type === 'due' ? 'বাকি' : 'জমা'}</td>
-          <td class="p-2.5 text-right font-mono font-bold">৳${s.amount.toFixed(2)}</td>
-          <td class="p-2.5 text-center no-print"><button onclick="shopData.splice(${i},1); renderShopLedger();" class="text-gray-500 hover:text-rose-400"><i class="fa-solid fa-trash"></i></button></td>
-        `;
-        tbody.appendChild(tr);
+      if (!title || isNaN(amount) || amount <= 0) {
+        alert("দয়া করে খরচের খাত এবং সঠিক টাকার পরিমাণ লিখুন!");
+        return;
+      }
+
+      appData.expenses.unshift({
+        id: Date.now(),
+        title,
+        amount,
+        category,
+        date: new Date().toLocaleDateString('bn-BD')
       });
-      localStorage.setItem('emon_shop_ledger', JSON.stringify(shopData));
+
+      document.getElementById("expTitle").value = "";
+      document.getElementById("expAmount").value = "";
+      persistData();
     }
 
-    function addShopEntry() {
-      const name = document.getElementById('custName').value.trim();
-      const item = document.getElementById('custItem').value.trim() || 'কেনাকাটা';
-      const type = document.getElementById('custType').value;
-      const amount = parseFloat(document.getElementById('custAmount').value);
-      if(!name || !amount) return alert("নাম ও টাকা পূরণ করুন!");
-      shopData.unshift({ date: new Date().toLocaleDateString('bn-BD', { day: 'numeric', month: 'short' }), name, item, type, amount });
-      document.getElementById('custName').value = '';
-      document.getElementById('custItem').value = '';
-      document.getElementById('custAmount').value = '';
-      renderShopLedger();
+    function deleteExpenseRecord(id) {
+      appData.expenses = appData.expenses.filter(e => e.id !== id);
+      persistData();
     }
 
-    // Startup Initialization
-    renderTradingRoadmap();
-    renderExpenses();
-    renderShopLedger();
+    function renderExpense() {
+      const tbody = document.getElementById("expTableBody");
+      let total = 0;
+
+      if (!appData.expenses || appData.expenses.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">কোনো খরচের রেকর্ড নেই</td></tr>`;
+        document.getElementById("expTotal").innerText = `মোট খরচ: ৳০`;
+        return;
+      }
+
+      tbody.innerHTML = appData.expenses.map(e => {
+        total += e.amount;
+        return `
+          <tr class="hover:bg-slate-700/30 transition">
+            <td class="p-2.5 font-medium">${e.title}</td>
+            <td class="p-2.5 text-slate-400 text-xs">${e.category}</td>
+            <td class="p-2.5 text-right font-mono font-semibold text-red-400">৳${e.amount}</td>
+            <td class="p-2.5 text-center">
+              <button onclick="deleteExpenseRecord(${e.id})" class="text-slate-500 hover:text-red-400 p-1">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      document.getElementById("expTotal").innerText = `মোট খরচ: ৳${total}`;
+      lucide.createIcons();
+    }
+
+    // ----------------------------------------------------
+    // NOTE LOGIC
+    // ----------------------------------------------------
+    function saveNoteData() {
+      appData.note = document.getElementById("personalNote").value;
+      persistData();
+      alert("নোট সংরক্ষিত হয়েছে!");
+    }
+
+    function renderNote() {
+      document.getElementById("personalNote").value = appData.note || "";
+    }
+
+    // Master Render
+    function renderAll() {
+      renderShop();
+      renderExpense();
+      renderNote();
+    }
+
+    // Initialize App
+    window.addEventListener('DOMContentLoaded', () => {
+      loadLocal();
+      lucide.createIcons();
+    });
   </script>
 </body>
 </html>
