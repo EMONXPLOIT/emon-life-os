@@ -4,232 +4,166 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Emon Smart Manager</title>
-  
-  <!-- Firebase SDKs (Compat version for single HTML file) -->
+
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-  <!-- Tailwind CSS -->
+  <!-- Tailwind CSS & Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
-    body {
+    * {
       font-family: 'Hind Siliguri', sans-serif;
     }
   </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
+<body class="bg-[#0b1021] text-slate-100 min-h-screen flex flex-col">
 
-  <!-- Top Navbar -->
-  <header class="bg-slate-800/80 backdrop-blur border-b border-slate-700 sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+  <!-- Top App Bar -->
+  <header class="bg-[#121936] border-b border-slate-800 px-4 py-3 sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
       <div class="flex items-center gap-2">
         <i data-lucide="layers" class="text-indigo-400 w-6 h-6"></i>
-        <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
-          Emon Smart Manager
-        </h1>
+        <h1 class="text-lg font-bold text-white tracking-wide">Emon Smart Manager</h1>
       </div>
 
-      <!-- Auth Action Section -->
-      <div id="authSection" class="flex items-center gap-3">
-        <button id="loginBtn" onclick="loginWithGoogle()" class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-1.5 rounded-lg text-sm font-medium transition shadow-lg shadow-indigo-500/20">
-          <i data-lucide="log-in" class="w-4 h-4"></i>
-          <span>Google দিয়ে লগইন</span>
+      <!-- Auth Action -->
+      <div id="authContainer" class="flex items-center gap-2">
+        <button id="loginBtn" onclick="loginWithGoogle()" class="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow transition">
+          <i data-lucide="log-in" class="w-3.5 h-3.5"></i>
+          <span>গুগল লগইন</span>
         </button>
 
-        <div id="userProfile" class="hidden items-center gap-3">
-          <div class="flex items-center gap-2">
-            <img id="userAvatar" src="" alt="User" class="w-8 h-8 rounded-full border border-indigo-400">
-            <span id="userName" class="text-sm font-medium text-slate-300 hidden sm:inline-block"></span>
-          </div>
-          <button onclick="logoutUser()" class="p-1.5 text-slate-400 hover:text-red-400 transition" title="লগআউট">
-            <i data-lucide="log-out" class="w-5 h-5"></i>
+        <div id="userProfile" class="hidden items-center gap-2">
+          <img id="userAvatar" src="" alt="User" class="w-7 h-7 rounded-full border border-indigo-400">
+          <span id="userName" class="text-xs font-medium text-slate-300 hidden sm:inline"></span>
+          <button onclick="logoutUser()" class="text-slate-400 hover:text-red-400 p-1" title="লগআউট">
+            <i data-lucide="log-out" class="w-4 h-4"></i>
           </button>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- Navigation Tabs -->
-  <nav class="max-w-6xl mx-auto w-full px-4 pt-4 flex gap-2 border-b border-slate-800 overflow-x-auto pb-2">
-    <button onclick="switchTab('calculator')" id="tab-calculator" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white flex items-center gap-2 whitespace-nowrap">
+  <!-- Navigation Buttons -->
+  <div class="max-w-4xl mx-auto w-full px-4 pt-4 flex gap-2 overflow-x-auto pb-1">
+    <button onclick="switchView('calc')" id="btn-calc" class="nav-tab px-4 py-2 rounded-xl text-sm font-semibold bg-indigo-600 text-white flex items-center gap-2 whitespace-nowrap shadow">
       <i data-lucide="calculator" class="w-4 h-4"></i> ক্যালকুলেটর
     </button>
-    <button onclick="switchTab('shop')" id="tab-shop" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 flex items-center gap-2 whitespace-nowrap">
+    <button onclick="switchView('shop')" id="btn-shop" class="nav-tab px-4 py-2 rounded-xl text-sm font-semibold bg-[#161f42] text-slate-400 flex items-center gap-2 whitespace-nowrap">
       <i data-lucide="shopping-bag" class="w-4 h-4"></i> দোকান খাতা
     </button>
-    <button onclick="switchTab('expense')" id="tab-expense" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 flex items-center gap-2 whitespace-nowrap">
+    <button onclick="switchView('expense')" id="btn-expense" class="nav-tab px-4 py-2 rounded-xl text-sm font-semibold bg-[#161f42] text-slate-400 flex items-center gap-2 whitespace-nowrap">
       <i data-lucide="wallet" class="w-4 h-4"></i> ব্যক্তিগত খরচ
     </button>
-    <button onclick="switchTab('notes')" id="tab-notes" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 flex items-center gap-2 whitespace-nowrap">
-      <i data-lucide="file-text" class="w-4 h-4"></i> নোটবুক
-    </button>
-  </nav>
-
-  <!-- Cloud Sync Indicator -->
-  <div class="max-w-6xl mx-auto w-full px-4 py-2 flex items-center justify-between text-xs text-slate-400">
-    <div id="syncStatus" class="flex items-center gap-1.5">
-      <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-      <span>লোকাল মোড (লগইন করলে ডাটা ক্লাউডে সেভ থাকবে)</span>
-    </div>
   </div>
 
-  <!-- Main Content Area -->
-  <main class="max-w-6xl mx-auto w-full px-4 py-4 flex-1">
+  <!-- Status Bar -->
+  <div class="max-w-4xl mx-auto w-full px-4 py-2 flex items-center gap-2 text-[11px] text-slate-400">
+    <span id="syncDot" class="w-2 h-2 rounded-full bg-amber-400"></span>
+    <span id="syncStatus">লোকাল মোড (লগইন ছাড়া তথ্য ফোনে সংরক্ষিত)</span>
+  </div>
 
-    <!-- 1. Calculator Section -->
-    <section id="sec-calculator" class="space-y-4">
-      <div class="max-w-md mx-auto bg-slate-800 rounded-2xl p-4 border border-slate-700 shadow-xl">
-        <div class="bg-slate-900 rounded-xl p-4 mb-4 text-right">
-          <div id="calc-history" class="text-xs text-slate-500 h-4 overflow-hidden"></div>
-          <div id="calc-display" class="text-3xl font-mono font-bold text-white tracking-wider truncate">0</div>
+  <!-- Content Container -->
+  <main class="max-w-4xl mx-auto w-full px-4 pb-8 flex-1">
+
+    <!-- 1. CALC VIEW -->
+    <div id="view-calc" class="flex justify-center mt-2">
+      <div class="w-full max-w-sm bg-[#121936] p-4 rounded-3xl border border-slate-800 shadow-2xl">
+        <div class="bg-[#0b1021] rounded-2xl p-4 mb-4 text-right">
+          <div id="calc-exp" class="text-xs text-slate-500 h-4"></div>
+          <div id="calc-val" class="text-3xl font-mono font-bold text-white tracking-wider truncate">0</div>
         </div>
-        <div class="grid grid-cols-4 gap-2">
-          <button onclick="calcClear()" class="p-3 bg-red-500/20 text-red-400 font-bold rounded-xl hover:bg-red-500/30 transition">C</button>
-          <button onclick="calcOp('/')" class="p-3 bg-indigo-500/20 text-indigo-400 font-bold rounded-xl hover:bg-indigo-500/30 transition">÷</button>
-          <button onclick="calcOp('*')" class="p-3 bg-indigo-500/20 text-indigo-400 font-bold rounded-xl hover:bg-indigo-500/30 transition">×</button>
-          <button onclick="calcDelete()" class="p-3 bg-slate-700 text-slate-300 font-bold rounded-xl hover:bg-slate-600 transition">⌫</button>
+        <div class="grid grid-cols-4 gap-2.5">
+          <button onclick="cClear()" class="p-3.5 bg-rose-500/20 text-rose-400 font-bold rounded-2xl">C</button>
+          <button onclick="cOp('/')" class="p-3.5 bg-[#1b2550] text-indigo-400 font-bold rounded-2xl">÷</button>
+          <button onclick="cOp('*')" class="p-3.5 bg-[#1b2550] text-indigo-400 font-bold rounded-2xl">×</button>
+          <button onclick="cDel()" class="p-3.5 bg-[#1b2550] text-slate-300 font-bold rounded-2xl">⌫</button>
 
-          <button onclick="calcNum('7')" class="p-3 bg-slate-700/60 hover:bg-slate-700 rounded-xl text-lg font-semibold">7</button>
-          <button onclick="calcNum('8')" class="p-3 bg-slate-700/60 hover:bg-slate-700 rounded-xl text-lg font-semibold">8</button>
-          <button onclick="calcNum('9')" class="p-3 bg-slate-700/60 hover:bg-slate-700 rounded-xl text-lg font-semibold">9</button>
-          <button onclick="calcOp('-')" class="p-3 bg-indigo-500/20 text-indigo-400 font-bold rounded-xl hover:bg-indigo-500/30 transition">−</button>
+          <button onclick="cNum('7')" class="p-3.5 bg-[#172045] hover:bg-[#1f2b5c] text-white font-semibold rounded-2xl">7</button>
+          <button onclick="cNum('8')" class="p-3.5 bg-[#172045] hover:bg-[#1f2b5c] text-white font-semibold rounded-2xl">8</button>
+          <button onclick="cNum('9')" class="p-3.5 bg-[#172045] hover:bg-[#1f2b5c] text-white font-semibold rounded-2xl">9</button>
+          <button onclick="cOp('-')" class="p-3.5 bg-[#1b2550] text-indigo-400 font-bold rounded-2xl">−</button>
 
-          <button onclick="calcNum('4')" class="p-3 bg-slate-700/60 hover:bg-slate-700 rounded-xl text-lg font-semibold">4</button>
-          <button onclick="calcNum('5')" class="p-3 bg-slate-700/60 hover:bg-slate-700 rounded-xl text-lg font-semibold">5</button>
-          <button onclick="calcNum('6')" class="p-3 bg-slate-700/60 hover:bg-slate-700 rounded-xl text-lg font-semibold">6</button>
-          <button onclick="calcOp('+')" class="p-3 bg-indigo-500/20 text-indigo-400 font-bold rounded-xl hover:bg-indigo-500/30 transition">+</button>
+          <button onclick="cNum('4')" class="p-3.5 bg-[#172045] hover:bg-[#1f2b5c] text-white font-semibold rounded-2xl">4</button>
+          <button onclick="cNum('5')" class="p-3.5 bg-[#172045] hover:bg-[#1f2b5c] text-white font-semibold rounded-2xl">5</button>
+          <button onclick="cNum('6')" class="p-3.5 bg-[#172045] hover:bg-[#1f2b5c] text-white font-semibold rounded-2xl">6</button>
+          <button onclick="cOp('+')" class="p-3.5 bg-[#1b2550] text-indigo-400 font-bold rounded-2xl">+</button>
 
-          <button onclick="calcNum('1')" class="p-3 bg-slate-700/60 hover:bg-slate-700 rounded-xl text-lg font-semibold">1</button>
-          <button onclick="calcNum('2')" class="p-3 bg-slate-700/60 hover:bg-slate-700 rounded-xl text-lg font-semibold">2</button>
-          <button onclick="calcNum('3')" class="p-3 bg-slate-700/60 hover:bg-slate-700 rounded-xl text-lg font-semibold">3</button>
-          <button onclick="calcEquals()" class="p-3 row-span-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl flex items-center justify-center transition">=</button>
+          <button onclick="cNum('1')" class="p-3.5 bg-[#172045] hover:bg-[#1f2b5c] text-white font-semibold rounded-2xl">1</button>
+          <button onclick="cNum('2')" class="p-3.5 bg-[#172045] hover:bg-[#1f2b5c] text-white font-semibold rounded-2xl">2</button>
+          <button onclick="cNum('3')" class="p-3.5 bg-[#172045] hover:bg-[#1f2b5c] text-white font-semibold rounded-2xl">3</button>
+          <button onclick="cEq()" class="p-3.5 row-span-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-2xl flex items-center justify-center">=</button>
 
-          <button onclick="calcNum('0')" class="p-3 col-span-2 bg-slate-700/60 hover:bg-slate-700 rounded-xl text-lg font-semibold">0</button>
-          <button onclick="calcNum('.')" class="p-3 bg-slate-700/60 hover:bg-slate-700 rounded-xl text-lg font-semibold">.</button>
+          <button onclick="cNum('0')" class="p-3.5 col-span-2 bg-[#172045] hover:bg-[#1f2b5c] text-white font-semibold rounded-2xl">0</button>
+          <button onclick="cNum('.')" class="p-3.5 bg-[#172045] hover:bg-[#1f2b5c] text-white font-semibold rounded-2xl">.</button>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- 2. Shop Ledger Section -->
-    <section id="sec-shop" class="hidden space-y-4">
-      <div class="grid md:grid-cols-3 gap-4">
-        <!-- Entry Form -->
-        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 h-fit space-y-3">
-          <h2 class="text-base font-semibold flex items-center gap-2 text-indigo-400">
-            <i data-lucide="plus-circle" class="w-4 h-4"></i> নতুন এন্ট্রি
-          </h2>
-          <input id="shopCustomer" type="text" placeholder="কাস্টমারের নাম" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
-          <input id="shopItem" type="text" placeholder="পণ্য / সেবার বিবরণ" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
-          <input id="shopAmount" type="number" placeholder="টাকার পরিমাণ (৳)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
-          <select id="shopType" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 text-slate-300">
+    <!-- 2. SHOP VIEW -->
+    <div id="view-shop" class="hidden space-y-4">
+      <div class="bg-[#121936] p-4 rounded-2xl border border-slate-800 space-y-3">
+        <h3 class="text-sm font-semibold text-indigo-400">নতুন কাস্টমার / বাকি এন্ট্রি</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <input id="shName" type="text" placeholder="কাস্টমারের নাম" class="bg-[#0b1021] border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none">
+          <input id="shItem" type="text" placeholder="পণ্যের বিবরণ" class="bg-[#0b1021] border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none">
+          <input id="shAmount" type="number" placeholder="টাকার পরিমাণ (৳)" class="bg-[#0b1021] border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none">
+          <select id="shType" class="bg-[#0b1021] border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none">
             <option value="due">বাকি (পাওনা)</option>
             <option value="paid">জমা (পরিশোধ)</option>
           </select>
-          <button onclick="addShopRecord()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2 rounded-lg text-sm transition">
-            রেকর্ড যুক্ত করুন
-          </button>
         </div>
+        <button onclick="addShopItem()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2 rounded-xl text-sm transition">
+          সংরক্ষণ করুন
+        </button>
+      </div>
 
-        <!-- Ledger Table -->
-        <div class="md:col-span-2 bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3">
-          <div class="flex items-center justify-between">
-            <h2 class="text-base font-semibold">দোকানের লেনদেন খাতা</h2>
-            <span id="shopNetDue" class="text-xs font-semibold px-2 py-1 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">মোট বাকি: ৳০</span>
-          </div>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm">
-              <thead class="text-xs uppercase bg-slate-900/50 text-slate-400">
-                <tr>
-                  <th class="p-2.5">কাস্টমার</th>
-                  <th class="p-2.5">বিবরণ</th>
-                  <th class="p-2.5">ধরন</th>
-                  <th class="p-2.5 text-right">টাকা</th>
-                  <th class="p-2.5 text-center">অ্যাকশন</th>
-                </tr>
-              </thead>
-              <tbody id="shopTableBody" class="divide-y divide-slate-700">
-                <tr><td colspan="5" class="p-4 text-center text-slate-500">কোনো লেনদেন রেকর্ড পাওয়া যায়নি</td></tr>
-              </tbody>
-            </table>
-          </div>
+      <div class="bg-[#121936] p-4 rounded-2xl border border-slate-800 space-y-2">
+        <div class="flex justify-between items-center mb-1">
+          <h3 class="text-sm font-semibold text-white">লেনদেন তালিকা</h3>
+          <span id="shTotalDue" class="text-xs bg-amber-500/10 text-amber-400 px-2 py-1 rounded-lg border border-amber-500/20 font-bold">মোট বাকি: ৳০</span>
+        </div>
+        <div id="shList" class="space-y-2 divide-y divide-slate-800">
+          <div class="text-center py-4 text-xs text-slate-500">কোনো রেকর্ড নেই</div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- 3. Expense Manager Section -->
-    <section id="sec-expense" class="hidden space-y-4">
-      <div class="grid md:grid-cols-3 gap-4">
-        <!-- Add Expense -->
-        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 h-fit space-y-3">
-          <h2 class="text-base font-semibold flex items-center gap-2 text-emerald-400">
-            <i data-lucide="plus-circle" class="w-4 h-4"></i> খরচের হিসাব যোগ
-          </h2>
-          <input id="expTitle" type="text" placeholder="খরচের খাত (উদা: বাজার, ভাড়া)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
-          <input id="expAmount" type="number" placeholder="টাকার পরিমাণ (৳)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
-          <select id="expCategory" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 text-slate-300">
-            <option value="খাবার">খাবার</option>
-            <option value="বিল ও ভাড়া">বিল ও ভাড়া</option>
-            <option value="যাতায়াত">যাতায়াত</option>
-            <option value="ব্যক্তিগত">ব্যক্তিগত</option>
-            <option value="অন্যান্য">অন্যান্য</option>
-          </select>
-          <button onclick="addExpenseRecord()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2 rounded-lg text-sm transition">
-            খরচ যোগ করুন
-          </button>
+    <!-- 3. EXPENSE VIEW -->
+    <div id="view-expense" class="hidden space-y-4">
+      <div class="bg-[#121936] p-4 rounded-2xl border border-slate-800 space-y-3">
+        <h3 class="text-sm font-semibold text-emerald-400">ব্যক্তিগত খরচের হিসাব</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <input id="exTitle" type="text" placeholder="খরচের খাত (উদা: বাজার)" class="bg-[#0b1021] border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none">
+          <input id="exAmount" type="number" placeholder="টাকার পরিমাণ (৳)" class="bg-[#0b1021] border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none">
         </div>
+        <button onclick="addExpenseItem()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2 rounded-xl text-sm transition">
+          খরচ যোগ করুন
+        </button>
+      </div>
 
-        <!-- Expense List -->
-        <div class="md:col-span-2 bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3">
-          <div class="flex items-center justify-between">
-            <h2 class="text-base font-semibold">মাসিক খরচের তালিকা</h2>
-            <span id="expTotal" class="text-xs font-semibold px-2 py-1 rounded bg-red-500/10 text-red-400 border border-red-500/20">মোট খরচ: ৳০</span>
-          </div>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm">
-              <thead class="text-xs uppercase bg-slate-900/50 text-slate-400">
-                <tr>
-                  <th class="p-2.5">খাত</th>
-                  <th class="p-2.5">ক্যাটাগরি</th>
-                  <th class="p-2.5 text-right">টাকা</th>
-                  <th class="p-2.5 text-center">অ্যাকশন</th>
-                </tr>
-              </thead>
-              <tbody id="expTableBody" class="divide-y divide-slate-700">
-                <tr><td colspan="4" class="p-4 text-center text-slate-500">কোনো খরচের রেকর্ড নেই</td></tr>
-              </tbody>
-            </table>
-          </div>
+      <div class="bg-[#121936] p-4 rounded-2xl border border-slate-800 space-y-2">
+        <div class="flex justify-between items-center mb-1">
+          <h3 class="text-sm font-semibold text-white">খরচের তালিকা</h3>
+          <span id="exTotal" class="text-xs bg-rose-500/10 text-rose-400 px-2 py-1 rounded-lg border border-rose-500/20 font-bold">মোট খরচ: ৳০</span>
+        </div>
+        <div id="exList" class="space-y-2 divide-y divide-slate-800">
+          <div class="text-center py-4 text-xs text-slate-500">কোনো খরচের হিসাব নেই</div>
         </div>
       </div>
-    </section>
-
-    <!-- 4. Quick Notes Section -->
-    <section id="sec-notes" class="hidden space-y-4">
-      <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3">
-        <h2 class="text-base font-semibold flex items-center gap-2 text-cyan-400">
-          <i data-lucide="edit-3" class="w-4 h-4"></i> ক্লাউড নোটবুক
-        </h2>
-        <textarea id="personalNote" rows="8" placeholder="এখানে গুরুত্বপূর্ণ হিসাব বা নোট লিখে রাখুন, ক্লাউডে অটো সেভ হবে..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm focus:outline-none focus:border-indigo-500 leading-relaxed"></textarea>
-        <div class="flex justify-end">
-          <button onclick="saveNoteData()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">
-            নোট সংরক্ষণ করুন
-          </button>
-        </div>
-      </div>
-    </section>
+    </div>
 
   </main>
 
-  <!-- JavaScript Application Logic -->
   <script>
-    // ----------------------------------------------------
-    // FIREBASE INITIALIZATION WITH YOUR LIVE CONFIG
-    // ----------------------------------------------------
+    // ---------------------------------------------
+    // FIREBASE SETUP
+    // ---------------------------------------------
     const firebaseConfig = {
       apiKey: "AIzaSyAxwRVb4o6G66m9tZddxu-oGR_es1XHCgw",
       authDomain: "emon-smart-manager.firebaseapp.com",
@@ -240,332 +174,232 @@
       measurementId: "G-VKZWZGM2YK"
     };
 
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
 
     let currentUser = null;
-    let appData = {
+    let localData = {
       shop: [],
-      expenses: [],
-      note: ""
+      expenses: []
     };
 
     // Load Local Data Initially
-    function loadLocal() {
+    function initData() {
       const stored = localStorage.getItem('emon_smart_manager_data');
       if (stored) {
-        try {
-          appData = JSON.parse(stored);
-        } catch (e) {
-          console.error("Local data parse error", e);
-        }
+        try { localData = JSON.parse(stored); } catch(e){}
       }
-      renderAll();
+      renderData();
     }
 
     // Save Data (Local + Cloud)
-    function persistData() {
-      localStorage.setItem('emon_smart_manager_data', JSON.stringify(appData));
-      renderAll();
+    function syncAndSave() {
+      localStorage.setItem('emon_smart_manager_data', JSON.stringify(localData));
+      renderData();
 
       if (currentUser) {
-        updateSyncStatus("সিঙ্ক হচ্ছে...", "bg-amber-400 animate-pulse");
-        db.collection("users").doc(currentUser.uid).set(appData)
-          .then(() => {
-            updateSyncStatus("ক্লাউডে সংরক্ষিত (Connected)", "bg-emerald-400");
-          })
-          .catch((err) => {
-            console.error("Firestore sync error:", err);
-            updateSyncStatus("সিঙ্ক ব্যর্থ হয়েছে", "bg-red-500");
-          });
+        setSyncUi("ক্লাউডে সেভ হচ্ছে...", "bg-amber-400");
+        db.collection("users").doc(currentUser.uid).set(localData)
+          .then(() => setSyncUi("ক্লাউডে সংরক্ষিত (সংযুক্ত)", "bg-emerald-400"))
+          .catch(() => setSyncUi("সিঙ্ক ব্যর্থ হয়েছে", "bg-rose-500"));
       }
     }
 
-    function updateSyncStatus(text, dotClass) {
-      const status = document.getElementById("syncStatus");
-      status.innerHTML = `<span class="w-2 h-2 rounded-full ${dotClass}"></span><span>${text}</span>`;
+    function setSyncUi(text, dotColor) {
+      document.getElementById("syncStatus").innerText = text;
+      document.getElementById("syncDot").className = `w-2 h-2 rounded-full ${dotColor}`;
     }
 
-    // ----------------------------------------------------
-    // AUTHENTICATION LOGIC
-    // ----------------------------------------------------
+    // Auth Actions
     function loginWithGoogle() {
       const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider).catch((error) => {
-        alert("লগইন ত্রুটি: " + error.message);
-      });
+      auth.signInWithPopup(provider).catch(err => alert("ত্রুটি: " + err.message));
     }
 
     function logoutUser() {
-      auth.signOut().then(() => {
-        currentUser = null;
-        updateUIForAuth(null);
-        loadLocal();
-      });
+      auth.signOut();
     }
 
-    auth.onAuthStateChanged((user) => {
+    auth.onAuthStateChanged(user => {
       currentUser = user;
-      updateUIForAuth(user);
-      if (user) {
-        updateSyncStatus("ক্লাউড ডাটা লোড হচ্ছে...", "bg-amber-400 animate-pulse");
-        db.collection("users").doc(user.uid).get().then((doc) => {
-          if (doc.exists) {
-            appData = Object.assign({ shop: [], expenses: [], note: "" }, doc.data());
-            localStorage.setItem('emon_smart_manager_data', JSON.stringify(appData));
-          } else {
-            persistData();
-          }
-          renderAll();
-          updateSyncStatus("ক্লাউডে সংরক্ষিত (Connected)", "bg-emerald-400");
-        }).catch((err) => {
-          console.error("Error fetching user data:", err);
-          loadLocal();
-        });
-      } else {
-        updateSyncStatus("লোকাল মোড (লগইন করলে ডাটা ক্লাউডে সেভ থাকবে)", "bg-amber-400");
-      }
-    });
-
-    function updateUIForAuth(user) {
       const loginBtn = document.getElementById("loginBtn");
       const userProfile = document.getElementById("userProfile");
-      const userName = document.getElementById("userName");
-      const userAvatar = document.getElementById("userAvatar");
 
       if (user) {
         loginBtn.classList.add("hidden");
         userProfile.classList.remove("hidden");
         userProfile.classList.add("flex");
-        userName.textContent = user.displayName || "ইউজার";
-        userAvatar.src = user.photoURL || "https://api.dicebear.com/7.x/bottts/svg?seed=Emon";
+        document.getElementById("userName").innerText = user.displayName || "ইউজার";
+        document.getElementById("userAvatar").src = user.photoURL || "https://api.dicebear.com/7.x/bottts/svg?seed=Emon";
+
+        setSyncUi("ডাটা লোড হচ্ছে...", "bg-amber-400");
+        db.collection("users").doc(user.uid).get().then(doc => {
+          if (doc.exists) {
+            localData = Object.assign({ shop: [], expenses: [] }, doc.data());
+            localStorage.setItem('emon_smart_manager_data', JSON.stringify(localData));
+          } else {
+            syncAndSave();
+          }
+          renderData();
+          setSyncUi("ক্লাউডে সংরক্ষিত (সংযুক্ত)", "bg-emerald-400");
+        });
       } else {
         loginBtn.classList.remove("hidden");
         userProfile.classList.add("hidden");
         userProfile.classList.remove("flex");
+        setSyncUi("লোকাল মোড (লগইন ছাড়া তথ্য ফোনে সংরক্ষিত)", "bg-amber-400");
       }
-    }
-
-    // ----------------------------------------------------
-    // TABS LOGIC
-    // ----------------------------------------------------
-    function switchTab(tabId) {
-      ['calculator', 'shop', 'expense', 'notes'].forEach(id => {
-        document.getElementById(`sec-${id}`).classList.add('hidden');
-        const btn = document.getElementById(`tab-${id}`);
-        btn.classList.remove('bg-indigo-600', 'text-white');
-        btn.classList.add('text-slate-400');
-      });
-      document.getElementById(`sec-${tabId}`).classList.remove('hidden');
-      const activeBtn = document.getElementById(`tab-${tabId}`);
-      activeBtn.classList.add('bg-indigo-600', 'text-white');
-      activeBtn.classList.remove('text-slate-400');
-    }
-
-    // ----------------------------------------------------
-    // CALCULATOR LOGIC
-    // ----------------------------------------------------
-    let calcExpression = "";
-    function calcNum(val) {
-      if (calcExpression === "0" && val !== ".") calcExpression = "";
-      calcExpression += val;
-      updateCalcDisplay();
-    }
-    function calcOp(op) {
-      if (calcExpression === "" && op !== "-") return;
-      const lastChar = calcExpression.slice(-1);
-      if ("+-*/".includes(lastChar)) {
-        calcExpression = calcExpression.slice(0, -1) + op;
-      } else {
-        calcExpression += op;
-      }
-      updateCalcDisplay();
-    }
-    function calcClear() {
-      calcExpression = "";
-      document.getElementById("calc-history").innerText = "";
-      updateCalcDisplay();
-    }
-    function calcDelete() {
-      calcExpression = calcExpression.slice(0, -1);
-      updateCalcDisplay();
-    }
-    function calcEquals() {
-      try {
-        if (!calcExpression) return;
-        document.getElementById("calc-history").innerText = calcExpression;
-        const result = Function(`'use strict'; return (${calcExpression})`)();
-        calcExpression = String(result);
-        updateCalcDisplay();
-      } catch (e) {
-        document.getElementById("calc-display").innerText = "Error";
-      }
-    }
-    function updateCalcDisplay() {
-      document.getElementById("calc-display").innerText = calcExpression || "0";
-    }
-
-    // ----------------------------------------------------
-    // SHOP LEDGER LOGIC
-    // ----------------------------------------------------
-    function addShopRecord() {
-      const customer = document.getElementById("shopCustomer").value.trim();
-      const item = document.getElementById("shopItem").value.trim();
-      const amount = parseFloat(document.getElementById("shopAmount").value);
-      const type = document.getElementById("shopType").value;
-
-      if (!customer || isNaN(amount) || amount <= 0) {
-        alert("দয়া করে কাস্টমারের নাম এবং সঠিক পরিমাণ লিখুন!");
-        return;
-      }
-
-      appData.shop.unshift({
-        id: Date.now(),
-        customer,
-        item: item || "বিবরণ নেই",
-        amount,
-        type,
-        date: new Date().toLocaleDateString('bn-BD')
-      });
-
-      document.getElementById("shopCustomer").value = "";
-      document.getElementById("shopItem").value = "";
-      document.getElementById("shopAmount").value = "";
-      persistData();
-    }
-
-    function deleteShopRecord(id) {
-      appData.shop = appData.shop.filter(r => r.id !== id);
-      persistData();
-    }
-
-    function renderShop() {
-      const tbody = document.getElementById("shopTableBody");
-      let totalDue = 0;
-
-      if (!appData.shop || appData.shop.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">কোনো লেনদেন রেকর্ড পাওয়া যায়নি</td></tr>`;
-        document.getElementById("shopNetDue").innerText = `মোট বাকি: ৳০`;
-        return;
-      }
-
-      tbody.innerHTML = appData.shop.map(r => {
-        if (r.type === 'due') totalDue += r.amount;
-        else totalDue -= r.amount;
-
-        const isDue = r.type === 'due';
-        return `
-          <tr class="hover:bg-slate-700/30 transition">
-            <td class="p-2.5 font-medium">${r.customer}</td>
-            <td class="p-2.5 text-slate-400">${r.item}</td>
-            <td class="p-2.5">
-              <span class="text-xs px-2 py-0.5 rounded font-semibold ${isDue ? 'bg-amber-500/10 text-amber-400' : 'bg-emerald-500/10 text-emerald-400'}">
-                ${isDue ? 'বাকি' : 'জমা'}
-              </span>
-            </td>
-            <td class="p-2.5 text-right font-mono font-semibold">৳${r.amount}</td>
-            <td class="p-2.5 text-center">
-              <button onclick="deleteShopRecord(${r.id})" class="text-slate-500 hover:text-red-400 p-1">
-                <i data-lucide="trash-2" class="w-4 h-4"></i>
-              </button>
-            </td>
-          </tr>
-        `;
-      }).join('');
-
-      document.getElementById("shopNetDue").innerText = `মোট বাকি: ৳${totalDue}`;
-      lucide.createIcons();
-    }
-
-    // ----------------------------------------------------
-    // EXPENSE LOGIC
-    // ----------------------------------------------------
-    function addExpenseRecord() {
-      const title = document.getElementById("expTitle").value.trim();
-      const amount = parseFloat(document.getElementById("expAmount").value);
-      const category = document.getElementById("expCategory").value;
-
-      if (!title || isNaN(amount) || amount <= 0) {
-        alert("দয়া করে খরচের খাত এবং সঠিক টাকার পরিমাণ লিখুন!");
-        return;
-      }
-
-      appData.expenses.unshift({
-        id: Date.now(),
-        title,
-        amount,
-        category,
-        date: new Date().toLocaleDateString('bn-BD')
-      });
-
-      document.getElementById("expTitle").value = "";
-      document.getElementById("expAmount").value = "";
-      persistData();
-    }
-
-    function deleteExpenseRecord(id) {
-      appData.expenses = appData.expenses.filter(e => e.id !== id);
-      persistData();
-    }
-
-    function renderExpense() {
-      const tbody = document.getElementById("expTableBody");
-      let total = 0;
-
-      if (!appData.expenses || appData.expenses.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">কোনো খরচের রেকর্ড নেই</td></tr>`;
-        document.getElementById("expTotal").innerText = `মোট খরচ: ৳০`;
-        return;
-      }
-
-      tbody.innerHTML = appData.expenses.map(e => {
-        total += e.amount;
-        return `
-          <tr class="hover:bg-slate-700/30 transition">
-            <td class="p-2.5 font-medium">${e.title}</td>
-            <td class="p-2.5 text-slate-400 text-xs">${e.category}</td>
-            <td class="p-2.5 text-right font-mono font-semibold text-red-400">৳${e.amount}</td>
-            <td class="p-2.5 text-center">
-              <button onclick="deleteExpenseRecord(${e.id})" class="text-slate-500 hover:text-red-400 p-1">
-                <i data-lucide="trash-2" class="w-4 h-4"></i>
-              </button>
-            </td>
-          </tr>
-        `;
-      }).join('');
-
-      document.getElementById("expTotal").innerText = `মোট খরচ: ৳${total}`;
-      lucide.createIcons();
-    }
-
-    // ----------------------------------------------------
-    // NOTE LOGIC
-    // ----------------------------------------------------
-    function saveNoteData() {
-      appData.note = document.getElementById("personalNote").value;
-      persistData();
-      alert("নোট সংরক্ষিত হয়েছে!");
-    }
-
-    function renderNote() {
-      document.getElementById("personalNote").value = appData.note || "";
-    }
-
-    // Master Render
-    function renderAll() {
-      renderShop();
-      renderExpense();
-      renderNote();
-    }
-
-    // Initialize App
-    window.addEventListener('DOMContentLoaded', () => {
-      loadLocal();
-      lucide.createIcons();
     });
+
+    // ---------------------------------------------
+    // NAVIGATION
+    // ---------------------------------------------
+    function switchView(tab) {
+      ['calc', 'shop', 'expense'].forEach(t => {
+        document.getElementById(`view-${t}`).classList.add('hidden');
+        const b = document.getElementById(`btn-${t}`);
+        b.classList.remove('bg-indigo-600', 'text-white');
+        b.classList.add('bg-[#161f42]', 'text-slate-400');
+      });
+      document.getElementById(`view-${tab}`).classList.remove('hidden');
+      const active = document.getElementById(`btn-${tab}`);
+      active.classList.add('bg-indigo-600', 'text-white');
+      active.classList.remove('bg-[#161f42]', 'text-slate-400');
+    }
+
+    // ---------------------------------------------
+    // CALCULATOR
+    // ---------------------------------------------
+    let cState = "";
+    function cNum(n) {
+      if (cState === "0" && n !== ".") cState = "";
+      cState += n;
+      document.getElementById("calc-val").innerText = cState || "0";
+    }
+    function cOp(op) {
+      if (!cState && op !== "-") return;
+      if ("+-*/".includes(cState.slice(-1))) cState = cState.slice(0, -1);
+      cState += op;
+      document.getElementById("calc-val").innerText = cState;
+    }
+    function cClear() {
+      cState = "";
+      document.getElementById("calc-exp").innerText = "";
+      document.getElementById("calc-val").innerText = "0";
+    }
+    function cDel() {
+      cState = cState.slice(0, -1);
+      document.getElementById("calc-val").innerText = cState || "0";
+    }
+    function cEq() {
+      try {
+        if (!cState) return;
+        document.getElementById("calc-exp").innerText = cState;
+        cState = String(Function(`'use strict'; return (${cState})`)());
+        document.getElementById("calc-val").innerText = cState;
+      } catch(e) {
+        document.getElementById("calc-val").innerText = "Error";
+      }
+    }
+
+    // ---------------------------------------------
+    // SHOP DATA
+    // ---------------------------------------------
+    function addShopItem() {
+      const name = document.getElementById("shName").value.trim();
+      const item = document.getElementById("shItem").value.trim();
+      const amount = parseFloat(document.getElementById("shAmount").value);
+      const type = document.getElementById("shType").value;
+
+      if (!name || isNaN(amount) || amount <= 0) return alert("সঠিক নাম ও টাকার পরিমাণ দিন!");
+
+      localData.shop.unshift({ id: Date.now(), name, item: item || "বিবরণ নেই", amount, type });
+      document.getElementById("shName").value = "";
+      document.getElementById("shItem").value = "";
+      document.getElementById("shAmount").value = "";
+      syncAndSave();
+    }
+
+    function removeShop(id) {
+      localData.shop = localData.shop.filter(x => x.id !== id);
+      syncAndSave();
+    }
+
+    // ---------------------------------------------
+    // EXPENSE DATA
+    // ---------------------------------------------
+    function addExpenseItem() {
+      const title = document.getElementById("exTitle").value.trim();
+      const amount = parseFloat(document.getElementById("exAmount").value);
+
+      if (!title || isNaN(amount) || amount <= 0) return alert("খরচের খাত ও পরিমাণ দিন!");
+
+      localData.expenses.unshift({ id: Date.now(), title, amount });
+      document.getElementById("exTitle").value = "";
+      document.getElementById("exAmount").value = "";
+      syncAndSave();
+    }
+
+    function removeExpense(id) {
+      localData.expenses = localData.expenses.filter(x => x.id !== id);
+      syncAndSave();
+    }
+
+    // ---------------------------------------------
+    // RENDER UI
+    // ---------------------------------------------
+    function renderData() {
+      // Render Shop
+      let dueTotal = 0;
+      const shList = document.getElementById("shList");
+      if (!localData.shop.length) {
+        shList.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">কোনো রেকর্ড নেই</div>`;
+      } else {
+        shList.innerHTML = localData.shop.map(x => {
+          if (x.type === 'due') dueTotal += x.amount; else dueTotal -= x.amount;
+          return `
+            <div class="flex justify-between items-center py-2 text-xs">
+              <div>
+                <div class="font-bold text-white">${x.name} <span class="font-normal text-slate-400">(${x.item})</span></div>
+                <span class="${x.type === 'due' ? 'text-amber-400' : 'text-emerald-400'} font-semibold">${x.type === 'due' ? 'বাকি' : 'জমা'}</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="font-mono font-bold text-white">৳${x.amount}</span>
+                <button onclick="removeShop(${x.id})" class="text-slate-500 hover:text-red-400"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+              </div>
+            </div>`;
+        }).join('');
+      }
+      document.getElementById("shTotalDue").innerText = `মোট বাকি: ৳${dueTotal}`;
+
+      // Render Expenses
+      let expTotal = 0;
+      const exList = document.getElementById("exList");
+      if (!localData.expenses.length) {
+        exList.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">কোনো খরচের হিসাব নেই</div>`;
+      } else {
+        exList.innerHTML = localData.expenses.map(x => {
+          expTotal += x.amount;
+          return `
+            <div class="flex justify-between items-center py-2 text-xs">
+              <span class="text-white font-medium">${x.title}</span>
+              <div class="flex items-center gap-3">
+                <span class="font-mono font-bold text-rose-400">৳${x.amount}</span>
+                <button onclick="removeExpense(${x.id})" class="text-slate-500 hover:text-red-400"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+              </div>
+            </div>`;
+        }).join('');
+      }
+      document.getElementById("exTotal").innerText = `মোট খরচ: ৳${expTotal}`;
+
+      lucide.createIcons();
+    }
+
+    window.onload = () => {
+      initData();
+      lucide.createIcons();
+    };
   </script>
 </body>
 </html>
