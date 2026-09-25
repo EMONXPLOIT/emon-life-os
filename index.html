@@ -20,7 +20,7 @@
 
     @media print {
       body { background-color: #fff !important; color: #000 !important; }
-      header, nav, .no-print, button, input, select { display: none !important; }
+      header, nav, footer, .no-print, button, input, select { display: none !important; }
       .card-glass { border: 1px solid #aaa !important; background: transparent !important; color: #000 !important; }
       table { width: 100%; border-collapse: collapse; }
       th, td { border: 1px solid #777 !important; color: #000 !important; padding: 6px !important; }
@@ -34,7 +34,14 @@
   <header class="max-w-4xl mx-auto p-4 flex justify-between items-center bg-[#090d16]/95 border-b border-cyan-500/20 sticky top-0 z-50 backdrop-blur-md">
     <div>
       <h1 class="text-base font-black tracking-wider text-cyan-400 font-orbitron">EMON<span class="text-amber-400">|SMART MANAGER</span></h1>
-      <p class="text-[10px] text-gray-400 font-semibold">Dev & Owner: <span class="text-cyan-300 font-bold">Emon Khan</span></p>
+      <div class="flex items-center gap-2 mt-0.5">
+        <p class="text-[10px] text-gray-400 font-semibold">Dev & Owner: <span class="text-cyan-300 font-bold">Emon Khan</span></p>
+        <!-- Facebook Header Link -->
+        <a href="https://www.facebook.com/imana.isalama.347870" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 text-xs inline-flex items-center gap-1 bg-blue-950/60 border border-blue-500/30 px-1.5 py-0.5 rounded transition">
+          <i class="fa-brands fa-facebook"></i>
+          <span class="text-[9px] font-bold">Facebook</span>
+        </a>
+      </div>
     </div>
     <div class="flex items-center gap-1.5 no-print">
       <span class="text-[11px] text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2.5 py-1 rounded-lg font-bold">
@@ -50,112 +57,136 @@
       <div class="card-glass p-4 rounded-2xl bg-gradient-to-r from-cyan-950/40 to-slate-900 border-cyan-500/40 flex justify-between items-center">
         <div>
           <h2 class="text-sm font-bold text-cyan-300 flex items-center gap-2">
-            <i class="fa-solid fa-calculator text-amber-400"></i> শোরুম, অফিস ও কাস্টম দিনভিত্তিক বেতন ক্যালকুলেটর
+            <i class="fa-solid fa-calculator text-amber-400"></i> আনলিমিটেড শোরুম ও নিখুঁত সময় ভিত্তিক স্যালারি ক্যালকুলেটর
           </h2>
-          <p class="text-[11px] text-gray-400 mt-0.5">মাসিক বেতন থেকে ১০ দিন, ১৪ দিন বা যেকোনো দিনের ওভারটাইমসহ নিখুঁত হিসাব।</p>
+          <p class="text-[11px] text-gray-400 mt-0.5">১ সেকেন্ড, ১ মিনিট, ১ ঘণ্টা ও ১ দিনের নিখুঁত ইনকাম ট্র্যাকার।</p>
         </div>
         <button onclick="printCurrentTab('tab-tools')" class="no-print bg-cyan-500 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1">
           <i class="fa-solid fa-file-pdf"></i> রিপোর্ট PDF
         </button>
       </div>
 
-      <!-- MAIN SHOWROOM & CUSTOM DAYS CALCULATOR -->
-      <div class="card-glass p-4 rounded-2xl space-y-4">
+      <!-- Unlimited Shift, Overtime & Micro-Seconds Engine -->
+      <div class="card-glass p-4 rounded-2xl space-y-3">
+        <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+          <i class="fa-solid fa-stopwatch-20"></i> ১. শোরুম ও কর্মস্থলের লাইভ সময় ও ইনকাম ট্র্যাকার
+        </h3>
         
-        <!-- STEP 1: MONTHLY SALARY BASE -->
-        <div>
-          <h3 class="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-2 mb-2">
-            <i class="fa-solid fa-money-bill-wave"></i> ১. মাসিক মূল বেতন ও শিফট রেট
-          </h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-            <div>
-              <label class="text-gray-400 block mb-1">মাসিক মূল বেতন (৳ - আনলিমিটেড):</label>
-              <input type="number" id="srSalary" step="any" placeholder="যেমন: 15000 বা 7000" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white font-mono focus:border-cyan-400 focus:outline-none" oninput="updateBaseRates()">
-            </div>
-            <div>
-              <label class="text-gray-400 block mb-1">প্রতিদিনের শিফট ডিউটি (ঘণ্টা):</label>
-              <input type="number" id="srDailyDutyHours" value="8" step="any" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white font-mono focus:border-cyan-400 focus:outline-none" oninput="updateBaseRates()">
-            </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+          <div class="col-span-2 sm:col-span-1">
+            <label class="text-gray-400 block mb-1">মাসিক মূল বেতন (৳ - আনলিমিটেড):</label>
+            <input type="number" id="srSalary" step="any" placeholder="যেকোনো পরিমাণ" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono focus:border-cyan-400 focus:outline-none">
           </div>
-
-          <!-- Base Rates Display -->
-          <div class="grid grid-cols-3 gap-2 mt-2 text-center text-xs font-mono">
-            <div class="bg-slate-950/80 p-2 rounded-lg border border-slate-800">
-              <span class="text-[10px] text-gray-400 block">১ দিনের বেতন রেট</span>
-              <span class="font-bold text-emerald-400" id="basePerDay">৳০.০০</span>
-            </div>
-            <div class="bg-slate-950/80 p-2 rounded-lg border border-slate-800">
-              <span class="text-[10px] text-gray-400 block">১ ঘণ্টার রেট</span>
-              <span class="font-bold text-cyan-400" id="basePerHour">৳০.০০</span>
-            </div>
-            <div class="bg-slate-950/80 p-2 rounded-lg border border-slate-800">
-              <span class="text-[10px] text-gray-400 block">১ মিনিটের রেট</span>
-              <span class="font-bold text-purple-400" id="basePerMinute">৳০.০০</span>
-            </div>
+          <div>
+            <label class="text-gray-400 block mb-1">উপস্থিত দিন (হাজিরা):</label>
+            <input type="number" id="srDays" value="30" step="any" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono focus:border-cyan-400 focus:outline-none">
+          </div>
+          <div>
+            <label class="text-gray-400 block mb-1">প্রতিদিনের শিফট ডিউটি (ঘণ্টা):</label>
+            <input type="number" id="srDailyDutyHours" value="8" step="any" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono focus:border-cyan-400 focus:outline-none">
+          </div>
+          <div>
+            <label class="text-gray-400 block mb-1">মোট ওভারটাইম (ঘণ্টা):</label>
+            <input type="number" id="srOvertimeHours" value="0" step="any" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono focus:border-cyan-400 focus:outline-none">
+          </div>
+          <div class="col-span-2 sm:col-span-2">
+            <label class="text-gray-400 block mb-1">অগ্রিম / অন্যান্য কর্তন (৳):</label>
+            <input type="number" id="srDeduct" value="0" step="any" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono focus:border-cyan-400 focus:outline-none">
           </div>
         </div>
 
-        <hr class="border-slate-800">
+        <button onclick="calcShowroomSalary()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-2 rounded-lg text-xs transition">
+          সম্পূর্ণ হিসাব বের করুন ⚡
+        </button>
 
-        <!-- STEP 2: CUSTOM WORKING DAYS & OVERTIME (YOUR REQUESTED FEATURE) -->
-        <div class="space-y-3">
-          <div class="flex justify-between items-center">
-            <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
-              <i class="fa-solid fa-calendar-check"></i> ২. নির্দিষ্ট কাজের দিন ও ওভারটাইম হিসাব (১০ দিন, ১৪ দিন ইত্যাদি)
-            </h3>
-            <span class="text-[10px] text-cyan-400 bg-cyan-950 px-2 py-0.5 rounded border border-cyan-800 font-bold">কাস্টম হাজিরার হিসাব</span>
+        <!-- Detailed Results with Second/Minute Breakdown -->
+        <div id="srResult" class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-xs hidden space-y-2.5 font-mono">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+            <div class="bg-slate-950/80 p-2 rounded-lg border border-slate-800">
+              <span class="text-[10px] text-gray-400 block">১ সেকেন্ডে আয়</span>
+              <span class="text-xs font-black text-rose-400" id="resSecondRate">৳০.০০০০</span>
+            </div>
+            <div class="bg-slate-950/80 p-2 rounded-lg border border-slate-800">
+              <span class="text-[10px] text-gray-400 block">১ মিনিটে আয়</span>
+              <span class="text-xs font-black text-purple-400" id="resMinuteRate">৳০.০০</span>
+            </div>
+            <div class="bg-slate-950/80 p-2 rounded-lg border border-slate-800">
+              <span class="text-[10px] text-gray-400 block">১ ঘণ্টায় আয়</span>
+              <span class="text-xs font-black text-cyan-400" id="resHourRate">৳০.০০</span>
+            </div>
+            <div class="bg-slate-950/80 p-2 rounded-lg border border-slate-800">
+              <span class="text-[10px] text-gray-400 block">১ দিনে আয়</span>
+              <span class="text-xs font-black text-emerald-400" id="resDailyIncome">৳০.০০</span>
+            </div>
+          </div>
+
+          <div class="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800 space-y-1">
+            <div class="flex justify-between text-gray-300">
+              <span>মোট কাজের সময় (হাজিরা + ওভারটাইম):</span>
+              <span class="text-amber-300 font-bold" id="resTotalWorkedTime">০ ঘণ্টা (০ সেকেন্ড)</span>
+            </div>
+            <div class="flex justify-between text-gray-300">
+              <span>ওভারটাইম থেকে অতিরিক্ত আয়:</span>
+              <span class="text-emerald-400 font-bold" id="resOvertimePay">+৳০.০০</span>
+            </div>
+          </div>
+
+          <div class="flex justify-between border-t border-slate-800 pt-2 text-sm font-bold">
+            <span class="text-amber-300">সর্বমোট নিট প্রদেয় বেতন:</span> 
+            <span class="text-amber-400 text-base" id="resTotalSalary">৳০.০০</span>
+          </div>
+
+          <button onclick="addCalculatedSalaryToWallet()" class="w-full mt-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-bold py-2 rounded-lg text-xs flex items-center justify-center gap-1.5 no-print shadow-md">
+            <i class="fa-solid fa-plus-circle"></i> খরচের খাতার ব্যালেন্সে এই বেতন যোগ করুন (+)
+          </button>
+        </div>
+
+        <!-- কাস্টম দিন ও ওভারটাইম হিসাব বক্স -->
+        <div class="p-3 bg-slate-950/70 rounded-xl border border-amber-500/30 space-y-2.5 pt-3">
+          <div class="flex items-center justify-between border-b border-slate-800/80 pb-1.5">
+            <h4 class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-calendar-day"></i> নির্দিষ্ট দিন ও ওভারটাইম হিসাব (১০, ১৪ বা ১৫ দিন)
+            </h4>
+            <span class="text-[9px] text-cyan-300 bg-cyan-950 px-2 py-0.5 rounded border border-cyan-800">কাস্টম হাজিরার রসিদ</span>
           </div>
 
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
             <div>
-              <label class="text-gray-400 block mb-1">মোট কয়দিন কাজ করেছে?</label>
-              <input type="number" id="custWorkDays" placeholder="যেমন: 10 বা 15" class="w-full bg-slate-950 border border-amber-500/40 rounded-lg p-2.5 text-amber-300 font-mono font-bold focus:border-amber-400 focus:outline-none">
+              <label class="text-gray-400 block mb-1">কয়দিন ডিউটি করেছে?</label>
+              <input type="number" id="custWorkDays" step="any" placeholder="যেমন: 10 বা 14" class="w-full bg-slate-900 border border-amber-500/40 rounded-lg p-2 text-amber-300 font-mono font-bold focus:border-amber-400 focus:outline-none">
             </div>
             <div>
-              <label class="text-gray-400 block mb-1">মোট ওভারটাইম (ঘণ্টা):</label>
-              <input type="number" id="custOvertimeHours" value="0" step="any" placeholder="অতিরিক্ত ঘণ্টা" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white font-mono focus:border-cyan-400 focus:outline-none">
+              <label class="text-gray-400 block mb-1">ওভারটাইম (ঘণ্টা):</label>
+              <input type="number" id="custOtHours" step="any" value="0" placeholder="অতিরিক্ত ঘণ্টা" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white font-mono focus:border-cyan-400 focus:outline-none">
             </div>
             <div class="col-span-2 sm:col-span-1">
-              <label class="text-gray-400 block mb-1">অগ্রিম নিয়েছে / কর্তন (৳):</label>
-              <input type="number" id="custDeduct" value="0" step="any" placeholder="০" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-rose-300 font-mono focus:border-rose-400 focus:outline-none">
+              <label class="text-gray-400 block mb-1">অগ্রিম বাদ (৳):</label>
+              <input type="number" id="custDeductAmt" step="any" value="0" placeholder="০" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-rose-300 font-mono focus:border-rose-400 focus:outline-none">
             </div>
           </div>
 
-          <button onclick="calcCustomDutySalary()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold py-2.5 rounded-xl text-xs shadow-lg hover:opacity-90 transition">
-            নির্দিষ্ট দিনের মোট টাকা বের করুন ⚡
+          <button onclick="calcCustomDaysWithOt()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold py-2 rounded-lg text-xs hover:opacity-90 transition">
+            এই কয়দিনের হিসাব বের করুন ⚡
           </button>
-        </div>
 
-        <!-- RESULT MEMO FOR CUSTOM DAYS -->
-        <div id="custResultCard" class="p-3.5 bg-slate-900/95 rounded-xl border border-amber-500/30 text-xs hidden space-y-2 font-mono">
-          <div class="flex justify-between border-b border-slate-800 pb-2">
-            <span class="text-gray-400">কাজের হিসাবের দিন:</span>
-            <span class="text-cyan-300 font-bold"><span id="resWorkedDaysCount">০</span> দিন (<span id="resWorkedShiftHours">০</span> ঘণ্টা শিফট)</span>
+          <div id="custDayResult" class="p-2.5 bg-slate-900 rounded-lg border border-slate-800 text-xs hidden space-y-1.5 font-mono">
+            <div class="flex justify-between text-gray-300">
+              <span>হিসাবকৃত কাজের সময়:</span>
+              <span class="text-cyan-400 font-bold"><span id="lblDaysWorked">০</span> দিন + <span id="lblOtWorked">০</span> ঘণ্টা ওভারটাইম</span>
+            </div>
+            <div class="flex justify-between text-gray-300">
+              <span>মূল দিনের ইনকাম:</span>
+              <span class="text-white font-bold" id="lblBaseIncome">৳০.০০</span>
+            </div>
+            <div class="flex justify-between text-gray-300">
+              <span>ওভারটাইমের বাড়তি টাকা:</span>
+              <span class="text-emerald-400 font-bold" id="lblOtIncome">+৳০.০০</span>
+            </div>
+            <div class="flex justify-between border-t border-slate-800 pt-1 text-sm font-bold text-amber-300">
+              <span>মোট অর্জিত টাকা:</span>
+              <span class="text-amber-400 text-base" id="lblCustomTotalPay">৳০.০০</span>
+            </div>
           </div>
-
-          <div class="flex justify-between">
-            <span class="text-gray-400">মূল দিনের হাজিরা বাবদ টাকা:</span>
-            <span class="text-white font-bold" id="resBaseEarnedPay">৳০.০০</span>
-          </div>
-
-          <div class="flex justify-between">
-            <span class="text-gray-400">ওভারটাইম আয় (<span id="resOtHoursCount">০</span> ঘণ্টা):</span>
-            <span class="text-emerald-400 font-bold" id="resCustomOtPay">+৳০.০০</span>
-          </div>
-
-          <div class="flex justify-between">
-            <span class="text-gray-400">কর্তন / অগ্রিম বাদ:</span>
-            <span class="text-rose-400 font-bold" id="resCustomDeduct">-৳০.০০</span>
-          </div>
-
-          <div class="flex justify-between border-t border-slate-800 pt-2 text-sm font-bold bg-amber-500/10 p-2 rounded-lg">
-            <span class="text-amber-300">নিট প্রদেয় বেতন:</span>
-            <span class="text-amber-400 text-base" id="resCustomFinalPay">৳০.০০</span>
-          </div>
-
-          <button onclick="addCustomSalaryToWallet()" class="w-full mt-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-bold py-2 rounded-lg text-xs flex items-center justify-center gap-1.5 no-print shadow-md">
-            <i class="fa-solid fa-plus-circle"></i> এই উপার্জিত টাকা খরচ খাতায় যোগ করুন (+)
-          </button>
         </div>
 
       </div>
@@ -163,7 +194,7 @@
       <!-- 2. Profit / Margin Calculator -->
       <div class="card-glass p-4 rounded-2xl space-y-3">
         <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
-          <i class="fa-solid fa-chart-pie"></i> ৩. পণ্যের লাভ-ক্ষতি ও প্রফিট মার্জিন
+          <i class="fa-solid fa-chart-pie"></i> ২. পণ্যের লাভ-ক্ষতি ও প্রফিট মার্জিন
         </h3>
         <div class="grid grid-cols-2 gap-2 text-xs">
           <input type="number" id="costPrice" step="any" placeholder="পাইকারি কেনা দাম (৳)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
@@ -176,7 +207,7 @@
       <!-- 3. Discount Calculator -->
       <div class="card-glass p-4 rounded-2xl space-y-3">
         <h3 class="text-xs font-bold text-purple-400 uppercase tracking-wider flex items-center gap-2">
-          <i class="fa-solid fa-tags"></i> ৪. শপিং ও ডিসকাউন্ট হিসাব
+          <i class="fa-solid fa-tags"></i> ৩. শপিং ও ডিসকাউন্ট হিসাব
         </h3>
         <div class="grid grid-cols-2 gap-2 text-xs">
           <input type="number" id="origPrice" step="any" placeholder="মূল দাম (৳)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
@@ -184,6 +215,32 @@
         </div>
         <button onclick="calcDiscount()" class="w-full bg-purple-500 text-white font-bold py-2 rounded-lg text-xs">ছাড়ের পর মূল্য দেখুন 🏷️</button>
         <p id="discountResult" class="text-xs font-mono font-bold text-center text-emerald-400"></p>
+      </div>
+
+      <!-- 4. Land Measurement Converter -->
+      <div class="card-glass p-4 rounded-2xl space-y-3">
+        <h3 class="text-xs font-bold text-rose-400 uppercase tracking-wider flex items-center gap-2">
+          <i class="fa-solid fa-vector-square"></i> ৪. জমি ও স্কয়ার ফিট পরিমাপ (শতক ও কাঠা)
+        </h3>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <input type="number" id="landLength" step="any" placeholder="দৈর্ঘ্য (ফুট)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+          <input type="number" id="landWidth" step="any" placeholder="প্রস্থ (ফুট)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+        </div>
+        <button onclick="calcLandArea()" class="w-full bg-rose-500 text-white font-bold py-2 rounded-lg text-xs">জমি পরিমাপ করুন 📐</button>
+        <p id="landResult" class="text-xs font-mono font-bold text-center text-amber-300"></p>
+      </div>
+
+      <!-- 5. Gold / Bhori Price Calculator -->
+      <div class="card-glass p-4 rounded-2xl space-y-3">
+        <h3 class="text-xs font-bold text-amber-300 uppercase tracking-wider flex items-center gap-2">
+          <i class="fa-solid fa-coins"></i> ৫. স্বর্ণের ভরি ও আনার হিসাব
+        </h3>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <input type="number" id="goldRateBhori" step="any" placeholder="প্রতি ভরি স্বর্ণের দাম (৳)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+          <input type="number" id="goldGrams" step="any" placeholder="স্বর্ণের ওজন (গ্রাম)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+        </div>
+        <button onclick="calcGold()" class="w-full bg-amber-500 text-slate-950 font-bold py-2 rounded-lg text-xs">স্বর্ণের মোট দাম দেখুন 🪙</button>
+        <p id="goldResult" class="text-xs font-mono font-bold text-center text-cyan-300"></p>
       </div>
     </div>
 
@@ -194,7 +251,7 @@
           <h2 class="text-sm font-bold text-purple-300 flex items-center gap-2">
             <i class="fa-solid fa-file-pen text-amber-400"></i> সাদা কাগজ ও স্মার্ট নোটবুক
           </h2>
-          <p class="text-[11px] text-gray-400 mt-1">যা-ই লিখবেন স্বয়ংক্রিয়ভাবে সেভ থাকবে এবং রিলোডেও হারাবে না।</p>
+          <p class="text-[11px] text-gray-400 mt-1">এখানে যা লিখবেন তা স্বয়ংক্রিয়ভাবে সেভ থাকবে এবং রিলোডেও হারাবে না।</p>
         </div>
         <button onclick="printCurrentTab('tab-notepad')" class="no-print bg-purple-500 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1 shadow-md">
           <i class="fa-solid fa-file-pdf"></i> নোট PDF
@@ -334,6 +391,19 @@
 
   </main>
 
+  <!-- PROFESSIONAL FOOTER WITH VERIFIED SOCIAL PROFILE -->
+  <footer class="max-w-4xl mx-auto p-4 mt-6 border-t border-slate-800/80 text-center text-xs text-gray-400 space-y-2 no-print">
+    <div class="flex justify-center items-center gap-3">
+      <span class="text-cyan-400 font-bold">Created & Managed by Emon Khan</span>
+      <span>•</span>
+      <a href="https://www.facebook.com/imana.isalama.347870" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 font-semibold inline-flex items-center gap-1.5 bg-blue-950/40 border border-blue-500/30 px-2.5 py-1 rounded-full transition">
+        <i class="fa-brands fa-facebook text-sm"></i>
+        <span>অফিশিয়াল ফেসবুক আইডি</span>
+      </a>
+    </div>
+    <p class="text-[10px] text-gray-500">&copy; 2026 EMON SMART MANAGER. All Rights Reserved.</p>
+  </footer>
+
   <!-- BOTTOM NAVIGATION BAR -->
   <nav class="fixed bottom-0 left-0 right-0 max-w-4xl mx-auto bg-[#090d16] border-t border-slate-800 p-2 flex justify-around items-center z-40 rounded-t-2xl shadow-2xl no-print">
     <button onclick="switchTab('tools')" id="nav-tools" class="tab-btn active-nav flex flex-col items-center text-[10px] font-bold text-gray-400">
@@ -371,82 +441,82 @@
       activeTab.classList.remove('print-target');
     }
 
-    /* 1. REAL-TIME BASE RATES (UPDATES AS YOU TYPE SALARY) */
-    let currentCalculatedCustomPay = 0;
+    /* 1. UNLIMITED SHOWROOM, OVERTIME, MINUTE & SECOND CALC */
+    let lastCalculatedPayableSalary = 0;
 
-    function updateBaseRates() {
+    function calcShowroomSalary() {
       const salary = parseFloat(document.getElementById('srSalary').value) || 0;
+      const days = parseFloat(document.getElementById('srDays').value) || 30;
       const dutyHours = parseFloat(document.getElementById('srDailyDutyHours').value) || 8;
+      const otHours = parseFloat(document.getElementById('srOvertimeHours').value) || 0;
+      const deduct = parseFloat(document.getElementById('srDeduct').value) || 0;
 
-      if(salary <= 0) {
-        document.getElementById('basePerDay').innerText = "৳০.০০";
-        document.getElementById('basePerHour').innerText = "৳০.০০";
-        document.getElementById('basePerMinute').innerText = "৳০.০০";
-        return;
-      }
+      if(salary <= 0) return alert("মাসিক বেতন লিখুন!");
 
       const perDay = salary / 30;
       const perHour = perDay / dutyHours;
       const perMinute = perHour / 60;
+      const perSecond = perMinute / 60;
 
-      document.getElementById('basePerDay').innerText = `৳${perDay.toFixed(2)}`;
-      document.getElementById('basePerHour').innerText = `৳${perHour.toFixed(2)}`;
-      document.getElementById('basePerMinute').innerText = `৳${perMinute.toFixed(2)}`;
+      const overtimePay = otHours * perHour;
+      const basePay = perDay * days;
+      const totalPay = (basePay + overtimePay) - deduct;
+
+      lastCalculatedPayableSalary = totalPay;
+
+      const totalWorkedHours = (days * dutyHours) + otHours;
+      const totalWorkedSeconds = totalWorkedHours * 3600;
+
+      document.getElementById('resSecondRate').innerText = `৳${perSecond.toFixed(4)}`;
+      document.getElementById('resMinuteRate').innerText = `৳${perMinute.toFixed(2)}`;
+      document.getElementById('resHourRate').innerText = `৳${perHour.toFixed(2)}`;
+      document.getElementById('resDailyIncome').innerText = `৳${perDay.toFixed(2)}`;
+
+      document.getElementById('resTotalWorkedTime').innerText = `${totalWorkedHours.toLocaleString()} ঘণ্টা (${totalWorkedSeconds.toLocaleString()} সেকেন্ড)`;
+      document.getElementById('resOvertimePay').innerText = `+৳${overtimePay.toFixed(2)}`;
+      document.getElementById('resTotalSalary').innerText = `৳${totalPay.toLocaleString('en-IN', {maximumFractionDigits: 2})}`;
+      document.getElementById('srResult').classList.remove('hidden');
     }
 
-    /* 2. CUSTOM WORKING DAYS + OVERTIME CALCULATOR (10, 14, 15 DAYS ETC.) */
-    function calcCustomDutySalary() {
+    /* 2. CUSTOM WORKING DAYS + OVERTIME CALC (10, 14, 15 DAYS) */
+    function calcCustomDaysWithOt() {
       const salary = parseFloat(document.getElementById('srSalary').value) || 0;
       const dutyHours = parseFloat(document.getElementById('srDailyDutyHours').value) || 8;
       const workedDays = parseFloat(document.getElementById('custWorkDays').value);
-      const otHours = parseFloat(document.getElementById('custOvertimeHours').value) || 0;
-      const deduct = parseFloat(document.getElementById('custDeduct').value) || 0;
+      const otHours = parseFloat(document.getElementById('custOtHours').value) || 0;
+      const deduct = parseFloat(document.getElementById('custDeductAmt').value) || 0;
 
-      if(salary <= 0) {
-        alert("দয়া করে প্রথমে মাসিক মূল বেতন লিখুন!");
-        return;
-      }
-      if(isNaN(workedDays) || workedDays < 0) {
-        alert("মোট কয়দিন কাজ করেছে তা লিখুন (যেমন: ১০ বা ১৪ দিন)!");
-        return;
-      }
+      if(salary <= 0) return alert("দয়া করে উপরে মাসিক মূল বেতন লিখুন!");
+      if(isNaN(workedDays) || workedDays < 0) return alert("কত দিন কাজ করেছে তা লিখুন (যেমন: ১০ বা ১৪ দিন)!");
 
-      // Calculations based on 30-day month
       const perDayRate = salary / 30;
       const perHourRate = perDayRate / dutyHours;
 
       const baseEarned = perDayRate * workedDays;
       const otEarned = otHours * perHourRate;
-      const netPay = (baseEarned + otEarned) - deduct;
+      const finalCustomPay = (baseEarned + otEarned) - deduct;
 
-      currentCalculatedCustomPay = netPay;
+      document.getElementById('lblDaysWorked').innerText = workedDays;
+      document.getElementById('lblOtWorked').innerText = otHours;
+      document.getElementById('lblBaseIncome').innerText = `৳${baseEarned.toFixed(2)}`;
+      document.getElementById('lblOtIncome').innerText = `+৳${otEarned.toFixed(2)}`;
+      document.getElementById('lblCustomTotalPay').innerText = `৳${finalCustomPay.toLocaleString('en-IN', {maximumFractionDigits: 2})}`;
 
-      // Populate results in memo
-      document.getElementById('resWorkedDaysCount').innerText = workedDays;
-      document.getElementById('resWorkedShiftHours').innerText = workedDays * dutyHours;
-      document.getElementById('resBaseEarnedPay').innerText = `৳${baseEarned.toFixed(2)}`;
-      document.getElementById('resOtHoursCount').innerText = otHours;
-      document.getElementById('resCustomOtPay').innerText = `+৳${otEarned.toFixed(2)}`;
-      document.getElementById('resCustomDeduct').innerText = `-৳${deduct.toFixed(2)}`;
-      document.getElementById('resCustomFinalPay').innerText = `৳${netPay.toLocaleString('en-IN', {maximumFractionDigits: 2})}`;
-
-      document.getElementById('custResultCard').classList.remove('hidden');
+      document.getElementById('custDayResult').classList.remove('hidden');
     }
 
-    function addCustomSalaryToWallet() {
-      if(currentCalculatedCustomPay <= 0) return alert("প্রথমে হিসাব বের করুন!");
+    function addCalculatedSalaryToWallet() {
+      if(lastCalculatedPayableSalary <= 0) return alert("প্রথমে বেতন হিসাব করুন!");
       
-      const days = document.getElementById('custWorkDays').value;
       const dateStr = new Date().toLocaleDateString('bn-BD', { day: 'numeric', month: 'short' });
-      
       expenseData.unshift({
         type: 'income',
-        title: `${days} দিনের বেতন ও ওভারটাইম`,
-        amt: currentCalculatedCustomPay,
+        title: 'অর্জিত বেতন ও ওভারটাইম',
+        amt: lastCalculatedPayableSalary,
         date: dateStr
       });
       renderExpenses();
-      alert(`✅ ${days} দিনের উপার্জিত ৳${currentCalculatedCustomPay.toFixed(2)} খরচের খাতার ব্যালেন্সে যোগ হয়েছে!`);
+      alert("✅ অর্জিত বেতন ৳" + lastCalculatedPayableSalary.toFixed(2) + " খরচের খাতার ব্যালেন্সে যোগ করা হয়েছে!");
       switchTab('expense');
     }
 
@@ -472,7 +542,28 @@
       document.getElementById('discountResult').innerText = `ছাড়: ৳${saved.toFixed(2)} | চূড়ান্ত মূল্য: ৳${finalPrice.toFixed(2)}`;
     }
 
-    /* 5. PERSISTENT WHITEBOARD NOTEPAD */
+    /* 5. LAND CALC */
+    function calcLandArea() {
+      const l = parseFloat(document.getElementById('landLength').value) || 0;
+      const w = parseFloat(document.getElementById('landWidth').value) || 0;
+      if(!l || !w) return alert("দৈর্ঘ্য ও প্রস্থ লিখুন!");
+      const sqft = l * w;
+      const shotok = sqft / 435.6;
+      const katha = sqft / 720;
+      document.getElementById('landResult').innerText = `মোট: ${sqft.toFixed(1)} Sqft | ${shotok.toFixed(2)} শতক | ${katha.toFixed(2)} কাঠা`;
+    }
+
+    /* 6. GOLD CALC */
+    function calcGold() {
+      const rate = parseFloat(document.getElementById('goldRateBhori').value) || 0;
+      const grams = parseFloat(document.getElementById('goldGrams').value) || 0;
+      if(!rate || !grams) return alert("ভরির দাম ও মোট গ্রাম লিখুন!");
+      const perGram = rate / 11.664;
+      const total = perGram * grams;
+      document.getElementById('goldResult').innerText = `মোট দাম: ৳${total.toFixed(2)} (${(grams/11.664).toFixed(3)} ভরি)`;
+    }
+
+    /* 7. PERSISTENT WHITEBOARD NOTEPAD */
     const noteTitle = document.getElementById('noteTitle');
     const noteContent = document.getElementById('noteContent');
     const saveStatus = document.getElementById('saveStatus');
@@ -497,7 +588,7 @@
       }
     }
 
-    /* 6. TRADING ROADMAP */
+    /* 8. TRADING ROADMAP */
     let completedDays = JSON.parse(localStorage.getItem('emon_completed_days')) || {};
     function renderTradingRoadmap() {
       const tbody = document.getElementById('roadmapTableBody');
@@ -532,7 +623,7 @@
       renderTradingRoadmap();
     }
 
-    /* 7. EXPENSE & SHOP */
+    /* 9. EXPENSE & SHOP */
     let expenseData = JSON.parse(localStorage.getItem('emon_expenses')) || [];
     function renderExpenses() {
       const list = document.getElementById('expenseList');
