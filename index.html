@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>EMON SMART HUB | All-in-One Life, Business & PDF Manager</title>
+  <title>EMON SMART MANAGER | Ultimate Office & Calculator Suite</title>
   
   <!-- Tailwind CSS, Fonts & Font Awesome -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -15,14 +15,13 @@
     .font-orbitron { font-family: 'Orbitron', sans-serif; }
     body { background-color: #030712; color: #f3f4f6; }
     .card-glass { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(0, 242, 254, 0.2); backdrop-filter: blur(12px); }
-    .row-completed { background: rgba(16, 185, 129, 0.15) !important; border-left: 4px solid #10b981; }
     .active-nav { color: #38bdf8 !important; border-top: 2px solid #38bdf8; }
+    .row-completed { background: rgba(16, 185, 129, 0.15) !important; border-left: 4px solid #10b981; }
 
-    /* Clean Multi-section Print Engine */
     @media print {
       body { background-color: #fff !important; color: #000 !important; }
       header, nav, .no-print, button, input, select { display: none !important; }
-      .card-glass { border: 1px solid #aaa !important; background: transparent !important; color: #000 !important; box-shadow: none !important; }
+      .card-glass { border: 1px solid #aaa !important; background: transparent !important; color: #000 !important; }
       table { width: 100%; border-collapse: collapse; }
       th, td { border: 1px solid #777 !important; color: #000 !important; padding: 6px !important; }
       .print-target { display: block !important; }
@@ -46,134 +45,140 @@
 
   <main class="max-w-4xl mx-auto p-3 space-y-4">
 
-    <!-- TAB 1: SAVINGS & 50/30/20 PLAN -->
-    <div id="tab-savings" class="space-y-4 print-section">
-      <div class="card-glass p-4 rounded-2xl bg-gradient-to-r from-emerald-950/40 to-slate-900 border-emerald-500/40 flex justify-between items-center">
+    <!-- TAB 1: 10-IN-1 SMART OFFICE & CALC SUITE (NEW) -->
+    <div id="tab-tools" class="space-y-4 print-section">
+      <div class="card-glass p-4 rounded-2xl bg-gradient-to-r from-cyan-950/40 to-slate-900 border-cyan-500/40 flex justify-between items-center">
         <div>
-          <h2 class="text-sm font-bold text-emerald-400 flex items-center gap-2">
-            <i class="fa-solid fa-piggy-bank text-amber-400 text-base"></i> স্মার্ট সেভিংস ও অর্থ জমানোর ফ্রেমওয়ার্ক (৫০/৩০/২০)
+          <h2 class="text-sm font-bold text-cyan-300 flex items-center gap-2">
+            <i class="fa-solid fa-calculator text-amber-400"></i> ১০ প্রকার প্রফেশনাল অফিস ক্যালকুলেটর
           </h2>
-          <p class="text-[11px] text-gray-300 mt-1">আয় বা বেতন লিখলে সিস্টেম স্বয়ংক্রিয়ভাবে জমানোর হিসাব তৈরি করবে।</p>
+          <p class="text-[11px] text-gray-400 mt-0.5">শোরুমের ৮ ঘণ্টা ডিউটি, ওভারটাইম, লাভ-ক্ষতি ও যাবতীয় হিসাব এক ক্লিকে।</p>
         </div>
-        <button onclick="printCurrentTab('tab-savings')" class="no-print bg-emerald-500 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1">
-          <i class="fa-solid fa-download"></i> PDF
+        <button onclick="printCurrentTab('tab-tools')" class="no-print bg-cyan-500 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1">
+          <i class="fa-solid fa-file-pdf"></i> রিপোর্ট PDF
         </button>
       </div>
 
-      <div class="card-glass p-4 rounded-2xl space-y-3 no-print">
-        <label class="text-xs font-bold text-gray-300 block">আপনার মোট মাসিক আয় বা বেতন লিখুন (টাকা):</label>
-        <div class="flex gap-2">
-          <input type="number" id="monthlySalaryInput" placeholder="যেমন: 30000" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-sm text-amber-300 font-mono font-bold focus:outline-none focus:border-emerald-400">
-          <button onclick="calculateSavingsPlan()" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs hover:opacity-90 shrink-0">
-            প্ল্যান বের করুন 📊
-          </button>
+      <!-- 1. Showroom 8h + Overtime Calculator -->
+      <div class="card-glass p-4 rounded-2xl space-y-3">
+        <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+          <i class="fa-solid fa-business-time"></i> ১. শোরুমের বেতন ও ৮ ঘণ্টা ডিউটি + ওভারটাইম হিসাব
+        </h3>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+          <div>
+            <label class="text-gray-400 block mb-1">মাসিক মূল বেতন:</label>
+            <input type="number" id="srSalary" placeholder="যেমন: 15000" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+          </div>
+          <div>
+            <label class="text-gray-400 block mb-1">উপস্থিত দিন (৮ ঘণ্টা):</label>
+            <input type="number" id="srDays" value="30" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+          </div>
+          <div>
+            <label class="text-gray-400 block mb-1">মোট ওভারটাইম (ঘণ্টা):</label>
+            <input type="number" id="srOvertimeHours" value="0" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+          </div>
+          <div>
+            <label class="text-gray-400 block mb-1">অ্যাডভান্স/কর্তন:</label>
+            <input type="number" id="srDeduct" value="0" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+          </div>
+        </div>
+        <button onclick="calcShowroomSalary()" class="w-full bg-cyan-500 text-slate-950 font-bold py-2 rounded-lg text-xs">
+          হিসাব বের করুন ⚡
+        </button>
+        <div id="srResult" class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-xs hidden space-y-1 font-mono">
+          <div class="flex justify-between"><span>প্রতি ঘণ্টার রেট (৮h শিফট):</span> <span class="text-cyan-400" id="resHourRate">৳০</span></div>
+          <div class="flex justify-between"><span>ওভারটাইম আয়:</span> <span class="text-emerald-400" id="resOvertimePay">+৳০</span></div>
+          <div class="flex justify-between border-t border-slate-800 pt-1 text-sm font-bold"><span class="text-amber-300">সর্বমোট প্রদেয় বেতন:</span> <span class="text-amber-400" id="resTotalSalary">৳০</span></div>
         </div>
       </div>
 
-      <div id="savingsResultGrid" class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 hidden">
-        <div class="card-glass p-3.5 rounded-xl border-cyan-500/30">
-          <span class="text-[10px] bg-cyan-950 text-cyan-400 px-2 py-0.5 rounded font-bold uppercase">৫০% জরুরি প্রয়োজন</span>
-          <h3 id="needsAmount" class="text-lg font-black text-cyan-400 font-mono mt-2">৳০.০০</h3>
-          <p class="text-[10px] text-gray-400 mt-1">বাজার, বাসাভাড়া, বিল ও ওষুধ খরচ।</p>
+      <!-- 2. Profit / Margin Calculator -->
+      <div class="card-glass p-4 rounded-2xl space-y-3">
+        <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
+          <i class="fa-solid fa-chart-pie"></i> ২. পণ্যের লাভ-ক্ষতি ও প্রফিট মার্জিন
+        </h3>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <input type="number" id="costPrice" placeholder="পাইকারি কেনা দাম (৳)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+          <input type="number" id="sellPrice" placeholder="খুচরা বিক্রয় মূল্য (৳)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
         </div>
-        <div class="card-glass p-3.5 rounded-xl border-amber-500/30">
-          <span class="text-[10px] bg-amber-950 text-amber-400 px-2 py-0.5 rounded font-bold uppercase">৩০% ইচ্ছা ও শখ</span>
-          <h3 id="wantsAmount" class="text-lg font-black text-amber-300 font-mono mt-2">৳০.০০</h3>
-          <p class="text-[10px] text-gray-400 mt-1">বাইরে খাওয়া, বিনোদন ও ব্যক্তিগত শখ।</p>
+        <button onclick="calcProfitMargin()" class="w-full bg-emerald-500 text-slate-950 font-bold py-2 rounded-lg text-xs">নিট লাভ বের করুন 📈</button>
+        <p id="profitResult" class="text-xs font-mono font-bold text-center text-cyan-300"></p>
+      </div>
+
+      <!-- 3. Discount Calculator -->
+      <div class="card-glass p-4 rounded-2xl space-y-3">
+        <h3 class="text-xs font-bold text-purple-400 uppercase tracking-wider flex items-center gap-2">
+          <i class="fa-solid fa-tags"></i> ৩. শপিং ও ডিসকাউন্ট হিসাব
+        </h3>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <input type="number" id="origPrice" placeholder="মূল দাম (৳)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+          <input type="number" id="discPercent" placeholder="ছাড়ের হার (%)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
         </div>
-        <div class="card-glass p-3.5 rounded-xl border-emerald-500/40 bg-emerald-950/20">
-          <span class="text-[10px] bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded font-bold uppercase">২০% বাধ্যতামূলক সঞ্চয়</span>
-          <h3 id="savingsAmount" class="text-lg font-black text-emerald-400 font-mono mt-2">৳০.০০</h3>
-          <p class="text-[10px] text-gray-300 mt-1">ভবিষ্যৎ সঞ্চয় ও ইমার্জেন্সি ফান্ড।</p>
+        <button onclick="calcDiscount()" class="w-full bg-purple-500 text-white font-bold py-2 rounded-lg text-xs">ছাড়ের পর মূল্য দেখুন 🏷️</button>
+        <p id="discountResult" class="text-xs font-mono font-bold text-center text-emerald-400"></p>
+      </div>
+
+      <!-- 4. Land Measurement Converter -->
+      <div class="card-glass p-4 rounded-2xl space-y-3">
+        <h3 class="text-xs font-bold text-rose-400 uppercase tracking-wider flex items-center gap-2">
+          <i class="fa-solid fa-vector-square"></i> ৪. জমি ও স্কয়ার ফিট পরিমাপ (শতক ও কাঠা)
+        </h3>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <input type="number" id="landLength" placeholder="দৈর্ঘ্য (ফুট)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+          <input type="number" id="landWidth" placeholder="প্রস্থ (ফুট)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
         </div>
+        <button onclick="calcLandArea()" class="w-full bg-rose-500 text-white font-bold py-2 rounded-lg text-xs">জমি পরিমাপ করুন 📐</button>
+        <p id="landResult" class="text-xs font-mono font-bold text-center text-amber-300"></p>
+      </div>
+
+      <!-- 5. Gold / Bhori Price Calculator -->
+      <div class="card-glass p-4 rounded-2xl space-y-3">
+        <h3 class="text-xs font-bold text-amber-300 uppercase tracking-wider flex items-center gap-2">
+          <i class="fa-solid fa-coins"></i> ৫. স্বর্ণের ভরি ও আনার হিসাব
+        </h3>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <input type="number" id="goldRateBhori" placeholder="প্রতি ভরি স্বর্ণের দাম (৳)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+          <input type="number" id="goldGrams" placeholder="স্বর্ণের ওজন (গ্রাম)" class="bg-slate-950 border border-slate-700 rounded-lg p-2 text-white font-mono">
+        </div>
+        <button onclick="calcGold()" class="w-full bg-amber-500 text-slate-950 font-bold py-2 rounded-lg text-xs">স্বর্ণের মোট দাম দেখুন 🪙</button>
+        <p id="goldResult" class="text-xs font-mono font-bold text-center text-cyan-300"></p>
       </div>
     </div>
 
-    <!-- TAB 2: POCKET & DAILY EXPENSES -->
-    <div id="tab-expense" class="space-y-4 hidden print-section">
-      <div class="flex justify-between items-center no-print">
-        <h3 class="text-xs font-bold text-gray-300 uppercase tracking-wider">পকেট ওয়ালেট ও দৈনিক হিসেব</h3>
-        <button onclick="printCurrentTab('tab-expense')" class="bg-cyan-500 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1">
-          <i class="fa-solid fa-file-pdf"></i> খরচ শিট PDF
+    <!-- TAB 2: SMART WHITEBOARD NOTEPAD (PERSISTENT & FIXED) -->
+    <div id="tab-notepad" class="space-y-4 hidden print-section">
+      <div class="card-glass p-4 rounded-2xl bg-gradient-to-r from-purple-950/40 to-slate-900 border-purple-500/40 flex justify-between items-center">
+        <div>
+          <h2 class="text-sm font-bold text-purple-300 flex items-center gap-2">
+            <i class="fa-solid fa-file-pen text-amber-400"></i> সাদা কাগজ ও স্মার্ট নোটবুক
+          </h2>
+          <p class="text-[11px] text-gray-400 mt-1">এখানে যা-ই লিখবেন তা স্বয়ংক্রিয়ভাবে সেভ থাকবে এবং পিডিএফে নিখুঁত ডাউনলোড হবে।</p>
+        </div>
+        <button onclick="printCurrentTab('tab-notepad')" class="no-print bg-purple-500 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1 shadow-md">
+          <i class="fa-solid fa-file-pdf"></i> নোট PDF
         </button>
       </div>
 
-      <div class="grid grid-cols-3 gap-2">
-        <div class="card-glass p-3 rounded-xl text-center border-emerald-500/30">
-          <p class="text-[10px] text-gray-400 font-bold uppercase">পকেটে এলো (+)</p>
-          <h3 id="currentPocketFund" class="text-base font-black text-emerald-400 font-mono">৳০.০০</h3>
+      <div class="card-glass p-4 rounded-2xl space-y-3">
+        <input type="text" id="noteTitle" placeholder="নোটের শিরোনাম বা বিষয়ের নাম লিখুন..." class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-sm text-cyan-300 font-bold focus:outline-none focus:border-purple-400" oninput="saveNotepad()">
+        <textarea id="noteContent" rows="14" placeholder="এখানে চুক্তিপত্র, ব্যবসার হিসাব, মিটিং বা দৈনন্দিন ভাবনা লিখে রাখুন..." class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-white leading-relaxed focus:outline-none focus:border-purple-400" oninput="saveNotepad()"></textarea>
+        <div class="flex justify-between items-center text-[11px] text-gray-400">
+          <span id="saveStatus" class="text-emerald-400 font-semibold">● সেভ হয়েছে</span>
+          <button onclick="clearNotepad()" class="text-rose-400 hover:underline no-print">নোটবুক মুছুন</button>
         </div>
-        <div class="card-glass p-3 rounded-xl text-center border-rose-500/30">
-          <p class="text-[10px] text-gray-400 font-bold uppercase">মোট খরচ (-)</p>
-          <h3 id="totalSpent" class="text-base font-black text-rose-400 font-mono">৳০.০০</h3>
-        </div>
-        <div class="card-glass p-3 rounded-xl text-center border-cyan-500/30">
-          <p class="text-[10px] text-gray-400 font-bold uppercase">অবশিষ্ট আছে</p>
-          <h3 id="remainingPocketBal" class="text-base font-black text-cyan-300 font-mono">৳০.০০</h3>
-        </div>
-      </div>
-
-      <div class="card-glass p-4 rounded-2xl space-y-3 no-print">
-        <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs">
-          <select id="expenseType" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
-            <option value="expense">টাকা খরচ (-)</option>
-            <option value="income">টাকা এলো (+)</option>
-          </select>
-          <input type="text" id="expenseTitle" placeholder="বিবরণ (যেমন: বাজার, ভাড়া, নাস্তা)" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white sm:col-span-2">
-          <input type="number" id="expenseAmount" placeholder="পরিমাণ (টাকা)" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
-        </div>
-        <button onclick="addExpenseRecord()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-bold py-2 rounded-lg text-xs">
-          যুক্ত করুন ✍️
-        </button>
-      </div>
-
-      <div class="card-glass rounded-2xl p-3 space-y-2">
-        <h4 class="text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">খরচের তালিকা</h4>
-        <div id="expenseList" class="space-y-1.5 max-h-80 overflow-y-auto pr-1"></div>
       </div>
     </div>
 
     <!-- TAB 3: TRADING ROADMAP -->
     <div id="tab-trading" class="space-y-4 hidden print-section">
-      <div class="card-glass p-4 rounded-2xl border-cyan-500/40">
-        <div class="flex justify-between items-start">
-          <div class="text-left mb-3">
-            <h2 class="text-base font-black text-amber-400 font-orbitron tracking-wider">EMON TRADING ROAD MAP</h2>
-            <p class="text-xs text-gray-300">90 DAYS COMPOUNDING PLAN (5% DAILY TARGET)</p>
-          </div>
-          <button onclick="printCurrentTab('tab-trading')" class="no-print bg-amber-500 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1">
-            <i class="fa-solid fa-file-pdf"></i> প্ল্যান PDF
-          </button>
+      <div class="card-glass p-4 rounded-2xl border-cyan-500/40 flex justify-between items-center">
+        <div>
+          <h2 class="text-base font-black text-amber-400 font-orbitron tracking-wider">EMON TRADING ROAD MAP</h2>
+          <p class="text-xs text-gray-300">90 DAYS COMPOUNDING PLAN (5% DAILY TARGET)</p>
         </div>
-
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
-          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
-            <p class="text-[10px] text-gray-400 font-bold uppercase">INITIAL CAPITAL</p>
-            <h3 class="text-base font-black text-cyan-400 font-orbitron">$50.00</h3>
-          </div>
-          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
-            <p class="text-[10px] text-gray-400 font-bold uppercase">DAILY TARGET</p>
-            <h3 class="text-base font-black text-emerald-400 font-orbitron">5.00%</h3>
-          </div>
-          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
-            <p class="text-[10px] text-gray-400 font-bold uppercase">MAX STOP LOSS</p>
-            <h3 class="text-base font-black text-rose-400 font-orbitron">2.00%</h3>
-          </div>
-          <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
-            <p class="text-[10px] text-gray-400 font-bold uppercase">FINAL TARGET</p>
-            <h3 class="text-base font-black text-amber-300 font-orbitron">$4,036.52</h3>
-          </div>
-        </div>
-
-        <div class="mt-4 space-y-1.5 no-print">
-          <div class="flex justify-between text-xs font-bold">
-            <span class="text-gray-300">মিশন প্রগ্রেস: <span id="completedDaysCount" class="text-cyan-400">০</span> / ৯০ দিন</span>
-            <span id="progressPercentage" class="text-emerald-400 font-mono">0%</span>
-          </div>
-          <div class="w-full bg-slate-950 rounded-full h-2.5 border border-slate-800 overflow-hidden">
-            <div id="progressBarFill" class="bg-gradient-to-r from-cyan-400 to-emerald-400 h-full w-0 transition-all duration-300"></div>
-          </div>
-        </div>
+        <button onclick="printCurrentTab('tab-trading')" class="no-print bg-amber-500 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1">
+          <i class="fa-solid fa-file-pdf"></i> প্ল্যান PDF
+        </button>
       </div>
 
       <div class="card-glass rounded-2xl overflow-hidden border-slate-800">
@@ -196,67 +201,65 @@
       </div>
     </div>
 
-    <!-- TAB 4: WORKER SALARY & PAYROLL -->
-    <div id="tab-workers" class="space-y-4 hidden print-section">
-      <div class="card-glass p-4 rounded-2xl bg-gradient-to-r from-amber-950/40 to-slate-900 border-amber-500/30 flex justify-between items-center">
-        <div>
-          <h2 class="text-sm font-bold text-amber-400">👷 শ্রমিকদের মাসিক বেতন ও হাজিরা খাতা</h2>
-          <p class="text-[11px] text-gray-400 mt-1">হাজিরা ও অগ্রিম বাদ দিয়ে চূড়ান্ত প্রদেয় টাকার হিসাব।</p>
-        </div>
-        <button onclick="printCurrentTab('tab-workers')" class="no-print bg-amber-500 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1">
-          <i class="fa-solid fa-file-pdf"></i> বেতন শিট PDF
+    <!-- TAB 4: POCKET EXPENSES -->
+    <div id="tab-expense" class="space-y-4 hidden print-section">
+      <div class="flex justify-between items-center no-print">
+        <h3 class="text-xs font-bold text-gray-300 uppercase tracking-wider">পকেট ওয়ালেট ও দৈনিক হিসেব</h3>
+        <button onclick="printCurrentTab('tab-expense')" class="bg-cyan-500 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1">
+          <i class="fa-solid fa-file-pdf"></i> খরচ শিট PDF
         </button>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2">
+        <div class="card-glass p-3 rounded-xl text-center border-emerald-500/30">
+          <p class="text-[10px] text-gray-400 font-bold uppercase">পকেটে এলো (+)</p>
+          <h3 id="currentPocketFund" class="text-base font-black text-emerald-400 font-mono">৳০.০০</h3>
+        </div>
+        <div class="card-glass p-3 rounded-xl text-center border-rose-500/30">
+          <p class="text-[10px] text-gray-400 font-bold uppercase">মোট খরচ (-)</p>
+          <h3 id="totalSpent" class="text-base font-black text-rose-400 font-mono">৳০.০০</h3>
+        </div>
+        <div class="card-glass p-3 rounded-xl text-center border-cyan-500/30">
+          <p class="text-[10px] text-gray-400 font-bold uppercase">অবশিষ্ট ব্যালেন্স</p>
+          <h3 id="remainingPocketBal" class="text-base font-black text-cyan-300 font-mono">৳০.০০</h3>
+        </div>
       </div>
 
       <div class="card-glass p-4 rounded-2xl space-y-3 no-print">
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-          <input type="text" id="wName" placeholder="শ্রমিকের নাম" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
-          <input type="number" id="wSalary" placeholder="মাসিক বেতন (টাকা)" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white font-mono">
-          <input type="number" id="wDays" placeholder="উপস্থিত দিন (হাজিরা)" value="30" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white font-mono">
-          <input type="number" id="wAdvance" placeholder="অগ্রিম নিয়েছে (টাকা)" value="0" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white font-mono">
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs">
+          <select id="expenseType" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
+            <option value="expense">টাকা খরচ (-)</option>
+            <option value="income">টাকা এলো (+)</option>
+          </select>
+          <input type="text" id="expenseTitle" placeholder="বিবরণ" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white sm:col-span-2">
+          <input type="number" id="expenseAmount" placeholder="পরিমাণ" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
         </div>
-        <button onclick="addWorker()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2 rounded-lg text-xs">
-          শ্রমিক যুক্ত করুন ➕
+        <button onclick="addExpenseRecord()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-bold py-2 rounded-lg text-xs">
+          যুক্ত করুন ✍️
         </button>
       </div>
 
-      <div class="card-glass rounded-2xl overflow-hidden border-slate-800">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs border-collapse">
-            <thead>
-              <tr class="bg-slate-950/90 text-gray-400 uppercase border-b border-slate-800 text-[10px]">
-                <th class="p-2.5">নাম</th>
-                <th class="p-2.5">মাসিক বেতন</th>
-                <th class="p-2.5">হাজিরা</th>
-                <th class="p-2.5">অগ্রিম কর্তন</th>
-                <th class="p-2.5 text-emerald-400 font-bold">চূড়ান্ত প্রদেয় টাকা</th>
-                <th class="p-2.5 text-center no-print">একশন</th>
-              </tr>
-            </thead>
-            <tbody id="workersTableBody" class="divide-y divide-slate-800/60 font-mono"></tbody>
-          </table>
-        </div>
+      <div class="card-glass rounded-2xl p-3 space-y-2">
+        <div id="expenseList" class="space-y-1.5 max-h-80 overflow-y-auto pr-1"></div>
       </div>
     </div>
 
-    <!-- TAB 5: DOKAN KHATA / CUSTOMER LEDGER (NEW) -->
+    <!-- TAB 5: DOKAN KHATA -->
     <div id="tab-shop" class="space-y-4 hidden print-section">
       <div class="card-glass p-4 rounded-2xl bg-gradient-to-r from-cyan-950/40 to-slate-900 border-cyan-500/40 flex justify-between items-center">
         <div>
           <h2 class="text-sm font-bold text-cyan-400">🏪 দোকান ও কাস্টমার বাকির খাতা</h2>
-          <p class="text-[11px] text-gray-400 mt-1">নাম দিয়ে খাতা খুলুন এবং মেমো প্রিন্ট করুন।</p>
+          <p class="text-[11px] text-gray-400 mt-1">কাস্টমার অনুযায়ী বাকি ও জমার লেনদেন।</p>
         </div>
         <button onclick="printCurrentTab('tab-shop')" class="no-print bg-cyan-500 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1">
           <i class="fa-solid fa-file-pdf"></i> খাতা PDF
         </button>
       </div>
 
-      <!-- Add Customer / Ledger Entry -->
       <div class="card-glass p-4 rounded-2xl space-y-3 no-print">
-        <h3 class="text-xs font-bold text-amber-300 uppercase tracking-wider">নতুন কাস্টমার বা বাকির এন্ট্রি</h3>
         <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs">
           <input type="text" id="custName" placeholder="কাস্টমারের নাম" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
-          <input type="text" id="custItem" placeholder="পণ্যের বিবরণ (যেমন: ডাল, তেল)" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
+          <input type="text" id="custItem" placeholder="পণ্যের বিবরণ" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
           <select id="custType" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white">
             <option value="due">বাকি নিল (-)</option>
             <option value="paid">জমা দিল (+)</option>
@@ -268,7 +271,6 @@
         </button>
       </div>
 
-      <!-- Customer Ledger Table -->
       <div class="card-glass rounded-2xl overflow-hidden border-slate-800">
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs border-collapse">
@@ -276,8 +278,8 @@
               <tr class="bg-slate-950/90 text-gray-400 uppercase border-b border-slate-800 text-[10px]">
                 <th class="p-2.5">তারিখ</th>
                 <th class="p-2.5">কাস্টমারের নাম</th>
-                <th class="p-2.5">পণ্যের বিবরণ</th>
-                <th class="p-2.5">লেনদেনের ধরন</th>
+                <th class="p-2.5">বিবরণ</th>
+                <th class="p-2.5">ধরন</th>
                 <th class="p-2.5 text-right font-bold text-amber-400">টাকা</th>
                 <th class="p-2.5 text-center no-print">একশন</th>
               </tr>
@@ -288,53 +290,31 @@
       </div>
     </div>
 
-    <!-- TAB 6: WHITEBOARD NOTEPAD (NEW) -->
-    <div id="tab-notepad" class="space-y-4 hidden print-section">
-      <div class="card-glass p-4 rounded-2xl bg-gradient-to-r from-purple-950/40 to-slate-900 border-purple-500/40 flex justify-between items-center">
-        <div>
-          <h2 class="text-sm font-bold text-purple-300">📝 সাদা কাগজ ও স্মার্ট নোটবুক</h2>
-          <p class="text-[11px] text-gray-400 mt-1">যেকোনো চুক্তি, হিসাব বা ভাবনা লিখে পিডিএফ ডাউনলোড করুন।</p>
-        </div>
-        <button onclick="printCurrentTab('tab-notepad')" class="no-print bg-purple-500 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1 shadow-md">
-          <i class="fa-solid fa-file-pdf"></i> নোট PDF
-        </button>
-      </div>
-
-      <div class="card-glass p-4 rounded-2xl space-y-3">
-        <input type="text" id="noteTitle" placeholder="নোটের শিরোনাম বা বিষয়ের নাম লিখুন..." class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-sm text-cyan-300 font-bold focus:outline-none focus:border-purple-400">
-        <textarea id="noteContent" rows="12" placeholder="এখানে আপনার সমস্ত হিসাব-নিকাশ, জরুরি লেখা বা চুক্তিপত্র লিখুন..." class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-white leading-relaxed focus:outline-none focus:border-purple-400" onkeyup="saveNotepad()"></textarea>
-      </div>
-    </div>
-
   </main>
 
   <!-- BOTTOM NAVIGATION BAR -->
   <nav class="fixed bottom-0 left-0 right-0 max-w-4xl mx-auto bg-[#090d16] border-t border-slate-800 p-2 flex justify-around items-center z-40 rounded-t-2xl shadow-2xl no-print">
-    <button onclick="switchTab('savings')" id="nav-savings" class="tab-btn active-nav flex flex-col items-center text-[10px] font-bold text-gray-400">
-      <span class="text-base"><i class="fa-solid fa-piggy-bank"></i></span> সেভিংস
+    <button onclick="switchTab('tools')" id="nav-tools" class="tab-btn active-nav flex flex-col items-center text-[10px] font-bold text-gray-400">
+      <span class="text-base"><i class="fa-solid fa-calculator"></i></span> অফিস টুলস
     </button>
-    <button onclick="switchTab('expense')" id="nav-expense" class="tab-btn flex flex-col items-center text-[10px] font-bold text-gray-400">
-      <span class="text-base"><i class="fa-solid fa-wallet"></i></span> খরচ খাতা
+    <button onclick="switchTab('notepad')" id="nav-notepad" class="tab-btn flex flex-col items-center text-[10px] font-bold text-gray-400">
+      <span class="text-base"><i class="fa-solid fa-file-pen"></i></span> নোটবুক
     </button>
     <button onclick="switchTab('trading')" id="nav-trading" class="tab-btn flex flex-col items-center text-[10px] font-bold text-gray-400">
       <span class="text-base"><i class="fa-solid fa-chart-line"></i></span> ট্রেডিং
     </button>
-    <button onclick="switchTab('workers')" id="nav-workers" class="tab-btn flex flex-col items-center text-[10px] font-bold text-gray-400">
-      <span class="text-base"><i class="fa-solid fa-users"></i></span> শ্রমিক বেতন
+    <button onclick="switchTab('expense')" id="nav-expense" class="tab-btn flex flex-col items-center text-[10px] font-bold text-gray-400">
+      <span class="text-base"><i class="fa-solid fa-wallet"></i></span> খরচ খাতা
     </button>
     <button onclick="switchTab('shop')" id="nav-shop" class="tab-btn flex flex-col items-center text-[10px] font-bold text-gray-400">
       <span class="text-base"><i class="fa-solid fa-shop"></i></span> দোকান খাতা
-    </button>
-    <button onclick="switchTab('notepad')" id="nav-notepad" class="tab-btn flex flex-col items-center text-[10px] font-bold text-gray-400">
-      <span class="text-base"><i class="fa-solid fa-file-pen"></i></span> নোটবুক
     </button>
   </nav>
 
   <!-- SCRIPT ENGINE -->
   <script>
-    // Tab Switcher
     function switchTab(tab) {
-      ['savings', 'expense', 'trading', 'workers', 'shop', 'notepad'].forEach(t => {
+      ['tools', 'notepad', 'trading', 'expense', 'shop'].forEach(t => {
         document.getElementById('tab-' + t).classList.add('hidden');
         document.getElementById('nav-' + t).classList.remove('active-nav');
       });
@@ -342,7 +322,6 @@
       document.getElementById('nav-' + tab).classList.add('active-nav');
     }
 
-    // Direct PDF Print for Target Tab
     function printCurrentTab(tabId) {
       const activeTab = document.getElementById(tabId);
       activeTab.classList.add('print-target');
@@ -350,61 +329,98 @@
       activeTab.classList.remove('print-target');
     }
 
-    /* 1. SAVINGS CALCULATOR */
-    function calculateSavingsPlan() {
-      const salary = parseFloat(document.getElementById('monthlySalaryInput').value);
-      if(!salary || salary <= 0) return alert("সঠিক বেতন লিখুন!");
+    /* 1. SHOWROOM 8H + OVERTIME CALCULATOR */
+    function calcShowroomSalary() {
+      const salary = parseFloat(document.getElementById('srSalary').value) || 0;
+      const days = parseFloat(document.getElementById('srDays').value) || 30;
+      const otHours = parseFloat(document.getElementById('srOvertimeHours').value) || 0;
+      const deduct = parseFloat(document.getElementById('srDeduct').value) || 0;
 
-      document.getElementById('needsAmount').innerText = `৳${(salary * 0.5).toLocaleString()}`;
-      document.getElementById('wantsAmount').innerText = `৳${(salary * 0.3).toLocaleString()}`;
-      document.getElementById('savingsAmount').innerText = `৳${(salary * 0.2).toLocaleString()}`;
-      document.getElementById('savingsResultGrid').classList.remove('hidden');
-      localStorage.setItem('emon_salary', salary);
+      if(salary <= 0) return alert("মাসিক বেতন লিখুন!");
+
+      // 8 Hours per day shift rate
+      const perDay = salary / 30;
+      const perHour = perDay / 8;
+      const overtimePay = otHours * perHour;
+      const basePay = perDay * days;
+      const totalPay = (basePay + overtimePay) - deduct;
+
+      document.getElementById('resHourRate').innerText = `৳${perHour.toFixed(2)}`;
+      document.getElementById('resOvertimePay').innerText = `+৳${overtimePay.toFixed(2)}`;
+      document.getElementById('resTotalSalary').innerText = `৳${totalPay.toFixed(2)}`;
+      document.getElementById('srResult').classList.remove('hidden');
     }
 
-    /* 2. DAILY EXPENSES */
-    let expenseData = JSON.parse(localStorage.getItem('emon_expenses')) || [];
-    function renderExpenses() {
-      const list = document.getElementById('expenseList');
-      list.innerHTML = '';
-      let income = 0, spent = 0;
-
-      expenseData.forEach((item, i) => {
-        if(item.type === 'income') income += item.amt;
-        else spent += item.amt;
-
-        const div = document.createElement('div');
-        div.className = `p-2 rounded-xl border flex justify-between items-center text-xs ${item.type === 'income' ? 'bg-emerald-950/20 border-emerald-500/30' : 'bg-slate-900 border-slate-800'}`;
-        div.innerHTML = `
-          <div><span class="font-bold">${item.title}</span><span class="text-[10px] text-gray-400 block">${item.date}</span></div>
-          <div class="flex items-center gap-3">
-            <span class="font-bold font-mono ${item.type === 'income' ? 'text-emerald-400' : 'text-rose-400'}">${item.type === 'income' ? '+' : '-'}৳${item.amt}</span>
-            <button onclick="expenseData.splice(${i},1); renderExpenses();" class="text-gray-500 hover:text-rose-400 no-print"><i class="fa-solid fa-trash"></i></button>
-          </div>
-        `;
-        list.appendChild(div);
-      });
-
-      document.getElementById('currentPocketFund').innerText = `৳${income.toFixed(2)}`;
-      document.getElementById('totalSpent').innerText = `৳${spent.toFixed(2)}`;
-      document.getElementById('remainingPocketBal').innerText = `৳${(income - spent).toFixed(2)}`;
-      localStorage.setItem('emon_expenses', JSON.stringify(expenseData));
+    /* 2. PROFIT / LOSS MARGIN */
+    function calcProfitMargin() {
+      const cp = parseFloat(document.getElementById('costPrice').value) || 0;
+      const sp = parseFloat(document.getElementById('sellPrice').value) || 0;
+      if(!cp || !sp) return alert("ক্রয় ও বিক্রয় মূল্য লিখুন!");
+      const profit = sp - cp;
+      const margin = (profit / cp) * 100;
+      document.getElementById('profitResult').innerText = profit >= 0 
+        ? `✅ লাভ: ৳${profit.toFixed(2)} (${margin.toFixed(1)}% মার্জিন)` 
+        : `❌ ক্ষতি: ৳${Math.abs(profit).toFixed(2)} (${margin.toFixed(1)}% লস)`;
     }
 
-    function addExpenseRecord() {
-      const type = document.getElementById('expenseType').value;
-      const title = document.getElementById('expenseTitle').value.trim();
-      const amt = parseFloat(document.getElementById('expenseAmount').value);
-      if(!title || !amt) return alert("বিবরণ ও টাকার পরিমাণ দিন!");
-
-      const date = new Date().toLocaleDateString('bn-BD', { day: 'numeric', month: 'short' });
-      expenseData.unshift({ type, title, amt, date });
-      document.getElementById('expenseTitle').value = '';
-      document.getElementById('expenseAmount').value = '';
-      renderExpenses();
+    /* 3. DISCOUNT */
+    function calcDiscount() {
+      const orig = parseFloat(document.getElementById('origPrice').value) || 0;
+      const disc = parseFloat(document.getElementById('discPercent').value) || 0;
+      if(!orig) return alert("মূল দাম লিখুন!");
+      const saved = (orig * disc) / 100;
+      const finalPrice = orig - saved;
+      document.getElementById('discountResult').innerText = `ছাড়: ৳${saved.toFixed(2)} | চূড়ান্ত মূল্য: ৳${finalPrice.toFixed(2)}`;
     }
 
-    /* 3. TRADING ROADMAP (90 DAYS) */
+    /* 4. LAND CALC */
+    function calcLandArea() {
+      const l = parseFloat(document.getElementById('landLength').value) || 0;
+      const w = parseFloat(document.getElementById('landWidth').value) || 0;
+      if(!l || !w) return alert("দৈর্ঘ্য ও প্রস্থ লিখুন!");
+      const sqft = l * w;
+      const shotok = sqft / 435.6; // 1 Shotok = 435.6 sqft
+      const katha = sqft / 720;   // 1 Katha = 720 sqft
+      document.getElementById('landResult').innerText = `মোট: ${sqft.toFixed(1)} Sqft | ${shotok.toFixed(2)} শতক | ${katha.toFixed(2)} কাঠা`;
+    }
+
+    /* 5. GOLD CALC */
+    function calcGold() {
+      const rate = parseFloat(document.getElementById('goldRateBhori').value) || 0;
+      const grams = parseFloat(document.getElementById('goldGrams').value) || 0;
+      if(!rate || !grams) return alert("ভরির দাম ও মোট গ্রাম লিখুন!");
+      // 1 Bhori = 11.664 grams
+      const perGram = rate / 11.664;
+      const total = perGram * grams;
+      document.getElementById('goldResult').innerText = `মোট দাম: ৳${total.toFixed(2)} (${(grams/11.664).toFixed(3)} ভরি)`;
+    }
+
+    /* 6. PERSISTENT WHITEBOARD NOTEPAD */
+    const noteTitle = document.getElementById('noteTitle');
+    const noteContent = document.getElementById('noteContent');
+    const saveStatus = document.getElementById('saveStatus');
+
+    noteTitle.value = localStorage.getItem('emon_note_title') || '';
+    noteContent.value = localStorage.getItem('emon_note_content') || '';
+
+    function saveNotepad() {
+      localStorage.setItem('emon_note_title', noteTitle.value);
+      localStorage.setItem('emon_note_content', noteContent.value);
+      saveStatus.innerText = "● সংরক্ষিত";
+      saveStatus.className = "text-emerald-400 font-semibold";
+    }
+
+    function clearNotepad() {
+      if(confirm("নোটবুক খালি করতে চান?")) {
+        noteTitle.value = '';
+        noteContent.value = '';
+        localStorage.removeItem('emon_note_title');
+        localStorage.removeItem('emon_note_content');
+        saveStatus.innerText = "● খালি করা হয়েছে";
+      }
+    }
+
+    /* 7. TRADING ROADMAP */
     let completedDays = JSON.parse(localStorage.getItem('emon_completed_days')) || {};
     function renderTradingRoadmap() {
       const tbody = document.getElementById('roadmapTableBody');
@@ -432,58 +448,48 @@
         tbody.appendChild(tr);
         fund = total;
       }
-      updateTradingProgress();
     }
-
     function toggleTradingDay(day) {
       completedDays[day] = !completedDays[day];
       localStorage.setItem('emon_completed_days', JSON.stringify(completedDays));
       renderTradingRoadmap();
     }
 
-    function updateTradingProgress() {
-      const count = Object.values(completedDays).filter(Boolean).length;
-      const pct = Math.round((count / 90) * 100);
-      document.getElementById('completedDaysCount').innerText = count;
-      document.getElementById('progressPercentage').innerText = `${pct}%`;
-      document.getElementById('progressBarFill').style.width = `${pct}%`;
-    }
-
-    /* 4. WORKERS SALARY */
-    let workersData = JSON.parse(localStorage.getItem('emon_workers')) || [
-      { name: "করিম মিয়া", salary: 15000, days: 30, advance: 2000 }
-    ];
-    function renderWorkers() {
-      const tbody = document.getElementById('workersTableBody');
-      tbody.innerHTML = '';
-      workersData.forEach((w, i) => {
-        let finalPay = (w.salary / 30 * w.days) - w.advance;
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td class="p-2.5 font-bold text-white">${w.name}</td>
-          <td class="p-2.5">৳${w.salary}</td>
-          <td class="p-2.5 text-cyan-400">${w.days} দিন</td>
-          <td class="p-2.5 text-rose-400">-৳${w.advance}</td>
-          <td class="p-2.5 text-emerald-400 font-bold font-mono">৳${Math.max(0, finalPay).toFixed(2)}</td>
-          <td class="p-2.5 text-center no-print"><button onclick="workersData.splice(${i},1); renderWorkers();" class="text-gray-500 hover:text-rose-400"><i class="fa-solid fa-trash"></i></button></td>
+    /* 8. EXPENSE & SHOP */
+    let expenseData = JSON.parse(localStorage.getItem('emon_expenses')) || [];
+    function renderExpenses() {
+      const list = document.getElementById('expenseList');
+      list.innerHTML = '';
+      let inc = 0, exp = 0;
+      expenseData.forEach((item, i) => {
+        if(item.type === 'income') inc += item.amt; else exp += item.amt;
+        const div = document.createElement('div');
+        div.className = "p-2 rounded-xl border flex justify-between items-center text-xs bg-slate-900 border-slate-800";
+        div.innerHTML = `
+          <div><span class="font-bold">${item.title}</span><span class="text-[10px] text-gray-400 block">${item.date}</span></div>
+          <div class="flex items-center gap-3">
+            <span class="font-bold font-mono ${item.type === 'income' ? 'text-emerald-400' : 'text-rose-400'}">${item.type === 'income' ? '+' : '-'}৳${item.amt}</span>
+            <button onclick="expenseData.splice(${i},1); renderExpenses();" class="text-gray-500 hover:text-rose-400 no-print"><i class="fa-solid fa-trash"></i></button>
+          </div>
         `;
-        tbody.appendChild(tr);
+        list.appendChild(div);
       });
-      localStorage.setItem('emon_workers', JSON.stringify(workersData));
+      document.getElementById('currentPocketFund').innerText = `৳${inc.toFixed(2)}`;
+      document.getElementById('totalSpent').innerText = `৳${exp.toFixed(2)}`;
+      document.getElementById('remainingPocketBal').innerText = `৳${(inc - exp).toFixed(2)}`;
+      localStorage.setItem('emon_expenses', JSON.stringify(expenseData));
     }
-    function addWorker() {
-      const name = document.getElementById('wName').value.trim();
-      const salary = parseFloat(document.getElementById('wSalary').value);
-      const days = parseInt(document.getElementById('wDays').value) || 30;
-      const advance = parseFloat(document.getElementById('wAdvance').value) || 0;
-      if(!name || !salary) return alert("শ্রমিকের নাম ও বেতন পূরণ করুন!");
-      workersData.push({ name, salary, days, advance });
-      document.getElementById('wName').value = '';
-      document.getElementById('wSalary').value = '';
-      renderWorkers();
+    function addExpenseRecord() {
+      const type = document.getElementById('expenseType').value;
+      const title = document.getElementById('expenseTitle').value.trim();
+      const amt = parseFloat(document.getElementById('expenseAmount').value);
+      if(!title || !amt) return alert("বিবরণ ও টাকা লিখুন!");
+      expenseData.unshift({ type, title, amt, date: new Date().toLocaleDateString('bn-BD', { day: 'numeric', month: 'short' }) });
+      document.getElementById('expenseTitle').value = '';
+      document.getElementById('expenseAmount').value = '';
+      renderExpenses();
     }
 
-    /* 5. DOKAN KHATA / SHOP LEDGER */
     let shopData = JSON.parse(localStorage.getItem('emon_shop_ledger')) || [];
     function renderShopLedger() {
       const tbody = document.getElementById('shopTableBody');
@@ -494,8 +500,8 @@
           <td class="p-2.5 text-gray-400">${s.date}</td>
           <td class="p-2.5 font-bold text-white">${s.name}</td>
           <td class="p-2.5 text-gray-300">${s.item}</td>
-          <td class="p-2.5 ${s.type === 'due' ? 'text-rose-400 font-bold' : 'text-emerald-400 font-bold'}">${s.type === 'due' ? 'বাকি' : 'পরিশোধ'}</td>
-          <td class="p-2.5 text-right font-mono font-bold ${s.type === 'due' ? 'text-rose-400' : 'text-emerald-400'}">৳${s.amount.toFixed(2)}</td>
+          <td class="p-2.5 ${s.type === 'due' ? 'text-rose-400 font-bold' : 'text-emerald-400 font-bold'}">${s.type === 'due' ? 'বাকি' : 'জমা'}</td>
+          <td class="p-2.5 text-right font-mono font-bold">৳${s.amount.toFixed(2)}</td>
           <td class="p-2.5 text-center no-print"><button onclick="shopData.splice(${i},1); renderShopLedger();" class="text-gray-500 hover:text-rose-400"><i class="fa-solid fa-trash"></i></button></td>
         `;
         tbody.appendChild(tr);
@@ -504,40 +510,21 @@
     }
     function addShopEntry() {
       const name = document.getElementById('custName').value.trim();
-      const item = document.getElementById('custItem').value.trim() || 'সাধারণ কেনাকাটা';
+      const item = document.getElementById('custItem').value.trim() || 'কেনাকাটা';
       const type = document.getElementById('custType').value;
       const amount = parseFloat(document.getElementById('custAmount').value);
-      if(!name || !amount) return alert("কাস্টমারের নাম ও টাকার পরিমাণ লিখুন!");
-
-      const date = new Date().toLocaleDateString('bn-BD', { day: 'numeric', month: 'short' });
-      shopData.unshift({ date, name, item, type, amount });
+      if(!name || !amount) return alert("নাম ও টাকা পূরণ করুন!");
+      shopData.unshift({ date: new Date().toLocaleDateString('bn-BD', { day: 'numeric', month: 'short' }), name, item, type, amount });
       document.getElementById('custName').value = '';
       document.getElementById('custItem').value = '';
       document.getElementById('custAmount').value = '';
       renderShopLedger();
     }
 
-    /* 6. SMART NOTEPAD */
-    const noteTitle = document.getElementById('noteTitle');
-    const noteContent = document.getElementById('noteContent');
-    noteTitle.value = localStorage.getItem('emon_note_title') || '';
-    noteContent.value = localStorage.getItem('emon_note_content') || '';
-
-    function saveNotepad() {
-      localStorage.setItem('emon_note_title', noteTitle.value);
-      localStorage.setItem('emon_note_content', noteContent.value);
-    }
-    noteTitle.addEventListener('keyup', saveNotepad);
-
-    // Initial Engine Runs
-    renderExpenses();
+    // Startup Initialization
     renderTradingRoadmap();
-    renderWorkers();
+    renderExpenses();
     renderShopLedger();
-    if(localStorage.getItem('emon_salary')) {
-      document.getElementById('monthlySalaryInput').value = localStorage.getItem('emon_salary');
-      calculateSavingsPlan();
-    }
   </script>
 </body>
 </html>
